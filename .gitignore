@@ -1,0 +1,6 @@
+/mbm
+/cachegrind.out.*
+/callgrind.out.*
+/.vscode
+/**/*.d
+/**/*.o
