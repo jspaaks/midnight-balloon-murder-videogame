@@ -66,6 +66,7 @@ int main (void) {
         while (SDL_WaitEvent(&event) != 0) {
             game->update(&game, &event);
             game->draw(&ctx);
+            SDL_RenderPresent(ctx.renderer);
         }
     }
 

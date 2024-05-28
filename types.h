@@ -10,4 +10,9 @@ typedef struct {
     SDL_Texture * sprites;
 } ctx_t;
 
+typedef struct {
+    int w;
+    int h;
+} dims_t;
+
 #endif

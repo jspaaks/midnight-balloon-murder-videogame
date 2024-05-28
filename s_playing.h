@@ -1,5 +1,5 @@
-#ifndef PLAYING_H
-#define PLAYING_H
+#ifndef S_PLAYING_H
+#define S_PLAYING_H
 
 #include <SDL_render.h>
 #include <SDL_events.h>

@@ -1,6 +1,6 @@
 #include "fsm.h"
-#include "playing.h"
-#include "paused.h"
+#include "s_playing.h"
+#include "s_paused.h"
 
 static struct state states[] = {
     {

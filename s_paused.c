@@ -1,13 +1,12 @@
-#include "paused.h"
-#include "shared.h"
+#include "s_paused.h"
+#include "o_background.h"
 #include "types.h"
 #include "fsm.h"
 #include <SDL_events.h>
 #include <SDL_keycode.h>
 
 void paused_draw (ctx_t * ctx) {
-    shared_draw_background(ctx);
-    SDL_RenderPresent(ctx->renderer);
+    background_draw(ctx);
 }
 
 void paused_update (struct state ** game, SDL_Event * event) {

@@ -1,5 +1,5 @@
-#ifndef PAUSED_H
-#define PAUSED_H
+#ifndef S_PAUSED_H
+#define S_PAUSED_H
 
 #include "types.h"
 #include "fsm.h"
