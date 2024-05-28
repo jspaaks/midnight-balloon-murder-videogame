@@ -1,20 +1,23 @@
 #ifndef FSM_H
 #define FSM_H
 
-#include "SDL_surface.h"
-#include "SDL_video.h"
+#include "types.h"
+#include <SDL_surface.h>
+#include <SDL_video.h>
+#include <SDL_render.h>
+#include <SDL_events.h>
 
 typedef enum {
     PLAYING = 0,
-    HISCORES
+    PAUSED,
 } state_name_t;
 
-typedef struct {
-    void (*draw)(SDL_Window **, SDL_Surface **);
-    void (*update)(void);
+struct state {
+    void (*draw)(ctx_t *);
+    void (*update)(struct state **, SDL_Event *);
     state_name_t label;
-} state_t;
+};
 
-state_t * fsm_set_state (state_name_t);
+struct state * fsm_set_state (state_name_t);
 
 #endif

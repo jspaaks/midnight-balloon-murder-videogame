@@ -1,22 +1,20 @@
 #include "fsm.h"
-#include "hiscores.h"
 #include "playing.h"
-#include "SDL_surface.h"
-#include "SDL_video.h"
+#include "paused.h"
 
-static state_t states[] = {
+static struct state states[] = {
     {
         .draw = playing_draw,
         .label = PLAYING,
         .update = playing_update,
     },
     {
-        .draw = hiscores_draw,
-        .label = HISCORES,
-        .update = hiscores_update,
+        .draw = paused_draw,
+        .label = PAUSED,
+        .update = paused_update,
     },
 };
 
-state_t * fsm_set_state (state_name_t label) {
+struct state * fsm_set_state (state_name_t label) {
     return &states[label];
 }
