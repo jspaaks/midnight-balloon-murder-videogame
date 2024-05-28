@@ -12,3 +12,11 @@ sudo make install
 ```
 
 After this, `sdl-config --version` returns `2.31.0`.
+
+
+
+Converting SVG images to BMP with transparency using ImageMagick:
+
+```
+convert -background none -density 96 img/sprites.svg img/sprites.bmp
+```
