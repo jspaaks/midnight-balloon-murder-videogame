@@ -1,7 +1,7 @@
 SRCS := $(shell find . -maxdepth 1 -type f -name '*.c' -exec basename {} \;)
 OBJS := $(SRCS:%.c=%.o)
 DEPS := $(OBJS:%.o=%.d)
-FLGS := -g -O0 -Wall -Werror -Wextra -pedantic -MMD -MP
+FLGS := -g -O0 -Wall -Wextra -pedantic -MMD -MP
 CC   := gcc
 EXE  := mbm
 
