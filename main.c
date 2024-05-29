@@ -52,24 +52,24 @@ int main (void) {
         .window = NULL,
         .renderer = NULL,
         .sprites = NULL,
+        .keys = SDL_GetKeyboardState(NULL)
     };
-    struct state * game = fsm_set_state (PLAYING);
-    SDL_Event event;
+    struct state * state = fsm_set_state (PLAYING);
+    struct state * frame = state;  
 
     bool success = init(&ctx);
     if (!success) {
         exit(EXIT_FAILURE);
     }
 
-    Uint64 timeout = SDL_GetTicks64() + 10000;
-    while (SDL_GetTicks64() < timeout) {
-        while (SDL_WaitEvent(&event) != 0) {
-            game->update(&game, &event);
-            game->draw(&ctx);
-            SDL_RenderPresent(ctx.renderer);
-        }
+    //Uint64 timeout = SDL_GetTicks64() + 30000;
+    //while (SDL_GetTicks64() < timeout) {
+    while (true) {
+        frame = state;                    // so .update() and .draw() are of the same state
+        frame->update(&ctx, &state);
+        frame->draw(&ctx);
+        SDL_RenderPresent(ctx.renderer);
     }
-
     deinit(&ctx);
     return EXIT_SUCCESS;
 }

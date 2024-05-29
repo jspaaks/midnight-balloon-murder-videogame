@@ -14,7 +14,7 @@ typedef enum {
 
 struct state {
     void (*draw)(ctx_t *);
-    void (*update)(struct state **, SDL_Event *);
+    void (*update)(ctx_t *, struct state **);
     state_name_t label;
 };
 

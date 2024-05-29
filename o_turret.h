@@ -4,6 +4,6 @@
 #include <SDL_events.h>
 
 void turret_draw (ctx_t *);
-void turret_update (SDL_Event *);
+void turret_update (ctx_t *);
 
 #endif

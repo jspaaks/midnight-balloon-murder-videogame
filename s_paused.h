@@ -4,7 +4,7 @@
 #include "types.h"
 #include "fsm.h"
 
-void paused_draw (ctx_t * ctx);
-void paused_update (struct state ** game, SDL_Event *);
+void paused_draw (ctx_t *);
+void paused_update (ctx_t *, struct state **);
 
 #endif

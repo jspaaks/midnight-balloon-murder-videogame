@@ -7,6 +7,6 @@
 #include "types.h"
 
 void playing_draw (ctx_t *);
-void playing_update (struct state **, SDL_Event *);
+void playing_update (ctx_t *, struct state **);
 
 #endif

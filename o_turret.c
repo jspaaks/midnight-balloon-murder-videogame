@@ -2,6 +2,7 @@
 #include "types.h"
 #include "constants.h"
 #include <SDL_rect.h>
+#include <stdbool.h>
 
 static double max (double, double);
 static double min (double, double);
@@ -13,8 +14,12 @@ static const dims_t turret = {
 };
 
 static const dims_t barrel = {
-    .w = 45,
+    .w = 55,
     .h = 12
+};
+static const dims_t flash = {
+    .w = 30,
+    .h = 22
 };
 
 static const SDL_Rect turret_src = {
@@ -23,6 +28,18 @@ static const SDL_Rect turret_src = {
     .w = turret.w,
     .h = turret.h,
 };
+static const SDL_Rect barrel_src = {
+    .x = 4,
+    .y = 68,
+    .w = barrel.w,
+    .h = barrel.h,
+};
+static const SDL_Rect flash_src = {
+    .x = 166,
+    .y = 63,
+    .w = flash.w,
+    .h = flash.h,
+};
 
 static const SDL_Rect turret_tgt = {
     .x = 180,
@@ -30,49 +47,67 @@ static const SDL_Rect turret_tgt = {
     .w = turret.w,
     .h = turret.h,
 };
-
-static const SDL_Rect barrel_src = {
-    .x = 4,
-    .y = 68,
+static const SDL_Rect barrel_tgt = {
+    .x = turret_tgt.x + turret.w / 2,
+    .y = turret_tgt.y + turret.w / 2 - barrel.h / 2,
     .w = barrel.w,
     .h = barrel.h,
 };
-
-static const SDL_Rect barrel_tgt = {
-    .x = 180 + turret.w - 20,
-    .y = SCREEN_HEIGHT - GROUND_HEIGHT - turret.h + turret.w / 2 - barrel.h / 2,
-    .w = barrel.w,
-    .h = barrel.h,
+static const SDL_Rect flash_tgt = {
+    .x = barrel_tgt.x + barrel.w + 3,
+    .y = barrel_tgt.y + barrel.h / 2 - flash.h / 2,
+    .w = flash.w,
+    .h = flash.h,
 };
 
 static const SDL_Point barrel_center = {
-    .x = turret.w / -2 + 20,
+    .x = 0,
     .y = barrel.h / 2,
 };
+static const SDL_Point flash_center = {
+    .x = -1 * (barrel.w + 3),
+    .y = flash.h / 2,
+};
 
-double barrel_angle = -55;
-double barrel_speed = 2; // degrees per second
+static double barrel_angle = -55;
+static double barrel_speed = 2; // degrees per second
+static bool is_shooting = false;
 
 void turret_draw (ctx_t * ctx) {
+    // turret base
     SDL_RenderCopy(ctx->renderer, ctx->sprites, &turret_src, &turret_tgt);
+
+    // turret barrel
     SDL_RenderCopyEx(ctx->renderer, ctx->sprites, &barrel_src,
                                                   &barrel_tgt,
                                                   barrel_angle,
                                                   &barrel_center,
                                                   SDL_FLIP_NONE);
+    // muzzle flash
+    if (is_shooting) {
+        SDL_RenderCopyEx(ctx->renderer, ctx->sprites, &flash_src,
+                                                    &flash_tgt,
+                                                    barrel_angle,
+                                                    &flash_center,
+                                                    SDL_FLIP_NONE);
+    }
 }
 
-void turret_update (SDL_Event * event) {
-    if (event->type == SDL_KEYDOWN) {
-        if (event->key.keysym.sym == SDLK_w) {
-            barrel_angle = clip(barrel_angle + -1 * barrel_speed);
-            // TODO take into account integration of barrel_speed over time
+void turret_update (ctx_t * ctx) {
+    int flags = ctx->keys[SDL_SCANCODE_W] |
+                ctx->keys[SDL_SCANCODE_S] << 1;
+    double dt = 0.01;
+    switch (flags) {
+        case 1: {
+            barrel_angle = clip(barrel_angle + -1 * barrel_speed * dt);
+            break;
         }
-        if (event->key.keysym.sym == SDLK_s) {
-            barrel_angle = clip(barrel_angle + 1 * barrel_speed);
-            // TODO take into account integration of barrel_speed over time
+        case 2: {
+            barrel_angle = clip(barrel_angle + 1 * barrel_speed * dt);
+            break;
         }
     }
+    is_shooting = ctx->keys[SDL_SCANCODE_SPACE] == 1;
 }
 
 
@@ -85,7 +120,6 @@ static double min(double a, double b) {
 }
 
 static double clip(double v) {
-    fprintf(stdout, "%f\n", v);
     const double barrel_angle_min = -62;
     const double barrel_angle_max = -24;
     v = max(v, barrel_angle_min);

@@ -8,6 +8,7 @@ typedef struct {
     SDL_Window * window;
     SDL_Renderer * renderer;
     SDL_Texture * sprites;
+    const Uint8 * keys;
 } ctx_t;
 
 typedef struct {

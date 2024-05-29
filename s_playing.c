@@ -21,12 +21,15 @@ void playing_draw (ctx_t * ctx) {
     turret_draw(ctx);
 }
 
-void playing_update (struct state ** game, SDL_Event * event) {
-    if (event->type == SDL_KEYDOWN) {
-        if (event->key.keysym.sym == SDLK_ESCAPE) {
-            fprintf(stdout, "Pausing.\n");
-            *game = fsm_set_state(PAUSED);
+void playing_update (ctx_t * ctx, struct state ** state) {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_ESCAPE) {
+                fprintf(stdout, "pausing\n");
+                *state = fsm_set_state(PAUSED);
+            }
         }
-        turret_update(event);
     }
+    turret_update(ctx);
 }
