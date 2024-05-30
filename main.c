@@ -11,6 +11,7 @@
 #include <SDL_timer.h>
 #include "o_balloons.h"
 #include "levels.h"
+#include <time.h>
 
 void deinit (ctx_t *);
 bool init (ctx_t *);
@@ -25,7 +26,7 @@ void deinit (ctx_t * ctx) {
     SDL_DestroyTexture(ctx->spritesheet);
     ctx->spritesheet = NULL;
 
-    free(ctx->balloons);
+    o_balloons_free(ctx->balloons);
     ctx->balloons = NULL;
 
     ctx->levels = NULL;
@@ -36,6 +37,9 @@ void deinit (ctx_t * ctx) {
 }
 
 bool init (ctx_t * ctx) {
+    // initialize the random number generator
+    srand(time(NULL));
+
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
         fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
@@ -43,7 +47,7 @@ bool init (ctx_t * ctx) {
     }
     ctx->window = SDL_CreateWindow("Midnight Balloon Murder", SDL_WINDOWPOS_CENTERED,
                                    SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
-                                   SDL_WINDOW_RESIZABLE);
+                                   SDL_WINDOW_BORDERLESS);
     if (ctx->window == NULL) {
         fprintf(stderr, "Error creating window: %s\n", SDL_GetError());
         return false;
@@ -59,12 +63,17 @@ bool init (ctx_t * ctx) {
     ctx->dt = 0.0000000000001;
     ctx->nlevels = levels_get_nlevels();
     ctx->levels = levels_init();
-    ctx->level = ctx->levels + 1;
-    ctx->balloons = o_balloons_init(ctx);
+    ctx->level = ctx->levels + 5;
+    ctx->balloons = o_balloons_malloc(ctx);
     if (ctx->balloons == NULL) {
         fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
         return false;
     }
+    ctx->balloons = o_balloons_populate(ctx);
+    ctx->balloons = o_balloons_randomize_x(ctx);
+    ctx->balloons = o_balloons_randomize_t(ctx);
+    ctx->balloons = o_balloons_sort(ctx);
+
     return true;
 }
 
@@ -78,7 +87,7 @@ int main (void) {
     struct state * frame = state;
     Uint64 tstart;
 
-    Uint64 timeout = SDL_GetTicks64() + 1500;
+    Uint64 timeout = SDL_GetTicks64() + 70000;
     while (SDL_GetTicks64() < timeout) {
         tstart = SDL_GetTicks64();
         frame = state;  // so .update() and .draw() are of the same state
