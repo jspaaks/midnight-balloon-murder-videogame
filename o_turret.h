@@ -3,7 +3,7 @@
 #include "context.h"
 #include <SDL_events.h>
 
-void turret_draw (ctx_t *);
-void turret_update (ctx_t *);
+void o_turret_draw (ctx_t *);
+void o_turret_update (ctx_t *);
 
 #endif

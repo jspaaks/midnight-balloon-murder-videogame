@@ -4,7 +4,7 @@
 #include "context.h"
 #include "fsm.h"
 
-void paused_draw (ctx_t *);
-void paused_update (ctx_t *, struct state **);
+void s_paused_draw (ctx_t *);
+void s_paused_update (ctx_t *, struct state **);
 
 #endif

@@ -2,6 +2,6 @@
 #define O_BACKGROUND_H
 #include "context.h"
 
-void background_draw (ctx_t *);
+void o_background_draw (ctx_t *);
 
 #endif

@@ -9,7 +9,7 @@ static const SDL_Rect rect = {
     .h = GROUND_HEIGHT,
 };
 
-void ground_draw (ctx_t * ctx) {
+void o_ground_draw (ctx_t * ctx) {
     static rgba_t ground = { .r = 11, .g = 1, .b = 26, .a = 0 };
     SDL_SetRenderDrawColor(ctx->renderer, ground.r,
                                           ground.g,

@@ -5,11 +5,11 @@
 #include <SDL_events.h>
 #include <SDL_keycode.h>
 
-void paused_draw (ctx_t * ctx) {
-    background_draw(ctx);
+void s_paused_draw (ctx_t * ctx) {
+    o_background_draw(ctx);
 }
 
-void paused_update (ctx_t * ctx, struct state ** state) {
+void s_paused_update (ctx_t * ctx, struct state ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {

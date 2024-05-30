@@ -2,6 +2,6 @@
 #define O_MOON_H
 #include "context.h"
 
-void moon_draw (ctx_t *);
+void o_moon_draw (ctx_t *);
 
 #endif

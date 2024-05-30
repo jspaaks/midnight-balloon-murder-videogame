@@ -6,7 +6,7 @@
 #include "fsm.h"
 #include "context.h"
 
-void playing_draw (ctx_t *);
-void playing_update (ctx_t *, struct state **);
+void s_playing_draw (ctx_t *);
+void s_playing_update (ctx_t *, struct state **);
 
 #endif

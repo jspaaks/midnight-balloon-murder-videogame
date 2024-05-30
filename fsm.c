@@ -4,14 +4,14 @@
 
 static struct state states[] = {
     {
-        .draw = playing_draw,
+        .draw = s_playing_draw,
         .label = PLAYING,
-        .update = playing_update,
+        .update = s_playing_update,
     },
     {
-        .draw = paused_draw,
+        .draw = s_paused_draw,
         .label = PAUSED,
-        .update = paused_update,
+        .update = s_paused_update,
     },
 };
 

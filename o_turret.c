@@ -59,7 +59,7 @@ static double barrel_angle = -55;
 static double barrel_speed = 17; // degrees per second
 static bool is_shooting = false;
 
-void turret_draw (ctx_t * ctx) {
+void o_turret_draw (ctx_t * ctx) {
     // turret base
     SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &turret_src, &turret_tgt);
 
@@ -79,7 +79,7 @@ void turret_draw (ctx_t * ctx) {
     }
 }
 
-void turret_update (ctx_t * ctx) {
+void o_turret_update (ctx_t * ctx) {
     int flags = ctx->keys[SDL_SCANCODE_W] |
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {

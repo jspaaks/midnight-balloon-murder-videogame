@@ -2,6 +2,7 @@
 #include "o_balloons.h"
 #include "context.h"
 #include "constants.h"
+#include "levels.h"
 
 static const SDL_Rect yellow = {
     .x = 166,
@@ -24,16 +25,16 @@ static const SDL_Rect yellow = {
 
 static bool is_outside(balloon_t *);
 
-void balloons_draw (ctx_t * ctx) {
-    for (int i = 0; i < ctx->nballoons; i++) {
+void o_balloons_draw (ctx_t * ctx) {
+    for (int i = 0; i < ctx->level->nballoons; i++) {
         if (ctx->balloons[i].state == AIRBORNE) {
             SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &ctx->balloons[i].tgt);
         }
     }
 }
 
-balloon_t * balloons_init (int nballoons) {
-    balloon_t * balloons = malloc(nballoons * sizeof(balloon_t));
+balloon_t * o_balloons_init (ctx_t * ctx) {
+    balloon_t * balloons = malloc(ctx->level->nballoons * sizeof(balloon_t));
 
     balloon_t balloon = {
         .x = 3 * SCREEN_WIDTH / 4,
@@ -53,7 +54,7 @@ balloon_t * balloons_init (int nballoons) {
         },
     };
     balloon_t * b = balloons;
-    for (int i = 0; i < nballoons; i++) {
+    for (int i = 0; i < ctx->level->nballoons; i++) {
         *b = balloon;
         b->x += 10 * i;
         b->tgt.x += 10 * i;
@@ -62,8 +63,8 @@ balloon_t * balloons_init (int nballoons) {
     return balloons;
 }
 
-void balloons_update (ctx_t * ctx) {
-    for (int i = 0; i < ctx->nballoons; i++) {
+void o_balloons_update (ctx_t * ctx) {
+    for (int i = 0; i < ctx->level->nballoons; i++) {
         switch (ctx->balloons[i].state) {
             case PRESPAWN: {
                 break;

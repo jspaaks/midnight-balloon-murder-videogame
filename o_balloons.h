@@ -21,8 +21,8 @@ struct balloon_t {
     SDL_Rect tgt;
 };
 
-void balloons_draw (ctx_t *);
-balloon_t * balloons_init (int);
-void balloons_update (ctx_t *);
+void o_balloons_draw (ctx_t *);
+balloon_t * o_balloons_init (ctx_t *);
+void o_balloons_update (ctx_t *);
 
 #endif

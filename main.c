@@ -10,19 +10,29 @@
 #include <stdbool.h>
 #include <SDL_timer.h>
 #include "o_balloons.h"
+#include "levels.h"
 
 void deinit (ctx_t *);
 bool init (ctx_t *);
 
 void deinit (ctx_t * ctx) {
     SDL_DestroyRenderer(ctx->renderer);
-    SDL_DestroyWindow(ctx->window);
-    SDL_Quit();
-    free(ctx->balloons);
-    ctx->window = NULL;
     ctx->renderer = NULL;
+
+    SDL_DestroyWindow(ctx->window);
+    ctx->window = NULL;
+
+    SDL_DestroyTexture(ctx->spritesheet);
     ctx->spritesheet = NULL;
+
+    free(ctx->balloons);
     ctx->balloons = NULL;
+
+    ctx->levels = NULL;
+    ctx->level = NULL;
+    ctx->keys = NULL;
+
+    SDL_Quit();
 }
 
 bool init (ctx_t * ctx) {
@@ -47,8 +57,10 @@ bool init (ctx_t * ctx) {
     ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
     ctx->keys = SDL_GetKeyboardState(NULL);
     ctx->dt = 0.0000000000001;
-    ctx->nballoons = 10;
-    ctx->balloons = balloons_init(ctx->nballoons);
+    ctx->nlevels = levels_get_nlevels();
+    ctx->levels = levels_init();
+    ctx->level = ctx->levels + 1;
+    ctx->balloons = o_balloons_init(ctx);
     if (ctx->balloons == NULL) {
         fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
         return false;
@@ -66,7 +78,7 @@ int main (void) {
     struct state * frame = state;
     Uint64 tstart;
 
-    Uint64 timeout = SDL_GetTicks64() + 15000;
+    Uint64 timeout = SDL_GetTicks64() + 1500;
     while (SDL_GetTicks64() < timeout) {
         tstart = SDL_GetTicks64();
         frame = state;  // so .update() and .draw() are of the same state

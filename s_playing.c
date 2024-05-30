@@ -16,15 +16,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void playing_draw (ctx_t * ctx) {
-    background_draw(ctx);
-    moon_draw(ctx);
-    turret_draw(ctx);
-    balloons_draw(ctx);
-    ground_draw(ctx);
+void s_playing_draw (ctx_t * ctx) {
+    o_background_draw(ctx);
+    o_moon_draw(ctx);
+    o_turret_draw(ctx);
+    o_balloons_draw(ctx);
+    o_ground_draw(ctx);
 }
 
-void playing_update (ctx_t * ctx, struct state ** state) {
+void s_playing_update (ctx_t * ctx, struct state ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
@@ -34,7 +34,7 @@ void playing_update (ctx_t * ctx, struct state ** state) {
             }
         }
     }
-    turret_update(ctx);
-    balloons_update(ctx);
+    o_turret_update(ctx);
+    o_balloons_update(ctx);
     SDL_RenderPresent(ctx->renderer);
 }

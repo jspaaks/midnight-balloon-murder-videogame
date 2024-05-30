@@ -16,6 +16,6 @@ static const SDL_Rect tgt = {
     .h = 90,
 };
 
-void moon_draw (ctx_t * ctx) {
+void o_moon_draw (ctx_t * ctx) {
     SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &src, &tgt);
 }
