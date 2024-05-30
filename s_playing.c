@@ -18,10 +18,10 @@
 
 void playing_draw (ctx_t * ctx) {
     background_draw(ctx);
-    ground_draw(ctx);
     moon_draw(ctx);
     turret_draw(ctx);
     balloons_draw(ctx);
+    ground_draw(ctx);
 }
 
 void playing_update (ctx_t * ctx, struct state ** state) {
