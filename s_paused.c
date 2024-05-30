@@ -1,6 +1,6 @@
 #include "s_paused.h"
 #include "o_background.h"
-#include "types.h"
+#include "context.h"
 #include "fsm.h"
 #include <SDL_events.h>
 #include <SDL_keycode.h>

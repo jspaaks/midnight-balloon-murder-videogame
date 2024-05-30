@@ -1,7 +1,7 @@
 #ifndef S_PAUSED_H
 #define S_PAUSED_H
 
-#include "types.h"
+#include "context.h"
 #include "fsm.h"
 
 void paused_draw (ctx_t *);

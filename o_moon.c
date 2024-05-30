@@ -1,4 +1,4 @@
-#include "types.h"
+#include "context.h"
 #include "constants.h"
 #include <SDL_rect.h>
 
@@ -17,5 +17,5 @@ static const SDL_Rect tgt = {
 };
 
 void moon_draw (ctx_t * ctx) {
-    SDL_RenderCopy(ctx->renderer, ctx->sprites, &src, &tgt);
+    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &src, &tgt);
 }

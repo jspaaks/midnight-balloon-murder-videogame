@@ -1,5 +1,5 @@
 #include "o_turret.h"
-#include "types.h"
+#include "context.h"
 #include "constants.h"
 #include <SDL_rect.h>
 #include <stdbool.h>
@@ -8,65 +8,51 @@ static double max (double, double);
 static double min (double, double);
 static double clip (double);
 
-static const dims_t turret = {
-    .w = 70,
-    .h = 60
-};
-
-static const dims_t barrel = {
-    .w = 55,
-    .h = 12
-};
-static const dims_t flash = {
-    .w = 30,
-    .h = 22
-};
-
 static const SDL_Rect turret_src = {
     .x = 4,
     .y = 1,
-    .w = turret.w,
-    .h = turret.h,
+    .w = 70,
+    .h = 60,
 };
 static const SDL_Rect barrel_src = {
     .x = 4,
     .y = 68,
-    .w = barrel.w,
-    .h = barrel.h,
+    .w = 55,
+    .h = 12,
 };
 static const SDL_Rect flash_src = {
     .x = 166,
     .y = 63,
-    .w = flash.w,
-    .h = flash.h,
+    .w = 30,
+    .h = 22,
 };
 
 static const SDL_Rect turret_tgt = {
     .x = 180,
-    .y = SCREEN_HEIGHT - GROUND_HEIGHT - turret.h,
-    .w = turret.w,
-    .h = turret.h,
+    .y = SCREEN_HEIGHT - GROUND_HEIGHT - turret_src.h,
+    .w = turret_src.w,
+    .h = turret_src.h,
 };
 static const SDL_Rect barrel_tgt = {
-    .x = turret_tgt.x + turret.w / 2,
-    .y = turret_tgt.y + turret.w / 2 - barrel.h / 2,
-    .w = barrel.w,
-    .h = barrel.h,
+    .x = turret_tgt.x + turret_src.w / 2,
+    .y = turret_tgt.y + turret_src.w / 2 - barrel_src.h / 2,
+    .w = barrel_src.w,
+    .h = barrel_src.h,
 };
 static const SDL_Rect flash_tgt = {
-    .x = barrel_tgt.x + barrel.w + 3,
-    .y = barrel_tgt.y + barrel.h / 2 - flash.h / 2,
-    .w = flash.w,
-    .h = flash.h,
+    .x = barrel_tgt.x + barrel_src.w + 3,
+    .y = barrel_tgt.y + barrel_src.h / 2 - flash_src.h / 2,
+    .w = flash_src.w,
+    .h = flash_src.h,
 };
 
 static const SDL_Point barrel_center = {
     .x = 0,
-    .y = barrel.h / 2,
+    .y = barrel_src.h / 2,
 };
 static const SDL_Point flash_center = {
-    .x = -1 * (barrel.w + 3),
-    .y = flash.h / 2,
+    .x = -1 * (barrel_src.w + 3),
+    .y = flash_src.h / 2,
 };
 
 static double barrel_angle = -55;
@@ -75,21 +61,21 @@ static bool is_shooting = false;
 
 void turret_draw (ctx_t * ctx) {
     // turret base
-    SDL_RenderCopy(ctx->renderer, ctx->sprites, &turret_src, &turret_tgt);
+    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &turret_src, &turret_tgt);
 
     // turret barrel
-    SDL_RenderCopyEx(ctx->renderer, ctx->sprites, &barrel_src,
-                                                  &barrel_tgt,
-                                                  barrel_angle,
-                                                  &barrel_center,
-                                                  SDL_FLIP_NONE);
+    SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &barrel_src,
+                                                      &barrel_tgt,
+                                                      barrel_angle,
+                                                      &barrel_center,
+                                                      SDL_FLIP_NONE);
     // muzzle flash
     if (is_shooting) {
-        SDL_RenderCopyEx(ctx->renderer, ctx->sprites, &flash_src,
-                                                    &flash_tgt,
-                                                    barrel_angle,
-                                                    &flash_center,
-                                                    SDL_FLIP_NONE);
+        SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &flash_src,
+                                                          &flash_tgt,
+                                                          barrel_angle,
+                                                          &flash_center,
+                                                          SDL_FLIP_NONE);
     }
 }
 

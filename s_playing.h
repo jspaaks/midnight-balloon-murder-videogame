@@ -4,7 +4,7 @@
 #include <SDL_render.h>
 #include <SDL_events.h>
 #include "fsm.h"
-#include "types.h"
+#include "context.h"
 
 void playing_draw (ctx_t *);
 void playing_update (ctx_t *, struct state **);

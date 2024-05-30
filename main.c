@@ -1,11 +1,10 @@
 #include "constants.h"
-#include "types.h"
+#include "context.h"
 #include "fsm.h"
 #include <SDL.h>
 #include <SDL_surface.h>
 #include <SDL_video.h>
 #include <SDL_render.h>
-#include <SDL_timer.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -19,7 +18,7 @@ void deinit (ctx_t * ctx) {
     SDL_Quit();
     ctx->window = NULL;
     ctx->renderer = NULL;
-    ctx->sprites = NULL;
+    ctx->spritesheet = NULL;
 }
 
 bool init (ctx_t * ctx) {
@@ -43,7 +42,7 @@ bool init (ctx_t * ctx) {
     if (image == NULL) {
         fprintf(stdout, "Something went wrong loading spritesheet.\n");
     }
-    ctx->sprites = SDL_CreateTextureFromSurface(ctx->renderer, image);
+    ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
     return true;
 }
 
@@ -51,25 +50,23 @@ int main (void) {
     ctx_t ctx = {
         .window = NULL,
         .renderer = NULL,
-        .sprites = NULL,
+        .spritesheet = NULL,
         .keys = SDL_GetKeyboardState(NULL)
     };
     struct state * state = fsm_set_state (PLAYING);
-    struct state * frame = state;  
+    struct state * frame = state;
 
     bool success = init(&ctx);
     if (!success) {
         exit(EXIT_FAILURE);
     }
 
-    //Uint64 timeout = SDL_GetTicks64() + 30000;
-    //while (SDL_GetTicks64() < timeout) {
     while (true) {
-        frame = state;                    // so .update() and .draw() are of the same state
+        frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
         frame->draw(&ctx);
-        SDL_RenderPresent(ctx.renderer);
     }
+
     deinit(&ctx);
     return EXIT_SUCCESS;
 }
