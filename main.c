@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <SDL_timer.h>
+#include "o_balloons.h"
 
 void deinit (ctx_t *);
 bool init (ctx_t *);
@@ -17,9 +18,11 @@ void deinit (ctx_t * ctx) {
     SDL_DestroyRenderer(ctx->renderer);
     SDL_DestroyWindow(ctx->window);
     SDL_Quit();
+    free(ctx->balloons);
     ctx->window = NULL;
     ctx->renderer = NULL;
     ctx->spritesheet = NULL;
+    ctx->balloons = NULL;
 }
 
 bool init (ctx_t * ctx) {
@@ -39,29 +42,29 @@ bool init (ctx_t * ctx) {
     SDL_Surface * image = SDL_LoadBMP("img/sprites.bmp");
     if (image == NULL) {
         fprintf(stdout, "Something went wrong loading spritesheet.\n");
+        return false;
     }
     ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
     ctx->keys = SDL_GetKeyboardState(NULL);
     ctx->dt = 0.0000000000001;
+    ctx->nballoons = 10;
+    ctx->balloons = balloons_init(ctx->nballoons);
+    if (ctx->balloons == NULL) {
+        fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
+        return false;
+    }
     return true;
 }
 
 int main (void) {
-    ctx_t ctx = {
-        .window = NULL,
-        .renderer = NULL,
-        .spritesheet = NULL,
-        .keys = NULL,
-        .dt = 0.0
-    };
+    ctx_t ctx;
+    if (!init(&ctx)) {
+        exit(EXIT_FAILURE);
+    }
+
     struct state * state = fsm_set_state (PLAYING);
     struct state * frame = state;
     Uint64 tstart;
-
-    bool success = init(&ctx);
-    if (!success) {
-        exit(EXIT_FAILURE);
-    }
 
     Uint64 timeout = SDL_GetTicks64() + 15000;
     while (SDL_GetTicks64() < timeout) {

@@ -6,7 +6,9 @@
 
 typedef enum {PRESPAWN, AIRBORNE, HIT, MISS} balloon_state_t;
 
-typedef struct {
+typedef struct  balloon_t balloon_t;
+
+struct balloon_t {
     double x;
     double y;
     int w;
@@ -17,9 +19,10 @@ typedef struct {
     balloon_state_t state;
     const SDL_Rect * src;
     SDL_Rect tgt;
-} balloon_t;
+};
 
 void balloons_draw (ctx_t *);
+balloon_t * balloons_init (int);
 void balloons_update (ctx_t *);
 
 #endif
