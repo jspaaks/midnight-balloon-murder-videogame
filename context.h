@@ -9,6 +9,7 @@ typedef struct {
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
     const Uint8 * keys;
+    double dt;
 } ctx_t;
 
 #endif

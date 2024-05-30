@@ -56,7 +56,7 @@ static const SDL_Point flash_center = {
 };
 
 static double barrel_angle = -55;
-static double barrel_speed = 2; // degrees per second
+static double barrel_speed = 17; // degrees per second
 static bool is_shooting = false;
 
 void turret_draw (ctx_t * ctx) {
@@ -82,14 +82,13 @@ void turret_draw (ctx_t * ctx) {
 void turret_update (ctx_t * ctx) {
     int flags = ctx->keys[SDL_SCANCODE_W] |
                 ctx->keys[SDL_SCANCODE_S] << 1;
-    double dt = 0.01;
     switch (flags) {
         case 1: {
-            barrel_angle = clip(barrel_angle + -1 * barrel_speed * dt);
+            barrel_angle = clip(barrel_angle + -1 * barrel_speed * ctx->dt);
             break;
         }
         case 2: {
-            barrel_angle = clip(barrel_angle + 1 * barrel_speed * dt);
+            barrel_angle = clip(barrel_angle + 1 * barrel_speed * ctx->dt);
             break;
         }
     }

@@ -35,6 +35,6 @@ void playing_update (ctx_t * ctx, struct state ** state) {
         }
     }
     turret_update(ctx);
-    balloons_update();
+    balloons_update(ctx);
     SDL_RenderPresent(ctx->renderer);
 }

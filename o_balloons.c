@@ -2,7 +2,6 @@
 #include "context.h"
 #include "constants.h"
 
-
 static const SDL_Rect yellow = {
     .x = 166,
     .y = 1,
@@ -27,8 +26,8 @@ static balloon_t balloon = {
     .y = SCREEN_HEIGHT - GROUND_HEIGHT,
     .w = yellow.w,
     .h = yellow.h,
-    .u = 0,
-    .v = -2,
+    .u = 0.0,
+    .v = -30.0,
     .value = 5,
     .state = AIRBORNE,
     .src = &yellow,
@@ -40,17 +39,15 @@ static balloon_t balloon = {
     },
 };
 
-static double dt = 0.01;
-
 void balloons_draw (ctx_t * ctx) {
     if (balloon.state == AIRBORNE) {
         SDL_RenderCopy(ctx->renderer, ctx->spritesheet, balloon.src, &balloon.tgt);
     }
 }
 
-void balloons_update (void) {
-    balloon.x += balloon.u * dt;
-    balloon.y += balloon.v * dt;
+void balloons_update (ctx_t * ctx) {
+    balloon.x += balloon.u * ctx->dt;
+    balloon.y += balloon.v * ctx->dt;
     balloon.tgt.x = (int) balloon.x;
     balloon.tgt.y = (int) balloon.y;
     if (balloon.tgt.y + balloon.h < 0 || balloon.tgt.y > SCREEN_HEIGHT || balloon.tgt.x + balloon.w < 0 || balloon.tgt.x > SCREEN_WIDTH ) {

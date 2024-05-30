@@ -20,6 +20,6 @@ typedef struct {
 } balloon_t;
 
 void balloons_draw (ctx_t *);
-void balloons_update (void);
+void balloons_update (ctx_t *);
 
 #endif
