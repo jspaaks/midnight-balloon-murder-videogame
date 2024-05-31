@@ -22,14 +22,9 @@ struct balloon_t {
     Uint64 trelease;
 };
 
-int o_balloons_compare (const void *, const void *);
 void o_balloons_draw (ctx_t *);
 void o_balloons_free (balloon_t *);
-balloon_t * o_balloons_malloc (ctx_t *);
-balloon_t * o_balloons_populate (ctx_t *);
-balloon_t * o_balloons_randomize_t (ctx_t *);
-balloon_t * o_balloons_randomize_x (ctx_t *);
-balloon_t * o_balloons_sort (ctx_t *);
+ctx_t * o_balloons_init (ctx_t *);
 void o_balloons_update (ctx_t *);
 
 #endif

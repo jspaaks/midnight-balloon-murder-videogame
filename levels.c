@@ -54,11 +54,9 @@ static level_t levels[] = {
 };
 
 
-int levels_get_nlevels(void) {
-    return sizeof(levels) / sizeof(levels[0]);
+ctx_t * levels_init (ctx_t * ctx) {
+    ctx->levels = &levels[0];
+    ctx->level = ctx->levels + 1;
+    ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
+    return ctx;
 }
-
-level_t * levels_init (void) {
-      return &levels[0];
-}
-

@@ -5,19 +5,27 @@
 #include "levels.h"
 #include <SDL_timer.h>
 
-static const SDL_Rect yellow = {
+static int o_balloons_compare (const void *, const void *);
+static balloon_t * o_balloons_malloc (ctx_t *);
+static balloon_t * o_balloons_populate (ctx_t *);
+static balloon_t * o_balloons_randomize_t (ctx_t *);
+static balloon_t * o_balloons_randomize_x (ctx_t *);
+static balloon_t * o_balloons_sort (ctx_t *);
+static bool o_balloons_is_outside(balloon_t *);
+
+static const SDL_Rect src_yellow = {
     .x = 166,
     .y = 1,
     .w = 12,
     .h = 16,
 };
-static const SDL_Rect orange = {
+static const SDL_Rect src_orange = {
     .x = 184,
     .y = 1,
     .w = 9,
     .h = 12,
 };
-static const SDL_Rect red = {
+static const SDL_Rect src_red = {
     .x = 184,
     .y = 20,
     .w = 6,
@@ -26,61 +34,59 @@ static const SDL_Rect red = {
 static balloon_t balloon_red = {
     .x = 0,
     .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    .w = red.w,
-    .h = red.h,
+    .w = src_red.w,
+    .h = src_red.h,
     .u = 0.0,
     .v = -30.0,
     .value = 5,
     .state = PRESPAWN,
-    .src = &red,
+    .src = &src_red,
     .tgt = {
         .x = 0,
         .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-        .w = red.w,
-        .h = red.h,
+        .w = src_red.w,
+        .h = src_red.h,
     },
     .trelease = 0,
 };
 static balloon_t balloon_orange = {
     .x = 0,
     .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    .w = orange.w,
-    .h = orange.h,
+    .w = src_orange.w,
+    .h = src_orange.h,
     .u = 0.0,
     .v = -30.0,
     .value = 4,
     .state = PRESPAWN,
-    .src = &orange,
+    .src = &src_orange,
     .tgt = {
         .x = 0,
         .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-        .w = orange.w,
-        .h = orange.h,
+        .w = src_orange.w,
+        .h = src_orange.h,
     },
     .trelease = 0,
 };
 static balloon_t balloon_yellow = {
     .x = 0,
     .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    .w = yellow.w,
-    .h = yellow.h,
+    .w = src_yellow.w,
+    .h = src_yellow.h,
     .u = 0.0,
     .v = -30.0,
     .value = 3,
     .state = PRESPAWN,
-    .src = &yellow,
+    .src = &src_yellow,
     .tgt = {
         .x = 0,
         .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-        .w = yellow.w,
-        .h = yellow.h,
+        .w = src_yellow.w,
+        .h = src_yellow.h,
     },
     .trelease = 0,
 };
 
-static bool is_outside(balloon_t *);
-
-int o_balloons_compare (const void * a, const void * b) {
+static int o_balloons_compare (const void * a, const void * b) {
     const balloon_t * aa = a;
     const balloon_t * bb = b;
     if (aa->value < bb->value) {
@@ -104,12 +110,29 @@ void o_balloons_free (balloon_t * balloons) {
     free(balloons);
 }
 
-balloon_t * o_balloons_malloc (ctx_t * ctx) {
+ctx_t * o_balloons_init (ctx_t * ctx) {
+    ctx->balloons = o_balloons_malloc(ctx);
+    if (ctx->balloons == NULL) {
+        fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
+        exit(EXIT_FAILURE);
+    }
+    ctx->balloons = o_balloons_populate(ctx);
+    ctx->balloons = o_balloons_randomize_x(ctx);
+    ctx->balloons = o_balloons_randomize_t(ctx);
+    ctx->balloons = o_balloons_sort(ctx);
+    ctx->nprespawn = ctx->level->nballoons;
+    ctx->nairborne = 0;
+    ctx->nhit = 0;
+    ctx->nmiss = 0;
+    return ctx;
+}
+
+static balloon_t * o_balloons_malloc (ctx_t * ctx) {
     balloon_t * balloons = malloc(ctx->level->nballoons * sizeof(balloon_t));
     return balloons;
 }
 
-balloon_t * o_balloons_populate (ctx_t * ctx) {
+static balloon_t * o_balloons_populate (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     for (int i = 0; i < ctx->level->nred; i++, b++) {
         *b = balloon_red;
@@ -123,7 +146,7 @@ balloon_t * o_balloons_populate (ctx_t * ctx) {
     return ctx->balloons;
 }
 
-balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
+static balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
     static const float spawn_rate = 0.35; // balloons per second
     balloon_t * b = ctx->balloons;
     const int t_ampl = (int) 1000 * ctx->level->nballoons / spawn_rate;
@@ -134,7 +157,7 @@ balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
     return ctx->balloons;
 }
 
-balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
+static balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     const int x_ampl = (int) (0.5 * SCREEN_WIDTH);
     int r;
@@ -147,7 +170,7 @@ balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     return ctx->balloons;
 }
 
-balloon_t * o_balloons_sort (ctx_t * ctx) {
+static balloon_t * o_balloons_sort (ctx_t * ctx) {
     // TODO sort by balloon type
     size_t nitems = ctx->level->nballoons;
     size_t size = sizeof(balloon_t);
@@ -170,7 +193,7 @@ void o_balloons_update (ctx_t * ctx) {
                 ctx->balloons[i].y += ctx->balloons[i].v * ctx->dt;
                 ctx->balloons[i].tgt.x = (int) ctx->balloons[i].x;
                 ctx->balloons[i].tgt.y = (int) ctx->balloons[i].y;
-                if (is_outside(&ctx->balloons[i])) {
+                if (o_balloons_is_outside(&ctx->balloons[i])) {
                     ctx->balloons[i].state = MISS;
                 }
                 break;
@@ -191,7 +214,7 @@ void o_balloons_update (ctx_t * ctx) {
     }
 }
 
-static bool is_outside(balloon_t * balloon) {
+static bool o_balloons_is_outside(balloon_t * balloon) {
     return balloon->tgt.y + balloon->h < 0 ||
            balloon->tgt.y > SCREEN_HEIGHT  ||
            balloon->tgt.x + balloon->w < 0 ||

@@ -5,15 +5,14 @@
 typedef struct level_t level_t;
 
 struct level_t {
-    char name[20];
-    int nbullets;
-    int nred;
-    int norange;
-    int nyellow;
     int nballoons;
+    int nbullets;
+    int norange;
+    int nred;
+    int nyellow;
+    char name[20];
 };
 
-int levels_get_nlevels(void);
-level_t * levels_init (void);
+ctx_t * levels_init(ctx_t *);
 
 #endif
