@@ -4,6 +4,7 @@
 #include <SDL_video.h>
 #include <SDL_render.h>
 #include <SDL_rect.h>
+#include <stdbool.h>
 
 typedef struct ctx_t ctx_t;
 
@@ -12,6 +13,8 @@ struct bullet_t;  // incomplete type instead of #include "o_bullets.h"
 struct level_t;   // incomplete type instead of #include "levels.h"
 
 struct ctx_t {
+    bool fire_requested;
+    bool firing;
     int nairborne;
     int nbullets;
     int nhit;

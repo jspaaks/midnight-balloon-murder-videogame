@@ -80,12 +80,23 @@ int main (void) {
     struct state * frame = state;
     Uint64 tstart;
 
-    while (ctx.nprespawn + ctx.nairborne > 0) {
+    bool have_balloons = true;
+    bool have_bullets = true;
+
+    while (have_balloons && have_bullets) {
         tstart = SDL_GetTicks64();
         frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
         frame->draw(&ctx);
         ctx.dt = ((double) (SDL_GetTicks64() - tstart)) / 1000;
+        have_balloons = ctx.nprespawn + ctx.nairborne > 0;
+        have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
+    }
+    if (!have_balloons) {
+        fprintf(stdout, "No more balloons.\n");
+    }
+    if (!have_bullets) {
+        fprintf(stdout, "No more bullets.\n");
     }
 
     deinit(&ctx);

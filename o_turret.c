@@ -57,7 +57,6 @@ static const SDL_Point flash_center = {
 };
 
 static double barrel_speed = 17; // degrees per second
-static bool is_shooting = false;
 
 static double o_turret_clip(double v) {
     const double barrel_angle_min = -71;
@@ -78,7 +77,7 @@ void o_turret_draw (ctx_t * ctx) {
                                                       &barrel_center,
                                                       SDL_FLIP_NONE);
     // muzzle flash
-    if (is_shooting) {
+    if (ctx->firing) {
         SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &flash_src,
                                                           &flash_tgt,
                                                           ctx->barrel_angle,
@@ -97,6 +96,8 @@ ctx_t * o_turret_init (ctx_t * ctx) {
     };
     ctx->barrel_length = barrel_src.w;
     ctx->barrel_tready = SDL_GetTicks64();
+    ctx->fire_requested = false;
+    ctx->firing = false;
     return ctx;
 }
 
@@ -109,6 +110,7 @@ static double o_turret_min(double a, double b) {
 }
 
 ctx_t * o_turret_update (ctx_t * ctx) {
+    static const int cooldown = 100;
     int flags = ctx->keys[SDL_SCANCODE_W] |
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
@@ -121,6 +123,12 @@ ctx_t * o_turret_update (ctx_t * ctx) {
             break;
         }
     }
-    is_shooting = ctx->nbullets > 0 && ctx->keys[SDL_SCANCODE_SPACE] == 1;
+    bool a = ctx->keys[SDL_SCANCODE_SPACE];
+    bool b = ctx->nbullets > 0;
+    bool c = ctx->barrel_tready < SDL_GetTicks64();
+    ctx->firing = a && b && c;
+    if (ctx->firing) {
+        ctx->barrel_tready = SDL_GetTicks64() + cooldown;
+    }
     return ctx;
 }

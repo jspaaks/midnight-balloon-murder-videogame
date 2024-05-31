@@ -16,8 +16,7 @@ static ctx_t * o_bullets_update_remove (ctx_t *);
 static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 4, .h = 4 };
 
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
-    static const int cooldown = 400;
-    if (ctx->nbullets > 0 && ctx->barrel_tready < SDL_GetTicks64()) {
+    if (ctx->firing) {
         bullet_t * bu = malloc(1 * sizeof(bullet_t));
         if (bu == NULL) {
             fprintf(stderr, "Something went wrong allocating memory for new bullet.\n");
@@ -47,7 +46,6 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
         bu->next = ctx->bullets;
         ctx->bullets = bu;
         ctx->nbullets--;
-        ctx->barrel_tready = SDL_GetTicks64() + cooldown;
     }
     return ctx;
 }
