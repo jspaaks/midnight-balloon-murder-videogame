@@ -10,13 +10,14 @@
 #include <stdbool.h>
 #include <SDL_timer.h>
 #include "o_balloons.h"
+#include "o_bullets.h"
 #include "levels.h"
 #include <time.h>
 
-void deinit (ctx_t *);
-bool init (ctx_t *);
+static void deinit (ctx_t *);
+static bool init (ctx_t *);
 
-void deinit (ctx_t * ctx) {
+static void deinit (ctx_t * ctx) {
     SDL_DestroyRenderer(ctx->renderer);
     ctx->renderer = NULL;
 
@@ -36,7 +37,7 @@ void deinit (ctx_t * ctx) {
     SDL_Quit();
 }
 
-bool init (ctx_t * ctx) {
+static bool init (ctx_t * ctx) {
     // initialize the random number generator
     srand(time(NULL));
 
@@ -61,24 +62,9 @@ bool init (ctx_t * ctx) {
     ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
     ctx->keys = SDL_GetKeyboardState(NULL);
     ctx->dt = 0.0000000000001;
-    ctx->nlevels = levels_get_nlevels();
-    ctx->levels = levels_init();
-    ctx->level = ctx->levels + 2;
-    ctx->balloons = o_balloons_malloc(ctx);
-    if (ctx->balloons == NULL) {
-        fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
-        return false;
-    }
-    ctx->balloons = o_balloons_populate(ctx);
-    ctx->balloons = o_balloons_randomize_x(ctx);
-    ctx->balloons = o_balloons_randomize_t(ctx);
-    ctx->balloons = o_balloons_sort(ctx);
-
-    ctx->nprespawn = 0;
-    ctx->nairborne = 0;
-    ctx->nhit = 0;
-    ctx->nmiss = 0;
-
+    ctx = levels_init(ctx);
+    ctx = o_balloons_init(ctx);
+    ctx = o_bullets_init(ctx);
     return true;
 }
 
@@ -92,8 +78,7 @@ int main (void) {
     struct state * frame = state;
     Uint64 tstart;
 
-    Uint64 timeout = SDL_GetTicks64() + 70000;
-    while (SDL_GetTicks64() < timeout) {
+    while (ctx.nprespawn + ctx.nairborne > 0) {
         tstart = SDL_GetTicks64();
         frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
