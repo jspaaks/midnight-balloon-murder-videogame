@@ -1,3 +1,5 @@
+# Dev notes
+
 Download, compile and install SDL2 from the repo:
 
 
@@ -31,6 +33,7 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 1. level indicator text / bullets remaining
 1. legend texts
 1. key help texts
+1. refactor flash such that it has a lifetime beyond one frame
 
 ## Q
 
