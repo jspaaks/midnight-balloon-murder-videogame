@@ -25,8 +25,6 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 ## TODO
 
-1. bullets low warning
-1. bullet objects
 1. collision detection
 1. hitpoints texts
 1. hitpoints shrapnel
