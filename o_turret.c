@@ -3,6 +3,7 @@
 #include "constants.h"
 #include <SDL_rect.h>
 #include <stdbool.h>
+#include <SDL_timer.h>
 
 static double o_turret_max (double, double);
 static double o_turret_min (double, double);
@@ -87,7 +88,15 @@ void o_turret_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_turret_init (ctx_t * ctx) {
+    int turret_height = 60;
+    int turret_width = 70;
     ctx->barrel_angle = -55;
+    ctx->barrel_origin = (SDL_Point) {
+        .x = 180 + turret_width / 2,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT - turret_height + turret_width / 2
+    };
+    ctx->barrel_length = barrel_src.w;
+    ctx->barrel_tready = SDL_GetTicks64();
     return ctx;
 }
 
@@ -112,6 +121,6 @@ ctx_t * o_turret_update (ctx_t * ctx) {
             break;
         }
     }
-    is_shooting = ctx->keys[SDL_SCANCODE_SPACE] == 1;
+    is_shooting = ctx->nbullets > 0 && ctx->keys[SDL_SCANCODE_SPACE] == 1;
     return ctx;
 }

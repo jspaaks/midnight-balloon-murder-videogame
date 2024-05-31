@@ -3,6 +3,7 @@
 
 #include <SDL_video.h>
 #include <SDL_render.h>
+#include <SDL_rect.h>
 
 typedef struct ctx_t ctx_t;
 
@@ -17,12 +18,15 @@ struct ctx_t {
     int nlevels;
     int nmiss;
     int nprespawn;
+    int barrel_length;
     double dt;
     double barrel_angle;
     const Uint8 * keys;
+    Uint64 barrel_tready;
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
     SDL_Window * window;
+    SDL_Point barrel_origin;
     struct balloon_t * balloons;
     struct bullet_t * bullets;
     struct level_t * level;

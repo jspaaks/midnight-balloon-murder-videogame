@@ -6,50 +6,56 @@
 #include <stdbool.h>
 #include "constants.h"
 #include "levels.h"
+#include <math.h>
 
 static ctx_t * o_bullets_update_add (ctx_t *);
 static bullet_t * o_bullets_malloc (void);
 static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
-static SDL_Rect src_bullet = { .x = 100, .y =100, .w = 10, .h = 10 };
+static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 4, .h = 4 };
 
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
-    if (ctx->nbullets > 0) {
+    static const int cooldown = 400;
+    if (ctx->nbullets > 0 && ctx->barrel_tready < SDL_GetTicks64()) {
         bullet_t * bu = malloc(1 * sizeof(bullet_t));
         if (bu == NULL) {
             fprintf(stderr, "Something went wrong allocating memory for new bullet.\n");
             exit(EXIT_FAILURE);
         }
+        double a = M_PI * ctx->barrel_angle / 180;
+        double x = ctx->barrel_origin.x + cos(a) * (ctx->barrel_length + 20) - src_bullet.w / 2 + 1;
+        double y = ctx->barrel_origin.y + sin(a) * (ctx->barrel_length + 20) - src_bullet.h / 2;
+        double speed = 90;
         *bu = (bullet_t) {
-            .x = 100,
-            .y = 400,
-            .u = 30,
-            .v = -10,
-            .w = 10,
-            .h = 10,
+            .x = x,
+            .y = y,
+            .u = cos(a) * speed,
+            .v = sin(a) * speed,
+            .w = src_bullet.w,
+            .h = src_bullet.h,
             .spawned = SDL_GetTicks64(),
             .src = &src_bullet,
             .tgt = {
-                .x = 100,
-                .y = 400,
-                .w = 10,
-                .h = 10,
+                .x = (int) x,
+                .y = (int) y,
+                .w = src_bullet.w,
+                .h = src_bullet.h,
             },
             .next = NULL,
         };
         bu->next = ctx->bullets;
         ctx->bullets = bu;
         ctx->nbullets--;
+        ctx->barrel_tready = SDL_GetTicks64() + cooldown;
     }
     return ctx;
 }
 
 void o_bullets_draw (ctx_t * ctx) {
     bullet_t * bu = ctx->bullets;
-    SDL_SetRenderDrawColor(ctx->renderer, 0, 255, 255, 0);
     while (bu != NULL) {
-        SDL_RenderFillRect(ctx->renderer, &bu->tgt);
+        SDL_RenderCopy(ctx->renderer, ctx->spritesheet, bu->src, &bu->tgt);
         bu = bu->next;
     }
 }
