@@ -28,7 +28,7 @@ void s_playing_draw (ctx_t * ctx) {
     o_ground_draw(ctx);
 }
 
-void s_playing_update (ctx_t * ctx, struct state ** state) {
+ctx_t * s_playing_update (ctx_t * ctx, struct state ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
@@ -38,9 +38,10 @@ void s_playing_update (ctx_t * ctx, struct state ** state) {
             }
         }
     }
-    o_legend_update(ctx);
-    o_turret_update(ctx);
-    o_balloons_update(ctx);
-    o_bullets_update(ctx);
+    ctx = o_legend_update(ctx);
+    ctx = o_turret_update(ctx);
+    ctx = o_balloons_update(ctx);
+    ctx = o_bullets_update(ctx);
     SDL_RenderPresent(ctx->renderer);
+    return ctx;
 }

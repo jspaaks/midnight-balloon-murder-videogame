@@ -7,6 +7,6 @@
 #include "context.h"
 
 void s_playing_draw (ctx_t *);
-void s_playing_update (ctx_t *, struct state **);
+ctx_t * s_playing_update (ctx_t *, struct state **);
 
 #endif

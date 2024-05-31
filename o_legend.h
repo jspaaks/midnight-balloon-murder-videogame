@@ -3,6 +3,6 @@
 #include "context.h"
 
 void o_legend_draw (ctx_t *);
-void o_legend_update (ctx_t *);
+ctx_t * o_legend_update (ctx_t *);
 
 #endif

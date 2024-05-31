@@ -39,7 +39,7 @@ void o_legend_draw (ctx_t * ctx) {
     }
 }
 
-void o_legend_update (ctx_t * ctx) {
+ctx_t * o_legend_update (ctx_t * ctx) {
     int nhit = 0;
     int nmiss = 0;
     int nprespawn = 0;
@@ -72,4 +72,5 @@ void o_legend_update (ctx_t * ctx) {
     ctx->nairborne = nairborne;
     ctx->nhit = nhit;
     ctx->nmiss = nmiss;
+    return ctx;
 }

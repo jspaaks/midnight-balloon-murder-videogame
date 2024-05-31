@@ -7,15 +7,14 @@
 #include "constants.h"
 #include "levels.h"
 
-static void o_bullets_update_add (ctx_t *);
+static ctx_t * o_bullets_update_add (ctx_t *);
 static bullet_t * o_bullets_malloc (void);
-static void o_bullets_update_pos (ctx_t *);
-static void o_bullets_update_remove (ctx_t *);
-
+static ctx_t * o_bullets_update_pos (ctx_t *);
+static ctx_t * o_bullets_update_remove (ctx_t *);
 
 static SDL_Rect src_bullet = { .x = 100, .y =100, .w = 10, .h = 10 };
 
-static void o_bullets_update_add (ctx_t * ctx) {
+static ctx_t * o_bullets_update_add (ctx_t * ctx) {
     if (ctx->nbullets > 0) {
         bullet_t * bu = malloc(1 * sizeof(bullet_t));
         if (bu == NULL) {
@@ -43,6 +42,7 @@ static void o_bullets_update_add (ctx_t * ctx) {
         ctx->bullets = bu;
         ctx->nbullets--;
     }
+    return ctx;
 }
 
 void o_bullets_draw (ctx_t * ctx) {
@@ -65,18 +65,19 @@ static bullet_t * o_bullets_malloc (void) {
     return bullets;
 }
 
-void o_bullets_update (ctx_t * ctx) {
+ctx_t * o_bullets_update (ctx_t * ctx) {
     // update position
-    o_bullets_update_pos(ctx);
+    ctx = o_bullets_update_pos(ctx);
 
     // if SPACE down, add a bullet to the list
-    o_bullets_update_add(ctx);
+    ctx = o_bullets_update_add(ctx);
 
     // if bullet is out of view, delete it from the list
-    o_bullets_update_remove(ctx);
+    ctx = o_bullets_update_remove(ctx);
+    return ctx;
 }
 
-static void o_bullets_update_pos (ctx_t * ctx) {
+static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
         bu->x += bu->u * ctx->dt;
@@ -85,9 +86,10 @@ static void o_bullets_update_pos (ctx_t * ctx) {
         bu->tgt.y = (int) bu->y;
         bu = bu->next;
     }
+    return ctx;
 }
 
-static void o_bullets_update_remove (ctx_t * ctx) {
+static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
     bullet_t * this = ctx->bullets;
     bullet_t * prev = NULL;
     bool isfirst = false;
@@ -134,4 +136,5 @@ static void o_bullets_update_remove (ctx_t * ctx) {
             }
         }
     }
+    return ctx;
 }

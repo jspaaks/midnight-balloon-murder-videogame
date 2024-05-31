@@ -11,6 +11,7 @@
 #include <SDL_timer.h>
 #include "o_balloons.h"
 #include "o_bullets.h"
+#include "o_turret.h"
 #include "levels.h"
 #include <time.h>
 
@@ -63,6 +64,7 @@ static bool init (ctx_t * ctx) {
     ctx->keys = SDL_GetKeyboardState(NULL);
     ctx->dt = 0.0000000000001;
     ctx = levels_init(ctx);
+    ctx = o_turret_init(ctx);
     ctx = o_balloons_init(ctx);
     ctx = o_bullets_init(ctx);
     return true;

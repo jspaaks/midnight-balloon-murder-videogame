@@ -55,7 +55,6 @@ static const SDL_Point flash_center = {
     .y = flash_src.h / 2,
 };
 
-static double barrel_angle = -55;
 static double barrel_speed = 17; // degrees per second
 static bool is_shooting = false;
 
@@ -74,17 +73,22 @@ void o_turret_draw (ctx_t * ctx) {
     // turret barrel
     SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &barrel_src,
                                                       &barrel_tgt,
-                                                      barrel_angle,
+                                                      ctx->barrel_angle,
                                                       &barrel_center,
                                                       SDL_FLIP_NONE);
     // muzzle flash
     if (is_shooting) {
         SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &flash_src,
                                                           &flash_tgt,
-                                                          barrel_angle,
+                                                          ctx->barrel_angle,
                                                           &flash_center,
                                                           SDL_FLIP_NONE);
     }
+}
+
+ctx_t * o_turret_init (ctx_t * ctx) {
+    ctx->barrel_angle = -55;
+    return ctx;
 }
 
 static double o_turret_max(double a, double b) {
@@ -95,18 +99,19 @@ static double o_turret_min(double a, double b) {
     return a < b ? a : b;
 }
 
-void o_turret_update (ctx_t * ctx) {
+ctx_t * o_turret_update (ctx_t * ctx) {
     int flags = ctx->keys[SDL_SCANCODE_W] |
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            barrel_angle = o_turret_clip(barrel_angle + -1 * barrel_speed * ctx->dt);
+            ctx->barrel_angle = o_turret_clip(ctx->barrel_angle + -1 * barrel_speed * ctx->dt);
             break;
         }
         case 2: {
-            barrel_angle = o_turret_clip(barrel_angle + 1 * barrel_speed * ctx->dt);
+            ctx->barrel_angle = o_turret_clip(ctx->barrel_angle + 1 * barrel_speed * ctx->dt);
             break;
         }
     }
     is_shooting = ctx->keys[SDL_SCANCODE_SPACE] == 1;
+    return ctx;
 }

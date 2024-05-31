@@ -179,7 +179,7 @@ static balloon_t * o_balloons_sort (ctx_t * ctx) {
     return ctx->balloons;
 }
 
-void o_balloons_update (ctx_t * ctx) {
+ctx_t * o_balloons_update (ctx_t * ctx) {
     for (int i = 0; i < ctx->level->nballoons; i++) {
         switch (ctx->balloons[i].state) {
             case PRESPAWN: {
@@ -212,6 +212,7 @@ void o_balloons_update (ctx_t * ctx) {
             }
         }
     }
+    return ctx;
 }
 
 static bool o_balloons_is_outside(balloon_t * balloon) {

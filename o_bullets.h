@@ -19,6 +19,6 @@ struct bullet_t {
 
 void o_bullets_draw (ctx_t *);
 ctx_t * o_bullets_init (ctx_t *);
-void o_bullets_update (ctx_t *);
+ctx_t * o_bullets_update (ctx_t *);
 
 #endif

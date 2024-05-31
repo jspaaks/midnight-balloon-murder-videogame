@@ -5,6 +5,6 @@
 #include "fsm.h"
 
 void s_paused_draw (ctx_t *);
-void s_paused_update (ctx_t *, struct state **);
+ctx_t * s_paused_update (ctx_t *, struct state **);
 
 #endif
