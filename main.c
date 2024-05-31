@@ -63,7 +63,7 @@ bool init (ctx_t * ctx) {
     ctx->dt = 0.0000000000001;
     ctx->nlevels = levels_get_nlevels();
     ctx->levels = levels_init();
-    ctx->level = ctx->levels + 5;
+    ctx->level = ctx->levels + 2;
     ctx->balloons = o_balloons_malloc(ctx);
     if (ctx->balloons == NULL) {
         fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
@@ -73,6 +73,11 @@ bool init (ctx_t * ctx) {
     ctx->balloons = o_balloons_randomize_x(ctx);
     ctx->balloons = o_balloons_randomize_t(ctx);
     ctx->balloons = o_balloons_sort(ctx);
+
+    ctx->nprespawn = 0;
+    ctx->nairborne = 0;
+    ctx->nhit = 0;
+    ctx->nmiss = 0;
 
     return true;
 }

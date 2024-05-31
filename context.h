@@ -19,6 +19,10 @@ struct ctx_t {
     struct level_t * level;
     struct balloon_t * balloons;
     struct level_t * levels;
+    int nprespawn;
+    int nairborne;
+    int nhit;
+    int nmiss;
 };
 
 #endif
