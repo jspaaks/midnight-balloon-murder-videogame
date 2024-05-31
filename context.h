@@ -7,22 +7,26 @@
 typedef struct ctx_t ctx_t;
 
 struct balloon_t; // incomplete type instead of #include "o_balloons.h"
+struct bullet_t;  // incomplete type instead of #include "o_bullets.h"
 struct level_t;   // incomplete type instead of #include "levels.h"
 
 struct ctx_t {
-    SDL_Window * window;
+    int nairborne;
+    int nbullets;
+    int nhit;
+    int nlevels;
+    int nmiss;
+    int nprespawn;
+    double dt;
+    double barrel_angle;
+    const Uint8 * keys;
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
-    const Uint8 * keys;
-    double dt;
-    int nlevels;
-    struct level_t * level;
+    SDL_Window * window;
     struct balloon_t * balloons;
+    struct bullet_t * bullets;
+    struct level_t * level;
     struct level_t * levels;
-    int nprespawn;
-    int nairborne;
-    int nhit;
-    int nmiss;
 };
 
 #endif
