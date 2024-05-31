@@ -10,7 +10,7 @@ EXE  := mbm
 all: bin
 
 bin: $(OBJS)
-	$(CC) $(FLGS) -o $(EXE) $(OBJS) `sdl2-config --libs`
+	$(CC) $(FLGS) -o $(EXE) $(OBJS) `sdl2-config --libs` -lm
 
 %.o: %.c
 # this target deletes the implicit rule for generating .o
