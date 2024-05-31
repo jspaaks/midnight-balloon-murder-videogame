@@ -78,8 +78,6 @@ static balloon_t balloon_yellow = {
     .trelease = 0,
 };
 
-static const float spawn_rate = 0.195; // balloons per second
-
 static bool is_outside(balloon_t *);
 
 int o_balloons_compare (const void * a, const void * b) {
@@ -126,8 +124,9 @@ balloon_t * o_balloons_populate (ctx_t * ctx) {
 }
 
 balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
+    static const float spawn_rate = 0.35; // balloons per second
     balloon_t * b = ctx->balloons;
-    const int t_ampl = (int) 1000 * ctx->level->nballoons * spawn_rate;
+    const int t_ampl = (int) 1000 * ctx->level->nballoons / spawn_rate;
     Uint64 tnow = SDL_GetTicks64();
     for (int i = 0; i < ctx->level->nballoons; i++, b++) {
         b->trelease = tnow + rand() % t_ampl;
@@ -137,11 +136,11 @@ balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
 
 balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
-    const int x_ampl = (int) (0.1 * SCREEN_WIDTH);
+    const int x_ampl = (int) (0.5 * SCREEN_WIDTH);
     int r;
     for (int i = 0; i < ctx->level->nballoons; i++, b++) {
         r = rand() % x_ampl;
-        int x = (SCREEN_WIDTH / 2) + r;
+        int x = (0.4 * SCREEN_WIDTH) + r;
         b->x = x;
         b->tgt.x = x;
     }

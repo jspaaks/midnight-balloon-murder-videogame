@@ -105,8 +105,8 @@ static double min(double a, double b) {
 }
 
 static double clip(double v) {
-    const double barrel_angle_min = -62;
-    const double barrel_angle_max = -24;
+    const double barrel_angle_min = -71;
+    const double barrel_angle_max = -14;
     v = max(v, barrel_angle_min);
     v = min(v, barrel_angle_max);
     return v;
