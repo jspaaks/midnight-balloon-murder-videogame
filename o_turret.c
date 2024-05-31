@@ -4,9 +4,9 @@
 #include <SDL_rect.h>
 #include <stdbool.h>
 
-static double max (double, double);
-static double min (double, double);
-static double clip (double);
+static double o_turret_max (double, double);
+static double o_turret_min (double, double);
+static double o_turret_clip (double);
 
 static const SDL_Rect turret_src = {
     .x = 4,
@@ -59,6 +59,14 @@ static double barrel_angle = -55;
 static double barrel_speed = 17; // degrees per second
 static bool is_shooting = false;
 
+static double o_turret_clip(double v) {
+    const double barrel_angle_min = -71;
+    const double barrel_angle_max = -14;
+    v = o_turret_max(v, barrel_angle_min);
+    v = o_turret_min(v, barrel_angle_max);
+    return v;
+}
+
 void o_turret_draw (ctx_t * ctx) {
     // turret base
     SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &turret_src, &turret_tgt);
@@ -79,35 +87,26 @@ void o_turret_draw (ctx_t * ctx) {
     }
 }
 
+static double o_turret_max(double a, double b) {
+    return a > b ? a : b;
+}
+
+static double o_turret_min(double a, double b) {
+    return a < b ? a : b;
+}
+
 void o_turret_update (ctx_t * ctx) {
     int flags = ctx->keys[SDL_SCANCODE_W] |
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            barrel_angle = clip(barrel_angle + -1 * barrel_speed * ctx->dt);
+            barrel_angle = o_turret_clip(barrel_angle + -1 * barrel_speed * ctx->dt);
             break;
         }
         case 2: {
-            barrel_angle = clip(barrel_angle + 1 * barrel_speed * ctx->dt);
+            barrel_angle = o_turret_clip(barrel_angle + 1 * barrel_speed * ctx->dt);
             break;
         }
     }
     is_shooting = ctx->keys[SDL_SCANCODE_SPACE] == 1;
-}
-
-
-static double max(double a, double b) {
-    return a > b ? a : b;
-}
-
-static double min(double a, double b) {
-    return a < b ? a : b;
-}
-
-static double clip(double v) {
-    const double barrel_angle_min = -71;
-    const double barrel_angle_max = -14;
-    v = max(v, barrel_angle_min);
-    v = min(v, barrel_angle_max);
-    return v;
 }
