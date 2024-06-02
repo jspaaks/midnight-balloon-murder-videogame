@@ -1,7 +1,6 @@
 #ifndef O_TURRET_H
 #define O_TURRET_H
 #include "context.h"
-#include <SDL_events.h>
 
 void o_turret_draw (ctx_t *);
 ctx_t * o_turret_init (ctx_t *);

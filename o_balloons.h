@@ -9,14 +9,11 @@ typedef enum {PRESPAWN, AIRBORNE, HIT, MISS} balloon_state_t;
 typedef struct  balloon_t balloon_t;
 
 struct balloon_t {
-    double x;
-    double y;
-    int w;
-    int h;
-    double u;
-    double v;
+    float u;
+    float v;
     int value;
     balloon_state_t state;
+    SDL_FRect sim;
     const SDL_Rect * src;
     SDL_Rect tgt;
     Uint64 trelease;

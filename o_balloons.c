@@ -14,76 +14,82 @@ static balloon_t * o_balloons_sort (ctx_t *);
 static bool o_balloons_is_outside(balloon_t *);
 
 static const SDL_Rect src_yellow = {
+    .h = 16,
+    .w = 12,
     .x = 166,
     .y = 1,
-    .w = 12,
-    .h = 16,
 };
 static const SDL_Rect src_orange = {
+    .h = 12,
+    .w = 9,
     .x = 184,
     .y = 1,
-    .w = 9,
-    .h = 12,
 };
 static const SDL_Rect src_red = {
+    .h = 7,
+    .w = 6,
     .x = 184,
     .y = 20,
-    .w = 6,
-    .h = 7,
 };
 static balloon_t balloon_red = {
-    .x = 0,
-    .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    .w = src_red.w,
-    .h = src_red.h,
+    .sim = {
+        .h = src_red.h,
+        .w = src_red.w,
+        .x = 0,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+    },
+    .src = &src_red,
+    .state = PRESPAWN,
+    .tgt = {
+        .h = src_red.h,
+        .w = src_red.w,
+        .x = 0,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+    },
+    .trelease = 0,
     .u = 0.0,
     .v = -30.0,
     .value = 5,
-    .state = PRESPAWN,
-    .src = &src_red,
-    .tgt = {
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-        .w = src_red.w,
-        .h = src_red.h,
-    },
-    .trelease = 0,
 };
 static balloon_t balloon_orange = {
-    .x = 0,
-    .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    .w = src_orange.w,
-    .h = src_orange.h,
+    .sim = {
+        .h = src_orange.h,
+        .w = src_orange.w,
+        .x = 0,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+    },
+    .src = &src_orange,
+    .state = PRESPAWN,
+    .tgt = {
+        .h = src_orange.h,
+        .w = src_orange.w,
+        .x = 0,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+    },
+    .trelease = 0,
     .u = 0.0,
     .v = -30.0,
     .value = 4,
-    .state = PRESPAWN,
-    .src = &src_orange,
-    .tgt = {
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-        .w = src_orange.w,
-        .h = src_orange.h,
-    },
-    .trelease = 0,
 };
 static balloon_t balloon_yellow = {
-    .x = 0,
-    .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    .w = src_yellow.w,
-    .h = src_yellow.h,
+    .sim = {
+        .h = src_yellow.h,
+        .w = src_yellow.w,
+        .x = 0,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+    },
+    .src = &src_yellow,
+    .state = PRESPAWN,
+    .tgt = {
+        .h = src_yellow.h,
+        .w = src_yellow.w,
+        .x = 0,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+    },
+    .trelease = 0,
     .u = 0.0,
     .v = -30.0,
     .value = 3,
-    .state = PRESPAWN,
-    .src = &src_yellow,
-    .tgt = {
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-        .w = src_yellow.w,
-        .h = src_yellow.h,
-    },
-    .trelease = 0,
 };
 
 static int o_balloons_compare (const void * a, const void * b) {
@@ -164,7 +170,7 @@ static balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     for (int i = 0; i < ctx->level->nballoons; i++, b++) {
         r = rand() % x_ampl;
         int x = (0.4 * SCREEN_WIDTH) + r;
-        b->x = x;
+        b->sim.x = x;
         b->tgt.x = x;
     }
     return ctx->balloons;
@@ -189,10 +195,10 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             case AIRBORNE: {
-                ctx->balloons[i].x += ctx->balloons[i].u * ctx->dt;
-                ctx->balloons[i].y += ctx->balloons[i].v * ctx->dt;
-                ctx->balloons[i].tgt.x = (int) ctx->balloons[i].x;
-                ctx->balloons[i].tgt.y = (int) ctx->balloons[i].y;
+                ctx->balloons[i].sim.x += ctx->balloons[i].u * ctx->dt;
+                ctx->balloons[i].sim.y += ctx->balloons[i].v * ctx->dt;
+                ctx->balloons[i].tgt.x = (int) ctx->balloons[i].sim.x;
+                ctx->balloons[i].tgt.y = (int) ctx->balloons[i].sim.y;
                 if (o_balloons_is_outside(&ctx->balloons[i])) {
                     ctx->balloons[i].state = MISS;
                 }
@@ -216,8 +222,8 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
 }
 
 static bool o_balloons_is_outside(balloon_t * balloon) {
-    return balloon->tgt.y + balloon->h < 0 ||
+    return balloon->tgt.y + balloon->sim.h < 0 ||
            balloon->tgt.y > SCREEN_HEIGHT  ||
-           balloon->tgt.x + balloon->w < 0 ||
+           balloon->tgt.x + balloon->sim.w < 0 ||
            balloon->tgt.x > SCREEN_WIDTH;
 }

@@ -12,6 +12,8 @@
 #include "o_balloons.h"
 #include "o_bullets.h"
 #include "o_turret.h"
+#include "o_barrel.h"
+#include "o_flash.h"
 #include "levels.h"
 #include <time.h>
 
@@ -65,6 +67,8 @@ static bool init (ctx_t * ctx) {
     ctx->dt = 0.0000000000001;
     ctx = levels_init(ctx);
     ctx = o_turret_init(ctx);
+    ctx = o_barrel_init(ctx);
+    ctx = o_flash_init(ctx);
     ctx = o_balloons_init(ctx);
     ctx = o_bullets_init(ctx);
     return true;
@@ -88,7 +92,7 @@ int main (void) {
         frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
         frame->draw(&ctx);
-        ctx.dt = ((double) (SDL_GetTicks64() - tstart)) / 1000;
+        ctx.dt = ((float) (SDL_GetTicks64() - tstart)) / 1000;
         have_balloons = ctx.nprespawn + ctx.nairborne > 0;
         have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
     }

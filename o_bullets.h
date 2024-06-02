@@ -5,15 +5,12 @@
 typedef struct bullet_t bullet_t;
 
 struct bullet_t {
-    double x;
-    double y;
-    double u;
-    double v;
-    int w;
-    int h;
+    float u;
+    float v;
     Uint64 spawned;
     const SDL_Rect * src;
     SDL_Rect tgt;
+    SDL_FRect sim;
     struct bullet_t * next;
 };
 

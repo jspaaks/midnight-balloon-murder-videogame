@@ -56,7 +56,7 @@ static level_t levels[] = {
 
 ctx_t * levels_init (ctx_t * ctx) {
     ctx->levels = &levels[0];
-    ctx->level = ctx->levels + 1;
+    ctx->level = ctx->levels + 0;
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
     return ctx;
 }

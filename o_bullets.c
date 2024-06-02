@@ -13,40 +13,41 @@ static bullet_t * o_bullets_malloc (void);
 static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
-static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 4, .h = 4 };
+static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
 
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
-    if (ctx->firing) {
-        bullet_t * bu = malloc(1 * sizeof(bullet_t));
-        if (bu == NULL) {
-            fprintf(stderr, "Something went wrong allocating memory for new bullet.\n");
-            exit(EXIT_FAILURE);
-        }
-        double a = M_PI * ctx->barrel_angle / 180;
-        double x = ctx->barrel_origin.x + cos(a) * (ctx->barrel_length + 20) - src_bullet.w / 2 + 1;
-        double y = ctx->barrel_origin.y + sin(a) * (ctx->barrel_length + 20) - src_bullet.h / 2;
-        double speed = 90;
-        *bu = (bullet_t) {
+    bullet_t * bu = malloc(1 * sizeof(bullet_t));
+    if (bu == NULL) {
+        fprintf(stderr, "Something went wrong allocating memory for new bullet.\n");
+        exit(EXIT_FAILURE);
+    }
+    float a = M_PI * ctx->barrel.angle / 180;
+    float x = ctx->barrel.pivot.x + cos(a) * (ctx->barrel.length + 20) - (src_bullet.w - 1) / 2;
+    float y = ctx->barrel.pivot.y + sin(a) * (ctx->barrel.length + 20) - (src_bullet.h - 1) / 2;
+
+    float speed = 90;
+    *bu = (bullet_t) {
+        .u = cos(a) * speed,
+        .v = sin(a) * speed,
+        .spawned = SDL_GetTicks64(),
+        .sim = {
             .x = x,
             .y = y,
-            .u = cos(a) * speed,
-            .v = sin(a) * speed,
             .w = src_bullet.w,
             .h = src_bullet.h,
-            .spawned = SDL_GetTicks64(),
-            .src = &src_bullet,
-            .tgt = {
-                .x = (int) x,
-                .y = (int) y,
-                .w = src_bullet.w,
-                .h = src_bullet.h,
-            },
-            .next = NULL,
-        };
-        bu->next = ctx->bullets;
-        ctx->bullets = bu;
-        ctx->nbullets--;
-    }
+        },
+        .src = &src_bullet,
+        .tgt = {
+            .x = (int) x,
+            .y = (int) y,
+            .w = src_bullet.w,
+            .h = src_bullet.h,
+        },
+        .next = NULL,
+    };
+    bu->next = ctx->bullets;
+    ctx->bullets = bu;
+    ctx->nbullets--;
     return ctx;
 }
 
@@ -84,10 +85,10 @@ ctx_t * o_bullets_update (ctx_t * ctx) {
 static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
-        bu->x += bu->u * ctx->dt;
-        bu->y += bu->v * ctx->dt;
-        bu->tgt.x = (int) bu->x;
-        bu->tgt.y = (int) bu->y;
+        bu->sim.x += bu->u * ctx->dt;
+        bu->sim.y += bu->v * ctx->dt;
+        bu->tgt.x = (int) bu->sim.x;
+        bu->tgt.y = (int) bu->sim.y;
         bu = bu->next;
     }
     return ctx;
@@ -101,8 +102,8 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
     while (this != NULL) {
         isfirst = prev == NULL;
         doremove = false;
-        if (this->y < 0 - this->tgt.h || this->x > SCREEN_WIDTH ||
-            this->x < 0 - this->tgt.w || this->y > SCREEN_HEIGHT - GROUND_HEIGHT) {
+        if (this->tgt.y < 0 - this->tgt.h || this->tgt.x > SCREEN_WIDTH ||
+            this->tgt.x < 0 - this->tgt.w || this->tgt.y > SCREEN_HEIGHT - GROUND_HEIGHT) {
             doremove = true;
         }
         switch (isfirst << 1 | doremove ) {

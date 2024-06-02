@@ -6,6 +6,8 @@
 #include "o_moon.h"
 #include "o_ground.h"
 #include "o_turret.h"
+#include "o_barrel.h"
+#include "o_flash.h"
 #include "o_balloons.h"
 #include "o_bullets.h"
 #include "o_legend.h"
@@ -22,6 +24,8 @@ void s_playing_draw (ctx_t * ctx) {
     o_background_draw(ctx);
     o_moon_draw(ctx);
     o_turret_draw(ctx);
+    o_barrel_draw(ctx);
+    o_flash_draw(ctx);
     o_legend_draw(ctx);
     o_balloons_draw(ctx);
     o_bullets_draw(ctx);
@@ -40,8 +44,11 @@ ctx_t * s_playing_update (ctx_t * ctx, struct state ** state) {
     }
     ctx = o_legend_update(ctx);
     ctx = o_turret_update(ctx);
+    ctx = o_barrel_update(ctx);
+    ctx = o_flash_update(ctx);
     ctx = o_balloons_update(ctx);
     ctx = o_bullets_update(ctx);
+    SDL_Delay(100);
     SDL_RenderPresent(ctx->renderer);
     return ctx;
 }
