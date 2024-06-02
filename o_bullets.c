@@ -15,7 +15,7 @@ static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
 static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
-static Uint64 timeout = 250;
+static Uint64 timeout = 150;
 
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
     bool cond = ctx->nbullets > 0 &&
