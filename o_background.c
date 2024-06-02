@@ -1,5 +1,5 @@
 #include "o_background.h"
-#include "context.h"
+#include "types.h"
 #include "colors.h"
 
 void o_background_draw (ctx_t * ctx) {

@@ -1,7 +1,7 @@
 #ifndef FSM_H
 #define FSM_H
 
-#include "context.h"
+#include "types.h"
 #include <SDL_surface.h>
 #include <SDL_video.h>
 #include <SDL_render.h>

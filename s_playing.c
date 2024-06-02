@@ -1,5 +1,5 @@
 #include "s_playing.h"
-#include "context.h"
+#include "types.h"
 #include "constants.h"
 #include "fsm.h"
 #include "o_background.h"

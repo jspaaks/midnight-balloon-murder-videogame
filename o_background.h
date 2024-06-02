@@ -1,6 +1,6 @@
 #ifndef O_BACKGROUND_H
 #define O_BACKGROUND_H
-#include "context.h"
+#include "types.h"
 
 void o_background_draw (ctx_t *);
 

@@ -1,4 +1,4 @@
-#include "context.h"
+#include "types.h"
 #include "constants.h"
 #include <SDL_rect.h>
 

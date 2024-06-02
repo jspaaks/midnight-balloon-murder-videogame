@@ -3,6 +3,7 @@
 #include "levels.h"
 #include "o_balloons.h"
 #include "colors.h"
+#include "types.h"
 
 static void o_legend_bars_draw (ctx_t *);
 static void o_legend_nbullets_warning_draw (ctx_t *);

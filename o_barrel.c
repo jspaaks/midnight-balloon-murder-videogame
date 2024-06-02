@@ -1,5 +1,5 @@
 #include "o_barrel.h"
-#include "context.h"
+#include "types.h"
 #include <SDL_scancode.h>
 #include <assert.h>
 

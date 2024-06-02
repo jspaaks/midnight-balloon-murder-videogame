@@ -1,5 +1,5 @@
 #include "levels.h"
-#include "context.h"
+#include "types.h"
 #include <stdio.h>
 
 static level_t levels[] = {

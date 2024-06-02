@@ -1,5 +1,5 @@
-#ifndef CONTEXT_H
-#define CONTEXT_H
+#ifndef TYPES_H
+#define TYPES_H
 
 #include <SDL_video.h>
 #include <SDL_render.h>

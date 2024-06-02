@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "o_balloons.h"
-#include "context.h"
+#include "types.h"
 #include "constants.h"
 #include "levels.h"
 #include <SDL_timer.h>

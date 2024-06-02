@@ -1,7 +1,7 @@
 #ifndef BALLOONS_H
 #define BALLOONS_H
 #include <stdbool.h>
-#include "context.h"
+#include "types.h"
 #include <SDL_rect.h>
 
 void o_balloons_draw (ctx_t *);

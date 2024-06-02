@@ -1,5 +1,5 @@
 #include "o_turret.h"
-#include "context.h"
+#include "types.h"
 #include "constants.h"
 
 void o_turret_draw (ctx_t * ctx) {

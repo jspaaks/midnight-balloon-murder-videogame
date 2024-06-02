@@ -1,5 +1,5 @@
 #include "constants.h"
-#include "context.h"
+#include "types.h"
 #include "fsm.h"
 #include <SDL.h>
 #include <SDL_surface.h>

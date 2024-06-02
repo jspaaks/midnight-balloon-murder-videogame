@@ -1,5 +1,5 @@
 #include "o_flash.h"
-#include "context.h"
+#include "types.h"
 #include <SDL_rect.h>
 #include <stdio.h>
 
