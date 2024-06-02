@@ -101,11 +101,10 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
     bool doremove = false;
     while (this != NULL) {
         isfirst = prev == NULL;
-        doremove = false;
-        if (this->tgt.y < 0 - this->tgt.h || this->tgt.x > SCREEN_WIDTH ||
-            this->tgt.x < 0 - this->tgt.w || this->tgt.y > SCREEN_HEIGHT - GROUND_HEIGHT) {
-            doremove = true;
-        }
+        doremove = this->tgt.y < 0 - this->tgt.h ||
+                   this->tgt.x > SCREEN_WIDTH    ||
+                   this->tgt.x < 0 - this->tgt.w ||
+                   this->tgt.y > SCREEN_HEIGHT - GROUND_HEIGHT;
         switch (isfirst << 1 | doremove ) {
             case 0: {
                 // not first, not remove
