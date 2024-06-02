@@ -48,7 +48,6 @@ ctx_t * s_playing_update (ctx_t * ctx, struct state ** state) {
     ctx = o_flash_update(ctx);
     ctx = o_balloons_update(ctx);
     ctx = o_bullets_update(ctx);
-    SDL_Delay(100);
     SDL_RenderPresent(ctx->renderer);
     return ctx;
 }

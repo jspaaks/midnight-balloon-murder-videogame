@@ -41,7 +41,7 @@ struct barrel_t {
 struct bullet_t {
     float u;
     float v;
-    Uint64 spawned;
+    Uint64 tspawned;
     const SDL_Rect * src;
     SDL_Rect tgt;
     SDL_FRect sim;
@@ -90,6 +90,7 @@ struct ctx_t {
     struct level_t * level;
     struct level_t * levels;
     struct turret_t turret;
+    Uint64 tspawn_latestbullet;
 };
 
 #endif

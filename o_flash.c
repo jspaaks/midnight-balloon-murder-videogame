@@ -2,6 +2,7 @@
 #include "types.h"
 #include <SDL_rect.h>
 #include <stdio.h>
+#include <SDL_timer.h>
 
 void o_flash_draw (ctx_t * ctx) {
     if (ctx->flash.show) {
@@ -24,7 +25,7 @@ ctx_t * o_flash_init (ctx_t * ctx) {
             .x = -1 * loffset,
             .y = (h - 1) / 2,
         },
-        .show = true,
+        .show = false,
         .sim = (SDL_FRect) {
             .h = h,
             .w = w,
@@ -48,6 +49,7 @@ ctx_t * o_flash_init (ctx_t * ctx) {
 }
 
 ctx_t * o_flash_update (ctx_t * ctx) {
-    ctx->flash.show = true;
+    static Uint64 timeout = 25;
+    ctx->flash.show = SDL_GetTicks64() < ctx->tspawn_latestbullet  + timeout;
     return ctx;
 }
