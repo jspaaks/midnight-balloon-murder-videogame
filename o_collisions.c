@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "SDL_log.h"
 #include "types.h"
 #include "o_collisions.h"
 
@@ -8,7 +9,7 @@ void o_collisions_draw (ctx_t * ctx) {
     collision_t * c = ctx->collisions;
     SDL_SetRenderDrawColor(ctx->renderer, 166, 166, 166, 0);
     while (c != NULL) {
-        fprintf(stdout, "collision\n");
+        SDL_Log("collision\n");
         c = c->next;
     }
 }

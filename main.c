@@ -8,6 +8,9 @@
 #include "SDL_video.h"
 #include "SDL_render.h"
 #include "SDL_timer.h"
+#include "SDL_log.h"
+
+#include "SDL_ttf.h"
 
 #include "constants.h"
 #include "types.h"
@@ -50,20 +53,26 @@ static bool init (ctx_t * ctx) {
 
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
-        fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
+        SDL_Log("Error initializing SDL: %s\n", SDL_GetError());
         return false;
     }
+
+    if (TTF_Init() != 0) {
+        SDL_Log("Couldn't initialize TTF: %s", SDL_GetError());
+        return false;
+    }
+
     ctx->window = SDL_CreateWindow("Midnight Balloon Murder", SDL_WINDOWPOS_CENTERED,
                                    SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                                    SDL_WINDOW_BORDERLESS);
     if (ctx->window == NULL) {
-        fprintf(stderr, "Error creating window: %s\n", SDL_GetError());
+        SDL_Log("Error creating window: %s\n", SDL_GetError());
         return false;
     }
     ctx->renderer = SDL_CreateRenderer(ctx->window, -1, 0);
     SDL_Surface * image = SDL_LoadBMP("img/sprites.bmp");
     if (image == NULL) {
-        fprintf(stdout, "Something went wrong loading spritesheet.\n");
+        SDL_Log("Something went wrong loading spritesheet.\n");
         return false;
     }
     ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
@@ -102,10 +111,10 @@ int main (void) {
         have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
     }
     if (!have_balloons) {
-        fprintf(stdout, "No more balloons.\n");
+        SDL_Log("No more balloons.\n");
     }
     if (!have_bullets) {
-        fprintf(stdout, "No more bullets.\n");
+        SDL_Log("No more bullets.\n");
     }
 
     deinit(&ctx);

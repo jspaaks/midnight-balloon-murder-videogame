@@ -5,6 +5,7 @@
 #include "SDL_render.h"
 #include "SDL_timer.h"
 #include "SDL_scancode.h"
+#include "SDL_log.h"
 #include "constants.h"
 #include "levels.h"
 #include "o_bullets.h"
@@ -26,7 +27,7 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
     if (cond) {
         bullet_t * bu = malloc(1 * sizeof(bullet_t));
         if (bu == NULL) {
-            fprintf(stderr, "Something went wrong allocating memory for new bullet.\n");
+            SDL_Log("Something went wrong allocating memory for new bullet.\n");
             exit(EXIT_FAILURE);
         }
         float a = PI * ctx->barrel.angle / 180;
@@ -145,7 +146,7 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
                 break;
             }
             default: {
-                fprintf(stderr, "Something went wrong in removing a bullet from the list.\n");
+                SDL_Log("Something went wrong in removing a bullet from the list.\n");
                 exit(EXIT_FAILURE);
             }
         }

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "SDL_timer.h"
+#include "SDL_log.h"
 #include "types.h"
 #include "constants.h"
 #include "levels.h"
@@ -119,7 +120,7 @@ void o_balloons_free (balloon_t * balloons) {
 ctx_t * o_balloons_init (ctx_t * ctx) {
     ctx->balloons = o_balloons_malloc(ctx);
     if (ctx->balloons == NULL) {
-        fprintf(stderr, "Something went wrong allocating memory for the balloons.\n");
+        SDL_Log("Something went wrong allocating memory for the balloons.\n");
         exit(EXIT_FAILURE);
     }
     ctx->balloons = o_balloons_populate(ctx);
@@ -213,7 +214,7 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             default: {
-                fprintf(stderr, "Something is wrong with the balloon states.\n");
+                SDL_Log("Something is wrong with the balloon states.\n");
                 break;
             }
         }

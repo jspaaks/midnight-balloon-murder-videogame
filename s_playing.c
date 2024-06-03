@@ -6,6 +6,7 @@
 #include "SDL_scancode.h"
 #include "SDL_events.h"
 #include "SDL_timer.h"
+#include "SDL_log.h"
 #include "types.h"
 #include "constants.h"
 #include "fsm.h"
@@ -39,7 +40,7 @@ ctx_t * s_playing_update (ctx_t * ctx, struct state ** state) {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
             if (event.key.keysym.sym == SDLK_ESCAPE) {
-                fprintf(stdout, "pausing\n");
+                SDL_Log("pausing\n");
                 *state = fsm_set_state(PAUSED);
             }
         }

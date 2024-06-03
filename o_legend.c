@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "SDL_pixels.h"
+#include "SDL_log.h"
 #include "types.h"
 #include "levels.h"
 #include "o_legend.h"
@@ -98,7 +99,7 @@ ctx_t * o_legend_update (ctx_t * ctx) {
                 break;
             }
             default: {
-                fprintf(stderr, "Something went wrong with counting the balloon states.\n");
+                SDL_Log("Something went wrong with counting the balloon states.\n");
                 break;
             }
         }
