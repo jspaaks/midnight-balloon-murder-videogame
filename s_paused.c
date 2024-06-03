@@ -2,8 +2,8 @@
 #include "o_background.h"
 #include "types.h"
 #include "fsm.h"
-#include <SDL_events.h>
-#include <SDL_keycode.h>
+#include "SDL_events.h"
+#include "SDL_keycode.h"
 
 void s_paused_draw (ctx_t * ctx) {
     o_background_draw(ctx);

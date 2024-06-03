@@ -1,9 +1,9 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <SDL_video.h>
-#include <SDL_render.h>
-#include <SDL_rect.h>
+#include "SDL_video.h"
+#include "SDL_render.h"
+#include "SDL_rect.h"
 #include <stdbool.h>
 
 typedef enum {BA_PRESPAWN, BA_AIRBORNE, BA_HIT, BA_MISS} balloon_state_t;

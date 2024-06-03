@@ -1,8 +1,8 @@
 #ifndef S_PLAYING_H
 #define S_PLAYING_H
 
-#include <SDL_render.h>
-#include <SDL_events.h>
+#include "SDL_render.h"
+#include "SDL_events.h"
 #include "fsm.h"
 #include "types.h"
 

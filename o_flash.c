@@ -1,8 +1,8 @@
 #include "o_flash.h"
 #include "types.h"
-#include <SDL_rect.h>
+#include "SDL_rect.h"
 #include <stdio.h>
-#include <SDL_timer.h>
+#include "SDL_timer.h"
 
 void o_flash_draw (ctx_t * ctx) {
     if (ctx->flash.show) {

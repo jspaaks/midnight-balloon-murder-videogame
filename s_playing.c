@@ -12,12 +12,12 @@
 #include "o_bullets.h"
 #include "o_collisions.h"
 #include "o_legend.h"
-#include <SDL_render.h>
-#include <SDL_rect.h>
-#include <SDL_keyboard.h>
-#include <SDL_scancode.h>
-#include <SDL_events.h>
-#include <SDL_timer.h>
+#include "SDL_render.h"
+#include "SDL_rect.h"
+#include "SDL_keyboard.h"
+#include "SDL_scancode.h"
+#include "SDL_events.h"
+#include "SDL_timer.h"
 #include <stdio.h>
 #include <stdlib.h>
 

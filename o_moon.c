@@ -1,6 +1,6 @@
 #include "types.h"
 #include "constants.h"
-#include <SDL_rect.h>
+#include "SDL_rect.h"
 
 static const SDL_Rect src = {
     .x = 75,

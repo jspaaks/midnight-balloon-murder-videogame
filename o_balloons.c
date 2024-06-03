@@ -3,7 +3,7 @@
 #include "types.h"
 #include "constants.h"
 #include "levels.h"
-#include <SDL_timer.h>
+#include "SDL_timer.h"
 
 static int o_balloons_compare (const void *, const void *);
 static balloon_t * o_balloons_malloc (ctx_t *);
