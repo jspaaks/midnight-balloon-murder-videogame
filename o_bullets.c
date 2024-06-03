@@ -31,7 +31,7 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
         float x = ctx->barrel.pivot.x + cos(a) * (ctx->barrel.length + 20) - (src_bullet.w - 1) / 2;
         float y = ctx->barrel.pivot.y + sin(a) * (ctx->barrel.length + 20) - (src_bullet.h - 1) / 2;
 
-        float speed = 90;
+        float speed = 380;
         *bu = (bullet_t) {
             .u = cos(a) * speed,
             .v = sin(a) * speed,
@@ -91,8 +91,10 @@ ctx_t * o_bullets_update (ctx_t * ctx) {
 }
 
 static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
+    const float gravity = 80; // pixels per second per second
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
+        bu->v += gravity * ctx->dt;
         bu->sim.x += bu->u * ctx->dt;
         bu->sim.y += bu->v * ctx->dt;
         bu->tgt.x = (int) bu->sim.x;
