@@ -2,6 +2,7 @@
 #include "SDL_pixels.h"
 #include "SDL_log.h"
 #include "types.h"
+#include "colors.h"
 #include "levels.h"
 #include "o_legend.h"
 #include "o_balloons.h"
@@ -10,21 +11,31 @@ static void o_legend_bars_draw (ctx_t *);
 static void o_legend_nbullets_warning_draw (ctx_t *);
 
 static void o_legend_nbullets_warning_draw (ctx_t * ctx) {
-    static const SDL_Color magenta = { .r = 200, .g =   0, .b = 255, .a = 0 };
-    static const SDL_Color red     = { .r = 200, .g =   0, .b =   0, .a = 0 };
-    static const SDL_Color orange  = { .r = 200, .g = 161, .b =   0, .a = 0 };
-    static const SDL_Color green   = { .r =   0, .g = 161, .b =   0, .a = 0 };
-    static const SDL_Color bgcolor = { .r =   0, .g =  22, .b =  43, .a = 0 };
     if (ctx->nbullets < 5) {
-        SDL_SetRenderDrawColor(ctx->renderer, magenta.r, magenta.g, magenta.b, magenta.a);
+        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.magenta.r,
+                                              ctx->colors.magenta.g,
+                                              ctx->colors.magenta.b,
+                                              ctx->colors.magenta.a);
     } else if (ctx->nbullets < 10) {
-        SDL_SetRenderDrawColor(ctx->renderer, red.r, red.g, red.b, red.a);
+        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.red.r,
+                                              ctx->colors.red.g,
+                                              ctx->colors.red.b,
+                                              ctx->colors.red.a);
     } else if (ctx->nbullets < 20) {
-        SDL_SetRenderDrawColor(ctx->renderer, orange.r, orange.g, orange.b, orange.a);
+        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.orange.r,
+                                              ctx->colors.orange.g,
+                                              ctx->colors.orange.b,
+                                              ctx->colors.orange.a);
     } else if (ctx->nbullets < 30) {
-        SDL_SetRenderDrawColor(ctx->renderer, green.r, green.g, green.b, green.a);
+        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.green.r,
+                                              ctx->colors.green.g,
+                                              ctx->colors.green.b,
+                                              ctx->colors.green.a);
     } else {
-        SDL_SetRenderDrawColor(ctx->renderer, bgcolor.r, bgcolor.g, bgcolor.b, bgcolor.a);
+        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.bg.r,
+                                              ctx->colors.bg.g,
+                                              ctx->colors.bg.b,
+                                              ctx->colors.bg.a);
     }
     SDL_Rect rect = {
         .x = 80,
@@ -36,9 +47,6 @@ static void o_legend_nbullets_warning_draw (ctx_t * ctx) {
 }
 
 static void o_legend_bars_draw (ctx_t * ctx) {
-    static const SDL_Color hit    = { .r =   0, .g = 161, .b =   0, .a = 0 };
-    static const SDL_Color middle = { .r = 128, .g = 128, .b = 128, .a = 0 };
-    static const SDL_Color miss   = { .r = 200, .g =   0, .b =   0, .a = 0 };
     static const int nbars = 10;
     static int j = 0;
 
@@ -53,17 +61,26 @@ static void o_legend_bars_draw (ctx_t * ctx) {
         .h = 18,
     };
 
-    SDL_SetRenderDrawColor(ctx->renderer, hit.r, hit.g, hit.b, hit.a);
+    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.hit.r,
+                                          ctx->colors.hit.g,
+                                          ctx->colors.hit.b,
+                                          ctx->colors.hit.a);
     for (int i = 0; i < nhit; i++, j++) {
         rect.x += (rect.w + 5);
         SDL_RenderFillRect(ctx->renderer, &rect);
     }
-    SDL_SetRenderDrawColor(ctx->renderer, middle.r, middle.g, middle.b, middle.a);
+    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.middle.r,
+                                          ctx->colors.middle.g,
+                                          ctx->colors.middle.b,
+                                          ctx->colors.middle.a);
     for (int i = 0; i < nmiddle; i++, j++) {
         rect.x += (rect.w + 5);
         SDL_RenderFillRect(ctx->renderer, &rect);
     }
-    SDL_SetRenderDrawColor(ctx->renderer, miss.r, miss.g, miss.b, miss.a);
+    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.miss.r,
+                                          ctx->colors.miss.g,
+                                          ctx->colors.miss.b,
+                                          ctx->colors.miss.a);
     for (int i = 0; i < nmiss; i++, j++) {
         rect.x += (rect.w + 5);
         SDL_RenderFillRect(ctx->renderer, &rect);

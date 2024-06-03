@@ -14,6 +14,7 @@ typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
 typedef struct bullet_t bullet_t;
 typedef struct collision_t collision_t;
+typedef struct colors_t colors_t;
 typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
 typedef struct level_t level_t;
@@ -56,6 +57,18 @@ struct collision_t {
     struct collision_t * next;
 };
 
+struct colors_t {
+    SDL_Color bg;
+    SDL_Color green;
+    SDL_Color hit;
+    SDL_Color magenta;
+    SDL_Color middle;
+    SDL_Color miss;
+    SDL_Color orange;
+    SDL_Color red;
+    SDL_Color white;
+};
+
 struct flash_t {
     SDL_Point pivot_offset;
     bool show;
@@ -95,6 +108,7 @@ struct ctx_t {
     struct barrel_t barrel;
     struct bullet_t * bullets;
     struct collision_t * collisions;
+    struct colors_t colors;
     struct flash_t flash;
     struct level_t * level;
     struct level_t * levels;
