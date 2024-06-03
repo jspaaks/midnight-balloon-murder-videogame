@@ -16,6 +16,7 @@
 #include "types.h"
 #include "fsm.h"
 #include "levels.h"
+#include "colors.h"
 
 #include "o_balloons.h"
 #include "o_bullets.h"
@@ -44,6 +45,7 @@ static void deinit (ctx_t * ctx) {
     ctx->level = NULL;
     ctx->keys = NULL;
 
+    TTF_Quit();
     SDL_Quit();
 }
 
@@ -58,7 +60,7 @@ static bool init (ctx_t * ctx) {
     }
 
     if (TTF_Init() != 0) {
-        SDL_Log("Couldn't initialize TTF: %s", SDL_GetError());
+        SDL_Log("Couldn't initialize SDL_ttf: %s", SDL_GetError());
         return false;
     }
 
@@ -78,6 +80,7 @@ static bool init (ctx_t * ctx) {
     ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
     ctx->keys = SDL_GetKeyboardState(NULL);
     ctx->dt = 0.0000000000001;
+    ctx = colors_init(ctx);
     ctx = levels_init(ctx);
     ctx = o_turret_init(ctx);
     ctx = o_barrel_init(ctx);
@@ -85,6 +88,20 @@ static bool init (ctx_t * ctx) {
     ctx = o_balloons_init(ctx);
     ctx = o_bullets_init(ctx);
     ctx = o_collisions_init(ctx);
+
+    int ptsize = 20;
+    char fontfile[] = "fonts/Bayon-Regular.ttf";
+    TTF_Font * font = TTF_OpenFont(fontfile, ptsize);
+    if (font == NULL) {
+        SDL_Log("Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, SDL_GetError());
+        return false;
+    }
+    SDL_Surface * text = TTF_RenderText_Shaded(font, "midnight balloon murder", ctx->colors.white, ctx->colors.bg);
+    SDL_Texture * message = SDL_CreateTextureFromSurface(ctx->renderer, text);
+    SDL_RenderCopy(ctx->renderer, message, NULL, NULL);
+    SDL_RenderPresent(ctx->renderer);
+    SDL_Delay(3000);
+
     return true;
 }
 
