@@ -13,20 +13,23 @@ static ctx_t * o_bullets_update_add (ctx_t *);
 static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
-static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
-static Uint64 timeout = 150;
-
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
+
+    static const float PI = 3.14159265358979323846f;
+    static Uint64 timeout = 150;
+    static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
+
     bool cond = ctx->nbullets > 0 &&
                 SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout &&
                 ctx->keys[SDL_SCANCODE_SPACE];
+
     if (cond) {
         bullet_t * bu = malloc(1 * sizeof(bullet_t));
         if (bu == NULL) {
             fprintf(stderr, "Something went wrong allocating memory for new bullet.\n");
             exit(EXIT_FAILURE);
         }
-        float a = M_PI * ctx->barrel.angle / 180;
+        float a = PI * ctx->barrel.angle / 180;
         float x = ctx->barrel.pivot.x + cos(a) * (ctx->barrel.length + 20) - (src_bullet.w - 1) / 2;
         float y = ctx->barrel.pivot.y + sin(a) * (ctx->barrel.length + 20) - (src_bullet.h - 1) / 2;
 
