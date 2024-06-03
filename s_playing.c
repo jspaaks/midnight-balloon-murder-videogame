@@ -10,6 +10,7 @@
 #include "o_flash.h"
 #include "o_balloons.h"
 #include "o_bullets.h"
+#include "o_collisions.h"
 #include "o_legend.h"
 #include <SDL_render.h>
 #include <SDL_rect.h>
@@ -29,6 +30,7 @@ void s_playing_draw (ctx_t * ctx) {
     o_legend_draw(ctx);
     o_balloons_draw(ctx);
     o_bullets_draw(ctx);
+    o_collisions_draw(ctx);
     o_ground_draw(ctx);
 }
 
@@ -48,6 +50,7 @@ ctx_t * s_playing_update (ctx_t * ctx, struct state ** state) {
     ctx = o_flash_update(ctx);
     ctx = o_balloons_update(ctx);
     ctx = o_bullets_update(ctx);
+    ctx = o_collisions_update(ctx);
     SDL_RenderPresent(ctx->renderer);
     return ctx;
 }

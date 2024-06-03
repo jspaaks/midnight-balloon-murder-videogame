@@ -14,6 +14,7 @@
 #include "o_turret.h"
 #include "o_barrel.h"
 #include "o_flash.h"
+#include "o_collisions.h"
 #include "levels.h"
 #include <time.h>
 
@@ -71,6 +72,7 @@ static bool init (ctx_t * ctx) {
     ctx = o_flash_init(ctx);
     ctx = o_balloons_init(ctx);
     ctx = o_bullets_init(ctx);
+    ctx = o_collisions_init(ctx);
     return true;
 }
 

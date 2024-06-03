@@ -1,7 +1,6 @@
 #include "o_barrel.h"
 #include "types.h"
 #include <SDL_scancode.h>
-#include <assert.h>
 
 static float o_barrel_max (float, float);
 static float o_barrel_min (float, float);

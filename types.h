@@ -11,6 +11,7 @@ typedef enum {PRESPAWN, AIRBORNE, HIT, MISS} balloon_state_t;
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
 typedef struct bullet_t bullet_t;
+typedef struct collision_t collision_t;
 typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
 typedef struct level_t level_t;
@@ -46,6 +47,12 @@ struct bullet_t {
     SDL_Rect tgt;
     SDL_FRect sim;
     struct bullet_t * next;
+};
+
+struct collision_t {
+    SDL_FPoint sim;
+    Uint64 tspawned;
+    struct collision_t * next;
 };
 
 struct flash_t {
@@ -86,6 +93,7 @@ struct ctx_t {
     struct balloon_t * balloons;
     struct barrel_t barrel;
     struct bullet_t * bullets;
+    struct collision_t * collisions;
     struct flash_t flash;
     struct level_t * level;
     struct level_t * levels;
