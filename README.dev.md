@@ -71,3 +71,14 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 ## Q
 
 1. what happens when `dt` is 0?
+
+
+snippets
+
+```text
+#include "SDL_ttf.h"
+TTF_Init
+TTF_OpenFont
+TTF_CloseFont
+TTF_Quit
+```
