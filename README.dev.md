@@ -2,26 +2,47 @@
 
 ## Installing SDL2 from submodule
 
-Download, compile and install SDL2 from the submodule bundled with the main:
+Clone this repo recursively:
 
 ```shell
 cd <your project dir>
 git clone https://github.com/jspaaks/libsdl2-game.git --recursive .
-cd third_party/sdl
-mkdir build
-cd build
-../configure --prefix <your project dir>/lib
+```
+
+Compile and install SDL2 from the bundled submodule (`third_party/sdl`):
+
+```shell
+cd <project dir>
+mkdir -p build/sdl
+cd build/sdl
+../../third_party/sdl/configure --prefix <project dir>/lib
+make
+make install
+```
+After this, `sdl-config --version` returns `2.31.0`.
+
+Compile and install SDL_ttf from the bundled submodule (`third_party/sdl_ttf`):
+
+```shell
+cd <project dir>
+mkdir -p build/sdl_ttf
+cd build/sdl_ttf
+../../third_party/sdl_ttf/configure --prefix <project dir>/lib
 make
 make install
 ```
 
-After this, `sdl-config --version` returns `2.31.0`.
-
 ## Uninstalling SDL2
 
 ```shell
-cd <your project dir>
-cd third_party/sdl/build
+cd <your project dir>/build/sdl
+make uninstall
+```
+
+## Uninstalling SDL_ttf
+
+```shell
+cd <your project dir>/build/sdl_ttf
 make uninstall
 ```
 
