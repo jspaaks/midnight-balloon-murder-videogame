@@ -39,7 +39,7 @@ static balloon_t balloon_red = {
         .y = SCREEN_HEIGHT - GROUND_HEIGHT,
     },
     .src = &src_red,
-    .state = PRESPAWN,
+    .state = BA_PRESPAWN,
     .tgt = {
         .h = src_red.h,
         .w = src_red.w,
@@ -59,7 +59,7 @@ static balloon_t balloon_orange = {
         .y = SCREEN_HEIGHT - GROUND_HEIGHT,
     },
     .src = &src_orange,
-    .state = PRESPAWN,
+    .state = BA_PRESPAWN,
     .tgt = {
         .h = src_orange.h,
         .w = src_orange.w,
@@ -79,7 +79,7 @@ static balloon_t balloon_yellow = {
         .y = SCREEN_HEIGHT - GROUND_HEIGHT,
     },
     .src = &src_yellow,
-    .state = PRESPAWN,
+    .state = BA_PRESPAWN,
     .tgt = {
         .h = src_yellow.h,
         .w = src_yellow.w,
@@ -106,7 +106,7 @@ static int o_balloons_compare (const void * a, const void * b) {
 
 void o_balloons_draw (ctx_t * ctx) {
     for (int i = 0; i < ctx->level->nballoons; i++) {
-        if (ctx->balloons[i].state == AIRBORNE) {
+        if (ctx->balloons[i].state == BA_AIRBORNE) {
             SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &ctx->balloons[i].tgt);
         }
     }
@@ -188,27 +188,27 @@ static balloon_t * o_balloons_sort (ctx_t * ctx) {
 ctx_t * o_balloons_update (ctx_t * ctx) {
     for (int i = 0; i < ctx->level->nballoons; i++) {
         switch (ctx->balloons[i].state) {
-            case PRESPAWN: {
+            case BA_PRESPAWN: {
                 if (SDL_GetTicks64() > ctx->balloons[i].trelease) {
-                    ctx->balloons[i].state = AIRBORNE;
+                    ctx->balloons[i].state = BA_AIRBORNE;
                 }
                 break;
             }
-            case AIRBORNE: {
+            case BA_AIRBORNE: {
                 ctx->balloons[i].sim.x += ctx->balloons[i].u * ctx->dt;
                 ctx->balloons[i].sim.y += ctx->balloons[i].v * ctx->dt;
                 ctx->balloons[i].tgt.x = (int) ctx->balloons[i].sim.x;
                 ctx->balloons[i].tgt.y = (int) ctx->balloons[i].sim.y;
                 if (o_balloons_is_outside(&ctx->balloons[i])) {
-                    ctx->balloons[i].state = MISS;
+                    ctx->balloons[i].state = BA_MISS;
                 }
                 break;
             }
-            case HIT: {
+            case BA_HIT: {
                 // do nothing
                 break;
             }
-            case MISS: {
+            case BA_MISS: {
                 // do nothing
                 break;
             }

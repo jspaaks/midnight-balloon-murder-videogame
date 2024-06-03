@@ -6,7 +6,8 @@
 #include <SDL_rect.h>
 #include <stdbool.h>
 
-typedef enum {PRESPAWN, AIRBORNE, HIT, MISS} balloon_state_t;
+typedef enum {BA_PRESPAWN, BA_AIRBORNE, BA_HIT, BA_MISS} balloon_state_t;
+typedef enum {BU_AIRBORNE, BU_HIT} bullet_state_t;
 
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
@@ -42,7 +43,7 @@ struct barrel_t {
 struct bullet_t {
     float u;
     float v;
-    Uint64 tspawned;
+    bullet_state_t state;
     const SDL_Rect * src;
     SDL_Rect tgt;
     SDL_FRect sim;
@@ -51,7 +52,6 @@ struct bullet_t {
 
 struct collision_t {
     SDL_FPoint sim;
-    Uint64 tspawned;
     struct collision_t * next;
 };
 

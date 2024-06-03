@@ -81,19 +81,19 @@ ctx_t * o_legend_update (ctx_t * ctx) {
     int nairborne = 0;
     for (int i = 0; i < ctx->level->nballoons; i++) {
         switch (ctx->balloons[i].state) {
-            case PRESPAWN: {
+            case BA_PRESPAWN: {
                 nprespawn++;
                 break;
             }
-            case AIRBORNE: {
+            case BA_AIRBORNE: {
                 nairborne++;
                 break;
             }
-            case HIT: {
+            case BA_HIT: {
                 nhit++;
                 break;
             }
-            case MISS: {
+            case BA_MISS: {
                 nmiss++;
                 break;
             }

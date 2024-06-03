@@ -24,13 +24,14 @@ ctx_t * o_collisions_update (ctx_t * ctx) {
         bullet_t * bu = ctx->bullets;
         while (bu != NULL) {
             if (o_collisions_colliding(ba, bu)) {
-                // change state ba to HIT
-                ba->state = HIT;
+                // change state ba to BA_HIT
+                ba->state = BA_HIT;
 
                 // increase nbullets
                 ctx->nbullets += ba->value;
 
-                // remove bu
+                // mark bu for deletion
+                bu->state = BU_HIT;
 
                 // spawn collision effect
             }
@@ -42,7 +43,7 @@ ctx_t * o_collisions_update (ctx_t * ctx) {
 
 static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
 
-    if (ba->state != AIRBORNE) {
+    if (ba->state != BA_AIRBORNE) {
         return false;
     }
 

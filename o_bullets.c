@@ -10,7 +10,6 @@
 #include <SDL_scancode.h>
 
 static ctx_t * o_bullets_update_add (ctx_t *);
-static bullet_t * o_bullets_malloc (void);
 static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
@@ -35,7 +34,7 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
         *bu = (bullet_t) {
             .u = cos(a) * speed,
             .v = sin(a) * speed,
-            .tspawned = SDL_GetTicks64(),
+            .state = BU_AIRBORNE,
             .sim = {
                 .x = x,
                 .y = y,
@@ -62,20 +61,17 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
 void o_bullets_draw (ctx_t * ctx) {
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
-        SDL_RenderCopy(ctx->renderer, ctx->spritesheet, bu->src, &bu->tgt);
+        if (bu->state == BU_AIRBORNE) {
+            SDL_RenderCopy(ctx->renderer, ctx->spritesheet, bu->src, &bu->tgt);
+        }
         bu = bu->next;
     }
 }
 
 ctx_t * o_bullets_init (ctx_t * ctx) {
-    ctx->bullets = o_bullets_malloc();
+    ctx->bullets = NULL;
     ctx->nbullets = ctx->level->nbullets;
     return ctx;
-}
-
-static bullet_t * o_bullets_malloc (void) {
-    bullet_t * bullets = NULL;
-    return bullets;
 }
 
 ctx_t * o_bullets_update (ctx_t * ctx) {
@@ -85,13 +81,13 @@ ctx_t * o_bullets_update (ctx_t * ctx) {
     // if SPACE down, add a bullet to the list
     ctx = o_bullets_update_add(ctx);
 
-    // if bullet is out of view, delete it from the list
+    // if bullet is out of view or marked for deletion, delete it from the list
     ctx = o_bullets_update_remove(ctx);
     return ctx;
 }
 
 static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
-    const float gravity = 80; // pixels per second per second
+    const float gravity = 70; // pixels per second per second
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
         bu->v += gravity * ctx->dt;
@@ -111,7 +107,8 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
     bool doremove = false;
     while (this != NULL) {
         isfirst = prev == NULL;
-        doremove = this->tgt.y < 0 - this->tgt.h ||
+        doremove = this->state == BU_HIT         ||
+                   this->tgt.y < 0 - this->tgt.h ||
                    this->tgt.x > SCREEN_WIDTH    ||
                    this->tgt.x < 0 - this->tgt.w ||
                    this->tgt.y > SCREEN_HEIGHT - GROUND_HEIGHT;
