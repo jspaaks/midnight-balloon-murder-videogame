@@ -1,10 +1,11 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdbool.h>
+
 #include "SDL_video.h"
 #include "SDL_render.h"
 #include "SDL_rect.h"
-#include <stdbool.h>
 
 typedef enum {BA_PRESPAWN, BA_AIRBORNE, BA_HIT, BA_MISS} balloon_state_t;
 typedef enum {BU_AIRBORNE, BU_HIT} bullet_state_t;
@@ -17,6 +18,7 @@ typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
 typedef struct level_t level_t;
 typedef struct turret_t turret_t;
+typedef struct rgba_t rgba_t;
 
 struct balloon_t {
     float u;
@@ -70,6 +72,13 @@ struct level_t {
     int nred;
     int nyellow;
     char name[20];
+};
+
+struct rgba_t {
+    int r;
+    int g;
+    int b;
+    int a;
 };
 
 struct turret_t {

@@ -1,6 +1,5 @@
-#include "o_background.h"
 #include "types.h"
-#include "colors.h"
+#include "o_background.h"
 
 void o_background_draw (ctx_t * ctx) {
     static rgba_t bgcolor = { .r = 0, .g = 22, .b = 43, .a = 0 };

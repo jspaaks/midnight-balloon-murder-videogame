@@ -1,22 +1,25 @@
-#include "constants.h"
-#include "types.h"
-#include "fsm.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdbool.h>
+
 #include "SDL.h"
 #include "SDL_surface.h"
 #include "SDL_video.h"
 #include "SDL_render.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include "SDL_timer.h"
+
+#include "constants.h"
+#include "types.h"
+#include "fsm.h"
+#include "levels.h"
+
 #include "o_balloons.h"
 #include "o_bullets.h"
 #include "o_turret.h"
 #include "o_barrel.h"
 #include "o_flash.h"
 #include "o_collisions.h"
-#include "levels.h"
-#include <time.h>
 
 static void deinit (ctx_t *);
 static bool init (ctx_t *);

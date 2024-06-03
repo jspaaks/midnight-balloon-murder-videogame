@@ -1,7 +1,6 @@
-#include "o_ground.h"
-#include "constants.h"
-#include "colors.h"
 #include "types.h"
+#include "constants.h"
+#include "o_ground.h"
 
 static const SDL_Rect rect = {
     .x = 0,

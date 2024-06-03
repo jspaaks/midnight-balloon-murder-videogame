@@ -1,7 +1,15 @@
-#include "s_playing.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "SDL_render.h"
+#include "SDL_rect.h"
+#include "SDL_keyboard.h"
+#include "SDL_scancode.h"
+#include "SDL_events.h"
+#include "SDL_timer.h"
 #include "types.h"
 #include "constants.h"
 #include "fsm.h"
+#include "s_playing.h"
 #include "o_background.h"
 #include "o_moon.h"
 #include "o_ground.h"
@@ -12,14 +20,6 @@
 #include "o_bullets.h"
 #include "o_collisions.h"
 #include "o_legend.h"
-#include "SDL_render.h"
-#include "SDL_rect.h"
-#include "SDL_keyboard.h"
-#include "SDL_scancode.h"
-#include "SDL_events.h"
-#include "SDL_timer.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 void s_playing_draw (ctx_t * ctx) {
     o_background_draw(ctx);

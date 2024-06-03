@@ -1,9 +1,8 @@
-#include "o_legend.h"
 #include <stdio.h>
-#include "levels.h"
-#include "o_balloons.h"
-#include "colors.h"
 #include "types.h"
+#include "levels.h"
+#include "o_legend.h"
+#include "o_balloons.h"
 
 static void o_legend_bars_draw (ctx_t *);
 static void o_legend_nbullets_warning_draw (ctx_t *);

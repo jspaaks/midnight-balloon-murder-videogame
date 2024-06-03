@@ -1,13 +1,13 @@
-#include "o_bullets.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
 #include "SDL_rect.h"
 #include "SDL_render.h"
-#include <stdlib.h>
 #include "SDL_timer.h"
-#include <stdbool.h>
+#include "SDL_scancode.h"
 #include "constants.h"
 #include "levels.h"
-#include <math.h>
-#include "SDL_scancode.h"
+#include "o_bullets.h"
 
 static ctx_t * o_bullets_update_add (ctx_t *);
 static ctx_t * o_bullets_update_pos (ctx_t *);

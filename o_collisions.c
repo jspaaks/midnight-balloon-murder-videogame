@@ -1,6 +1,6 @@
-#include "o_collisions.h"
-#include "types.h"
 #include <stdio.h>
+#include "types.h"
+#include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
 
