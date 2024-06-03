@@ -1,3 +1,6 @@
 [submodule "third_party/sdl"]
 	path = third_party/sdl
 	url = https://github.com/libsdl-org/sdl.git
+[submodule "third_party/sdl_ttf"]
+	path = third_party/sdl_ttf
+	url = https://github.com/libsdl-org/SDL_ttf.git
