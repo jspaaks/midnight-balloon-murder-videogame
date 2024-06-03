@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "SDL_pixels.h"
 #include "types.h"
 #include "levels.h"
 #include "o_legend.h"
@@ -8,11 +9,11 @@ static void o_legend_bars_draw (ctx_t *);
 static void o_legend_nbullets_warning_draw (ctx_t *);
 
 static void o_legend_nbullets_warning_draw (ctx_t * ctx) {
-    static const rgba_t magenta = { .r = 200, .g =   0, .b = 255, .a = 0 };
-    static const rgba_t red     = { .r = 200, .g =   0, .b =   0, .a = 0 };
-    static const rgba_t orange  = { .r = 200, .g = 161, .b =   0, .a = 0 };
-    static const rgba_t green   = { .r =   0, .g = 161, .b =   0, .a = 0 };
-    static const rgba_t bgcolor = { .r =   0, .g =  22, .b =  43, .a = 0 };
+    static const SDL_Color magenta = { .r = 200, .g =   0, .b = 255, .a = 0 };
+    static const SDL_Color red     = { .r = 200, .g =   0, .b =   0, .a = 0 };
+    static const SDL_Color orange  = { .r = 200, .g = 161, .b =   0, .a = 0 };
+    static const SDL_Color green   = { .r =   0, .g = 161, .b =   0, .a = 0 };
+    static const SDL_Color bgcolor = { .r =   0, .g =  22, .b =  43, .a = 0 };
     if (ctx->nbullets < 5) {
         SDL_SetRenderDrawColor(ctx->renderer, magenta.r, magenta.g, magenta.b, magenta.a);
     } else if (ctx->nbullets < 10) {
@@ -34,9 +35,9 @@ static void o_legend_nbullets_warning_draw (ctx_t * ctx) {
 }
 
 static void o_legend_bars_draw (ctx_t * ctx) {
-    static const rgba_t hit    = { .r =   0, .g = 161, .b =   0, .a = 0 };
-    static const rgba_t middle = { .r = 128, .g = 128, .b = 128, .a = 0 };
-    static const rgba_t miss   = { .r = 200, .g =   0, .b =   0, .a = 0 };
+    static const SDL_Color hit    = { .r =   0, .g = 161, .b =   0, .a = 0 };
+    static const SDL_Color middle = { .r = 128, .g = 128, .b = 128, .a = 0 };
+    static const SDL_Color miss   = { .r = 200, .g =   0, .b =   0, .a = 0 };
     static const int nbars = 10;
     static int j = 0;
 

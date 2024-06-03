@@ -18,7 +18,6 @@ typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
 typedef struct level_t level_t;
 typedef struct turret_t turret_t;
-typedef struct rgba_t rgba_t;
 
 struct balloon_t {
     float u;
@@ -72,13 +71,6 @@ struct level_t {
     int nred;
     int nyellow;
     char name[20];
-};
-
-struct rgba_t {
-    int r;
-    int g;
-    int b;
-    int a;
 };
 
 struct turret_t {
