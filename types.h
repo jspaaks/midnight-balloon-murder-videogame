@@ -88,9 +88,6 @@ struct legend_t {
         SDL_Rect tgt;
         SDL_Color * bg;
     } highlight;
-    struct {
-        SDL_Rect tgt;
-    } bg;
 };
 
 struct level_t {
