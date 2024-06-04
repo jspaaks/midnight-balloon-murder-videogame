@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 #include "SDL_rect.h"
 #include "SDL_timer.h"
 #include "types.h"
@@ -15,6 +16,7 @@ void o_flash_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_flash_init (ctx_t * ctx) {
+    assert(ctx->barrel.tgt.x != 0 && "barrel needs to be initialized before flash");
     float h = 21;
     float w = 30;
     float loffset = (ctx->barrel.tgt.w + 2);

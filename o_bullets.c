@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
@@ -73,6 +74,7 @@ void o_bullets_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_bullets_init (ctx_t * ctx) {
+    assert(ctx->level != NULL && "levels needs to be initialized before bullets");
     ctx->bullets = NULL;
     ctx->nbullets = ctx->level->nbullets;
     return ctx;

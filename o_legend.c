@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "SDL_pixels.h"
 #include "SDL_log.h"
+#include "SDL_ttf.h"
 #include "types.h"
 #include "colors.h"
 #include "levels.h"
@@ -11,39 +12,53 @@ static void o_legend_bars_draw (ctx_t *);
 static void o_legend_nbullets_warning_draw (ctx_t *);
 
 static void o_legend_nbullets_warning_draw (ctx_t * ctx) {
-    if (ctx->nbullets < 5) {
-        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.magenta.r,
-                                              ctx->colors.magenta.g,
-                                              ctx->colors.magenta.b,
-                                              ctx->colors.magenta.a);
-    } else if (ctx->nbullets < 10) {
-        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.red.r,
-                                              ctx->colors.red.g,
-                                              ctx->colors.red.b,
-                                              ctx->colors.red.a);
-    } else if (ctx->nbullets < 20) {
-        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.orange.r,
-                                              ctx->colors.orange.g,
-                                              ctx->colors.orange.b,
-                                              ctx->colors.orange.a);
-    } else if (ctx->nbullets < 30) {
-        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.green.r,
-                                              ctx->colors.green.g,
-                                              ctx->colors.green.b,
-                                              ctx->colors.green.a);
-    } else {
-        SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.bg.r,
-                                              ctx->colors.bg.g,
-                                              ctx->colors.bg.b,
-                                              ctx->colors.bg.a);
-    }
-    SDL_Rect rect = {
+
+    static SDL_Color * bgcolor = NULL;
+    static char str[30];
+    static SDL_Rect rect = {
         .x = 80,
         .y = 80,
         .w = 195,
         .h = 38,
     };
+
+    // choose a warning color or use background color if not low on ammo
+    if (ctx->nbullets < 5) {
+        bgcolor = &ctx->colors.magenta;
+    } else if (ctx->nbullets < 10) {
+        bgcolor = &ctx->colors.red;
+    } else if (ctx->nbullets < 20) {
+        bgcolor = &ctx->colors.orange;
+    } else if (ctx->nbullets < 30) {
+        bgcolor = &ctx->colors.green;
+    } else {
+        bgcolor = &ctx->colors.bg;
+    }
+
+    // render the bullet count highlight rect
+    SDL_SetRenderDrawColor(ctx->renderer, bgcolor->r,
+                                          bgcolor->g,
+                                          bgcolor->b,
+                                          bgcolor->a);
     SDL_RenderFillRect(ctx->renderer, &rect);
+
+    // make the bullet count string
+    sprintf(str, "bullets %d", ctx->nbullets);
+
+    // render the bullet string to a surface
+    SDL_Surface * text = TTF_RenderText_Shaded(ctx->font, str, ctx->colors.white, *bgcolor);
+    SDL_Rect txt_tgt = {
+        .x = rect.x + (rect.w - text->w) / 2,
+        .y = rect.y + (rect.h - text->h) / 2,
+        .w = text->w,
+        .h = text->h,
+    };
+
+    // create the equivalent bullet string texture
+    SDL_Texture * message = SDL_CreateTextureFromSurface(ctx->renderer, text);
+
+    // render the bullet count string texture
+    SDL_RenderCopy(ctx->renderer, message, NULL, &txt_tgt);
 }
 
 static void o_legend_bars_draw (ctx_t * ctx) {

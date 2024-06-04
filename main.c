@@ -1,106 +1,72 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
-
-#include "SDL.h"
-#include "SDL_surface.h"
-#include "SDL_video.h"
-#include "SDL_render.h"
-#include "SDL_timer.h"
+#include "SDL_error.h"
 #include "SDL_log.h"
-
-#include "SDL_ttf.h"
-
-#include "constants.h"
-#include "types.h"
-#include "fsm.h"
-#include "levels.h"
+#include "SDL_timer.h"
+#include "SDL.h"
 #include "colors.h"
-
+#include "constants.h"
+#include "fonts.h"
+#include "fsm.h"
+#include "keystate.h"
+#include "levels.h"
+#include "renderer.h"
+#include "spritesheet.h"
+#include "types.h"
+#include "window.h"
 #include "o_balloons.h"
-#include "o_bullets.h"
-#include "o_turret.h"
 #include "o_barrel.h"
-#include "o_flash.h"
+#include "o_bullets.h"
 #include "o_collisions.h"
+#include "o_flash.h"
+#include "o_turret.h"
 
 static void deinit (ctx_t *);
 static bool init (ctx_t *);
 
 static void deinit (ctx_t * ctx) {
-    SDL_DestroyRenderer(ctx->renderer);
-    ctx->renderer = NULL;
-
-    SDL_DestroyWindow(ctx->window);
-    ctx->window = NULL;
-
-    SDL_DestroyTexture(ctx->spritesheet);
-    ctx->spritesheet = NULL;
-
-    o_balloons_free(ctx->balloons);
-    ctx->balloons = NULL;
-
-    ctx->levels = NULL;
-    ctx->level = NULL;
-    ctx->keys = NULL;
-
-    TTF_Quit();
+    // --- concrete entities
+    ctx = o_balloons_deinit(ctx);
+    // --- abstract entities
+    ctx = levels_deinit(ctx);
+    ctx = fonts_deinit(ctx);
+    ctx = keystate_deinit(ctx);
+    // --- sdl infrastructure
+    ctx = renderer_deinit(ctx);
+    ctx = window_deinit(ctx);
+    ctx = spritesheet_deinit(ctx);
+    // --- deinitialize sdl library
     SDL_Quit();
 }
 
 static bool init (ctx_t * ctx) {
     // initialize the random number generator
     srand(time(NULL));
-
+    // --- initialize sdl library
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
         SDL_Log("Error initializing SDL: %s\n", SDL_GetError());
         return false;
     }
-
-    if (TTF_Init() != 0) {
-        SDL_Log("Couldn't initialize SDL_ttf: %s", SDL_GetError());
-        return false;
-    }
-
-    ctx->window = SDL_CreateWindow("Midnight Balloon Murder", SDL_WINDOWPOS_CENTERED,
-                                   SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
-                                   SDL_WINDOW_BORDERLESS);
-    if (ctx->window == NULL) {
-        SDL_Log("Error creating window: %s\n", SDL_GetError());
-        return false;
-    }
-    ctx->renderer = SDL_CreateRenderer(ctx->window, -1, 0);
-    SDL_Surface * image = SDL_LoadBMP("img/sprites.bmp");
-    if (image == NULL) {
-        SDL_Log("Something went wrong loading spritesheet.\n");
-        return false;
-    }
-    ctx->spritesheet = SDL_CreateTextureFromSurface(ctx->renderer, image);
-    ctx->keys = SDL_GetKeyboardState(NULL);
-    ctx->dt = 0.0000000000001;
+    // --- sdl infrastructure
+    ctx = window_init(ctx);
+    ctx = renderer_init(ctx);
+    ctx = spritesheet_init(ctx);
+    // --- abstract entities
     ctx = colors_init(ctx);
+    ctx = fonts_init(ctx);
     ctx = levels_init(ctx);
+    ctx = keystate_init(ctx);
+    ctx->dt = 0.0000000000001;
+    // --- concrete entities
     ctx = o_turret_init(ctx);
     ctx = o_barrel_init(ctx);
-    ctx = o_flash_init(ctx);
     ctx = o_balloons_init(ctx);
     ctx = o_bullets_init(ctx);
     ctx = o_collisions_init(ctx);
-
-    int ptsize = 20;
-    char fontfile[] = "fonts/Bayon-Regular.ttf";
-    TTF_Font * font = TTF_OpenFont(fontfile, ptsize);
-    if (font == NULL) {
-        SDL_Log("Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, SDL_GetError());
-        return false;
-    }
-    SDL_Surface * text = TTF_RenderText_Shaded(font, "midnight balloon murder", ctx->colors.white, ctx->colors.bg);
-    SDL_Texture * message = SDL_CreateTextureFromSurface(ctx->renderer, text);
-    SDL_RenderCopy(ctx->renderer, message, NULL, NULL);
-    SDL_RenderPresent(ctx->renderer);
-    SDL_Delay(3000);
+    ctx = o_flash_init(ctx);
 
     return true;
 }

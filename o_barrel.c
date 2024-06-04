@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "SDL_scancode.h"
 #include "types.h"
 #include "o_barrel.h"
@@ -23,6 +24,7 @@ void o_barrel_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_barrel_init (ctx_t * ctx) {
+    assert(ctx->turret.tgt.x != 0 && "turret needs to be initialized before barrel");
     float w = 55.;
     float h = 11.;
     float x = ctx->turret.sim.x + (ctx->turret.sim.w - 1) / 2;

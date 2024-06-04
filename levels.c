@@ -53,6 +53,12 @@ static level_t levels[] = {
     },
 };
 
+ctx_t * levels_deinit (ctx_t * ctx) {
+    ctx->levels = NULL;
+    ctx->level = NULL;
+    ctx->nlevels = -1;
+    return ctx;
+}
 
 ctx_t * levels_init (ctx_t * ctx) {
     ctx->levels = &levels[0];

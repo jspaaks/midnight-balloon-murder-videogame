@@ -2,10 +2,10 @@
 #define TYPES_H
 
 #include <stdbool.h>
-
 #include "SDL_video.h"
 #include "SDL_render.h"
 #include "SDL_rect.h"
+#include "SDL_ttf.h"
 
 typedef enum {BA_PRESPAWN, BA_AIRBORNE, BA_HIT, BA_MISS} balloon_state_t;
 typedef enum {BU_AIRBORNE, BU_HIT} bullet_state_t;
@@ -104,6 +104,7 @@ struct ctx_t {
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
     SDL_Window * window;
+    TTF_Font * font;
     struct balloon_t * balloons;
     struct barrel_t barrel;
     struct bullet_t * bullets;

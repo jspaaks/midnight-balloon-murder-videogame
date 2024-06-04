@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include "SDL_timer.h"
 #include "SDL_log.h"
@@ -7,7 +8,6 @@
 #include "o_balloons.h"
 
 static int o_balloons_compare (const void *, const void *);
-static balloon_t * o_balloons_malloc (ctx_t *);
 static balloon_t * o_balloons_populate (ctx_t *);
 static balloon_t * o_balloons_randomize_t (ctx_t *);
 static balloon_t * o_balloons_randomize_x (ctx_t *);
@@ -113,12 +113,15 @@ void o_balloons_draw (ctx_t * ctx) {
     }
 }
 
-void o_balloons_free (balloon_t * balloons) {
-    free(balloons);
+ctx_t * o_balloons_deinit (ctx_t * ctx) {
+    free(ctx->balloons);
+    ctx->balloons = NULL;
+    return ctx;
 }
 
 ctx_t * o_balloons_init (ctx_t * ctx) {
-    ctx->balloons = o_balloons_malloc(ctx);
+    assert(ctx->level != NULL && "levels needs to be initialized before balloons");
+    ctx->balloons = malloc(ctx->level->nballoons * sizeof(balloon_t));
     if (ctx->balloons == NULL) {
         SDL_Log("Something went wrong allocating memory for the balloons.\n");
         exit(EXIT_FAILURE);
@@ -132,11 +135,6 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     ctx->nhit = 0;
     ctx->nmiss = 0;
     return ctx;
-}
-
-static balloon_t * o_balloons_malloc (ctx_t * ctx) {
-    balloon_t * balloons = malloc(ctx->level->nballoons * sizeof(balloon_t));
-    return balloons;
 }
 
 static balloon_t * o_balloons_populate (ctx_t * ctx) {
