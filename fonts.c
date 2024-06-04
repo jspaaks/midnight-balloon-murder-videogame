@@ -7,7 +7,7 @@
 
 ctx_t * fonts_init(ctx_t * ctx) {
     if (TTF_Init() != 0) {
-        SDL_Log("Couldn't initialize SDL_ttf: %s", SDL_GetError());
+        SDL_LogError(SDL_ENOMEM, "Couldn't initialize SDL_ttf: %s", SDL_GetError());
         exit(EXIT_FAILURE);
     }
 

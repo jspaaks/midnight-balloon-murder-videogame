@@ -131,7 +131,7 @@ ctx_t * o_legend_update (ctx_t * ctx) {
                 break;
             }
             default: {
-                SDL_Log("Something went wrong with counting the balloon states.\n");
+                SDL_LogError(SDL_UNSUPPORTED, "Something went wrong with counting the balloon states.\n");
                 break;
             }
         }
