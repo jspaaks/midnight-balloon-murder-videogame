@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "SDL_timer.h"
 #include "SDL_log.h"
+#include "SDL_rect.h"
+#include "SDL_render.h"
+#include "SDL_error.h"
 #include "types.h"
 #include "constants.h"
 #include "levels.h"
@@ -123,7 +126,7 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before balloons");
     ctx->balloons = malloc(ctx->level->nballoons * sizeof(balloon_t));
     if (ctx->balloons == NULL) {
-        SDL_Log("Something went wrong allocating memory for the balloons.\n");
+        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for the balloons: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
     ctx->balloons = o_balloons_populate(ctx);
@@ -212,7 +215,7 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             default: {
-                SDL_Log("Something is wrong with the balloon states.\n");
+                SDL_LogError(SDL_UNSUPPORTED, "Something is wrong with the balloon states.\n");
                 break;
             }
         }

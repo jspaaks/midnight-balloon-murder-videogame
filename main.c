@@ -47,7 +47,7 @@ static bool init (ctx_t * ctx) {
     // --- initialize sdl library
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
-        SDL_Log("Error initializing SDL: %s\n", SDL_GetError());
+        SDL_LogError(SDL_ENOMEM, "Error initializing SDL: %s\n", SDL_GetError());
         return false;
     }
     // --- sdl infrastructure

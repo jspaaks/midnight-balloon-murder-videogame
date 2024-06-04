@@ -1,4 +1,7 @@
+#include <stdlib.h>
 #include "SDL_ttf.h"
+#include "SDL_error.h"
+#include "SDL_log.h"
 #include "types.h"
 #include "fonts.h"
 
@@ -10,11 +13,10 @@ ctx_t * fonts_init(ctx_t * ctx) {
 
     int ptsize = 20;
     char fontfile[] = "fonts/Bayon-Regular.ttf";
-    TTF_Font * font = TTF_OpenFont(fontfile, ptsize);
-    if (font == NULL) {
-        SDL_LogError(0, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, SDL_GetError());
+    ctx->font = TTF_OpenFont(fontfile, ptsize);
+    if (ctx->font == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, SDL_GetError());
     }
-    ctx->font = font;
     return ctx;
 }
 

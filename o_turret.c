@@ -1,3 +1,5 @@
+#include "SDL_render.h"
+#include "SDL_rect.h"
 #include "types.h"
 #include "constants.h"
 #include "o_turret.h"

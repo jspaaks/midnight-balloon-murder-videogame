@@ -1,5 +1,7 @@
 #include <assert.h>
 #include "SDL_scancode.h"
+#include "SDL_rect.h"
+#include "SDL_render.h"
 #include "types.h"
 #include "o_barrel.h"
 

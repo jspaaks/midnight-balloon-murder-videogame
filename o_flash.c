@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <assert.h>
 #include "SDL_rect.h"
+#include "SDL_render.h"
 #include "SDL_timer.h"
 #include "types.h"
 #include "o_flash.h"

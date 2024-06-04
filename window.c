@@ -17,7 +17,7 @@ ctx_t * window_init(ctx_t * ctx) {
                                    SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                                    SDL_WINDOW_BORDERLESS);
     if (ctx->window == NULL) {
-        SDL_Log("Error creating window: %s\n", SDL_GetError());
+        SDL_LogError(SDL_ENOMEM, "Error creating window: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
     return ctx;
