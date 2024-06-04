@@ -81,13 +81,15 @@ int main (void) {
 
     struct state * state = fsm_set_state (PLAYING);
     struct state * frame = state;
-    Uint64 tstart;
+    Uint64 tnow = SDL_GetTicks64();
+    Uint64 tstart = tnow;
 
     bool have_balloons = true;
     bool have_bullets = true;
 
+    unsigned int nframes = 0;
+
     while (have_balloons && have_bullets) {
-        tstart = SDL_GetTicks64();
 
         frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
@@ -95,15 +97,21 @@ int main (void) {
 
         have_balloons = ctx.nprespawn + ctx.nairborne > 0;
         have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
+        nframes++;
 
         SDL_Delay(1);
-        ctx.dt.frame = ((float) (SDL_GetTicks64() - tstart)) / 1000;
+        tnow = SDL_GetTicks64();
+        if (tnow - tstart > 10) {
+            ctx.dt.frame = ((float) (tnow - tstart)) / nframes / 1000;
+            nframes = 0;
+            tstart = SDL_GetTicks64();
+        }
     }
     if (!have_balloons) {
-        SDL_Log("No more balloons.\n");
+        SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss);
     }
     if (!have_bullets) {
-        SDL_Log("No more bullets.\n");
+        SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss + ctx.nprespawn + ctx.nairborne);
     }
 
     deinit(&ctx);
