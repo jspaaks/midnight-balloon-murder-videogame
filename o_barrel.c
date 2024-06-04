@@ -78,11 +78,11 @@ ctx_t * o_barrel_update (ctx_t * ctx) {
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            ctx->barrel.angle = o_barrel_clip(ctx->barrel.angle + -1 * ctx->barrel.speed * ctx->dt);
+            ctx->barrel.angle = o_barrel_clip(ctx->barrel.angle + -1 * ctx->barrel.speed * ctx->dt.frame);
             break;
         }
         case 2: {
-            ctx->barrel.angle = o_barrel_clip(ctx->barrel.angle + 1 * ctx->barrel.speed * ctx->dt);
+            ctx->barrel.angle = o_barrel_clip(ctx->barrel.angle + 1 * ctx->barrel.speed * ctx->dt.frame);
             break;
         }
     }

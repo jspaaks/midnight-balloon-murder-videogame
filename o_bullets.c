@@ -95,9 +95,9 @@ static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
     const float gravity = 70; // pixels per second per second
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
-        bu->v += gravity * ctx->dt;
-        bu->sim.x += bu->u * ctx->dt;
-        bu->sim.y += bu->v * ctx->dt;
+        bu->v += gravity * ctx->dt.frame;
+        bu->sim.x += bu->u * ctx->dt.frame;
+        bu->sim.y += bu->v * ctx->dt.frame;
         bu->tgt.x = (int) bu->sim.x;
         bu->tgt.y = (int) bu->sim.y;
         bu = bu->next;

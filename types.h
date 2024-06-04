@@ -24,7 +24,7 @@ typedef struct turret_t turret_t;
 struct balloon_t {
     float u;
     float v;
-    int value;
+    unsigned int value;
     balloon_state_t state;
     SDL_FRect sim;
     const SDL_Rect * src;
@@ -54,6 +54,7 @@ struct bullet_t {
 };
 
 struct collision_t {
+    Uint64 tspawn;
     SDL_FPoint sim;
     struct collision_t * next;
 };
@@ -81,7 +82,7 @@ struct flash_t {
 };
 
 struct legend_t {
-    int nbars;
+    unsigned int nbars;
     struct {
         SDL_Rect tgt;
     } bars[10];
@@ -92,11 +93,11 @@ struct legend_t {
 };
 
 struct level_t {
-    int nballoons;
-    int nbullets;
-    int norange;
-    int nred;
-    int nyellow;
+    unsigned int nballoons;
+    unsigned int nbullets;
+    unsigned int norange;
+    unsigned int nred;
+    unsigned int nyellow;
     char name[20];
 };
 
@@ -108,13 +109,15 @@ struct turret_t {
 
 struct ctx_t {
     const Uint8 * keys;
-    float dt;
-    int nairborne;
-    int nbullets;
-    int nhit;
-    int nlevels;
-    int nmiss;
-    int nprespawn;
+    struct {
+        float frame;    // s
+    } dt;
+    unsigned int nairborne;
+    unsigned int nbullets;
+    unsigned int nhit;
+    unsigned int nlevels;
+    unsigned int nmiss;
+    unsigned int nprespawn;
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
     SDL_Window * window;

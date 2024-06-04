@@ -109,7 +109,7 @@ static int o_balloons_compare (const void * a, const void * b) {
 }
 
 void o_balloons_draw (ctx_t * ctx) {
-    for (int i = 0; i < ctx->level->nballoons; i++) {
+    for (unsigned int i = 0; i < ctx->level->nballoons; i++) {
         if (ctx->balloons[i].state == BA_AIRBORNE) {
             SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &ctx->balloons[i].tgt);
         }
@@ -142,13 +142,13 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
 
 static balloon_t * o_balloons_populate (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
-    for (int i = 0; i < ctx->level->nred; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->nred; i++, b++) {
         *b = balloon_red;
     }
-    for (int i = 0; i < ctx->level->norange; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->norange; i++, b++) {
         *b = balloon_orange;
     }
-    for (int i = 0; i < ctx->level->nyellow; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->nyellow; i++, b++) {
         *b = balloon_yellow;
     }
     return ctx->balloons;
@@ -159,7 +159,7 @@ static balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     const int t_ampl = (int) 1000 * ctx->level->nballoons / spawn_rate;
     Uint64 tnow = SDL_GetTicks64();
-    for (int i = 0; i < ctx->level->nballoons; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->nballoons; i++, b++) {
         b->trelease = tnow + rand() % t_ampl;
     }
     return ctx->balloons;
@@ -169,7 +169,7 @@ static balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     const int x_ampl = (int) (0.5 * SCREEN_WIDTH);
     int r;
-    for (int i = 0; i < ctx->level->nballoons; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->nballoons; i++, b++) {
         r = rand() % x_ampl;
         int x = (0.4 * SCREEN_WIDTH) + r;
         b->sim.x = x;
@@ -188,7 +188,7 @@ static balloon_t * o_balloons_sort (ctx_t * ctx) {
 }
 
 ctx_t * o_balloons_update (ctx_t * ctx) {
-    for (int i = 0; i < ctx->level->nballoons; i++) {
+    for (unsigned int i = 0; i < ctx->level->nballoons; i++) {
         switch (ctx->balloons[i].state) {
             case BA_PRESPAWN: {
                 if (SDL_GetTicks64() > ctx->balloons[i].trelease) {
@@ -197,8 +197,8 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             case BA_AIRBORNE: {
-                ctx->balloons[i].sim.x += ctx->balloons[i].u * ctx->dt;
-                ctx->balloons[i].sim.y += ctx->balloons[i].v * ctx->dt;
+                ctx->balloons[i].sim.x += ctx->balloons[i].u * ctx->dt.frame;
+                ctx->balloons[i].sim.y += ctx->balloons[i].v * ctx->dt.frame;
                 ctx->balloons[i].tgt.x = (int) ctx->balloons[i].sim.x;
                 ctx->balloons[i].tgt.y = (int) ctx->balloons[i].sim.y;
                 if (o_balloons_is_outside(&ctx->balloons[i])) {

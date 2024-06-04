@@ -1,10 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
 #include "types.h"
 #include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
+static ctx_t * o_collisions_add (ctx_t *, int, int);
+
+static ctx_t * o_collisions_add (ctx_t * ctx, int x, int y) {
+    //collision_t * c = malloc(1 * sizeof(collision_t));
+    //if (c == NULL) {
+    //    SDL_LogError(SDL_ENOMEM, "Error allocating memory for new collision: %s \n", SDL_GetError());
+    //    exit(EXIT_FAILURE);
+    //}
+    //c = {
+    //    .sim = {
+    //        .x = x,
+    //        .y = y,
+    //        .w = 11,
+    //        .w = 11,
+    //    },
+    //    .next = ctx->collisions;
+    //};
+    return ctx;
+}
 
 void o_collisions_draw (ctx_t * ctx) {
     collision_t * c = ctx->collisions;
@@ -22,7 +43,7 @@ ctx_t * o_collisions_init (ctx_t * ctx) {
 
 ctx_t * o_collisions_update (ctx_t * ctx) {
     balloon_t * ba = ctx->balloons;
-    for (int i = 0; i<ctx->level->nballoons; i++, ba++) {
+    for (unsigned int i = 0; i<ctx->level->nballoons; i++, ba++) {
         bullet_t * bu = ctx->bullets;
         while (bu != NULL) {
             if (o_collisions_colliding(ba, bu)) {
@@ -36,6 +57,7 @@ ctx_t * o_collisions_update (ctx_t * ctx) {
                 bu->state = BU_HIT;
 
                 // spawn collision effect
+                o_collisions_add(ctx, ba->tgt.x, ba->tgt.y);
             }
             bu = bu->next;
         }

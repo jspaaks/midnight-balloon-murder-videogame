@@ -299,7 +299,7 @@ void o_legend_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_legend_init (ctx_t * ctx) {
-    const int n = 10;
+    const unsigned int n = 10;
     ctx->legend.nbars = n;
     SDL_Rect first = {
         .x = 60,
@@ -307,7 +307,7 @@ ctx_t * o_legend_init (ctx_t * ctx) {
         .w = 15,
         .h = 20,
     };
-    for (int i = 0; i < ctx->legend.nbars; i++) {
+    for (unsigned int i = 0; i < ctx->legend.nbars; i++) {
         ctx->legend.bars[i].tgt = (SDL_Rect) {
             .x = first.x + i * (first.w + 5),
             .y = first.y,
@@ -325,11 +325,11 @@ ctx_t * o_legend_init (ctx_t * ctx) {
 }
 
 ctx_t * o_legend_update (ctx_t * ctx) {
-    int nhit = 0;
-    int nmiss = 0;
-    int nprespawn = 0;
-    int nairborne = 0;
-    for (int i = 0; i < ctx->level->nballoons; i++) {
+    unsigned int nhit = 0;
+    unsigned int nmiss = 0;
+    unsigned int nprespawn = 0;
+    unsigned int nairborne = 0;
+    for (unsigned int i = 0; i < ctx->level->nballoons; i++) {
         switch (ctx->balloons[i].state) {
             case BA_PRESPAWN: {
                 nprespawn++;

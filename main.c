@@ -60,7 +60,6 @@ static bool init (ctx_t * ctx) {
     ctx = fonts_init(ctx);
     ctx = levels_init(ctx);
     ctx = keystate_init(ctx);
-    ctx->dt = 0.0000000000001;
     // --- concrete entities
     ctx = o_turret_init(ctx);
     ctx = o_barrel_init(ctx);
@@ -69,6 +68,8 @@ static bool init (ctx_t * ctx) {
     ctx = o_collisions_init(ctx);
     ctx = o_flash_init(ctx);
     ctx = o_legend_init(ctx);
+    // --- time related
+    ctx->dt.frame = 0.0000000000001;
     return true;
 }
 
@@ -96,7 +97,7 @@ int main (void) {
         have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
 
         SDL_Delay(1);
-        ctx.dt = ((float) (SDL_GetTicks64() - tstart)) / 1000;
+        ctx.dt.frame = ((float) (SDL_GetTicks64() - tstart)) / 1000;
     }
     if (!have_balloons) {
         SDL_Log("No more balloons.\n");
