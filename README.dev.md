@@ -62,23 +62,11 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 ## TODO
 
+1. level indicator text / bullets remaining
 1. hitpoints texts
 1. hitpoints shrapnel
-1. level indicator text / bullets remaining
-1. legend texts
 1. key help texts
 
 ## Q
 
 1. what happens when `dt` is 0?
-
-
-snippets
-
-```text
-#include "SDL_ttf.h"
-TTF_Init
-TTF_OpenFont
-TTF_CloseFont
-TTF_Quit
-```
