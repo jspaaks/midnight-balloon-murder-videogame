@@ -62,8 +62,9 @@ struct colors_t {
     SDL_Color bg;
     SDL_Color green;
     SDL_Color hit;
+    SDL_Color lightgray;
     SDL_Color magenta;
-    SDL_Color middle;
+    SDL_Color middlegray;
     SDL_Color miss;
     SDL_Color none;
     SDL_Color orange;

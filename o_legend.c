@@ -2,6 +2,7 @@
 #include "SDL_pixels.h"
 #include "SDL_log.h"
 #include "SDL_ttf.h"
+#include "constants.h"
 #include "types.h"
 #include "colors.h"
 #include "levels.h"
@@ -9,9 +10,12 @@
 #include "o_balloons.h"
 
 static void o_legend_draw_bars (ctx_t *);
-static void o_legend_draw_rect_bullet_count (ctx_t *);
+static void o_legend_draw_rect_nbullets (ctx_t *);
 static void o_legend_draw_text_hit (ctx_t *);
+static void o_legend_draw_text_level (ctx_t *);
 static void o_legend_draw_text_miss (ctx_t *);
+static void o_legend_draw_text_nballoons (ctx_t *);
+static void o_legend_draw_text_nbullets (ctx_t *);
 static void o_legend_draw_text_nhit (ctx_t *);
 static void o_legend_draw_text_nmiss (ctx_t *);
 
@@ -27,10 +31,10 @@ static void o_legend_draw_bars (ctx_t * ctx) {
     for (int i = 0; i < nhit; i++, j++) {
         SDL_RenderFillRect(ctx->renderer, &ctx->legend.bars[j].tgt);
     }
-    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.middle.r,
-                                          ctx->colors.middle.g,
-                                          ctx->colors.middle.b,
-                                          ctx->colors.middle.a);
+    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.middlegray.r,
+                                          ctx->colors.middlegray.g,
+                                          ctx->colors.middlegray.b,
+                                          ctx->colors.middlegray.a);
     for (int i = 0; i < nmiddle; i++, j++) {
         SDL_RenderFillRect(ctx->renderer, &ctx->legend.bars[j].tgt);
     }
@@ -43,7 +47,7 @@ static void o_legend_draw_bars (ctx_t * ctx) {
     }
 }
 
-static void o_legend_draw_rect_bullet_count (ctx_t * ctx) {
+static void o_legend_draw_rect_nbullets (ctx_t * ctx) {
     // choose a warning color or use background color if not low on ammo
     if (ctx->nbullets < 5) {
         ctx->legend.highlight.bg = &ctx->colors.magenta;
@@ -65,43 +69,11 @@ static void o_legend_draw_rect_bullet_count (ctx_t * ctx) {
     SDL_RenderFillRect(ctx->renderer, &ctx->legend.highlight.tgt);
 }
 
-static void o_legend_draw_text_bullet_count (ctx_t * ctx) {
-    char str[30];
-    // make the bullet count string
-    sprintf(str, "BULLETS %d", ctx->nbullets);
-
-    // render the bullet string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, str, ctx->colors.white, *ctx->legend.highlight.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nbullet legend caption: %s\n", SDL_GetError());
-    }
-
-    // create the equivalent bullet string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nbullet legend caption: %s\n", SDL_GetError());
-    }
-
-    SDL_Rect tgt = {
-        .x = ctx->legend.highlight.tgt.x + (ctx->legend.highlight.tgt.w - surf->w) / 2,
-        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf->h) / 2,
-        .w = surf->w,
-        .h = surf->h,
-    };
-
-    // render the bullet count string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
-}
-
 static void o_legend_draw_text_hit (ctx_t * ctx) {
     char hit[4] = "HIT";
 
     // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, hit, ctx->colors.white, ctx->colors.bg);
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, hit, ctx->colors.lightgray, ctx->colors.bg);
     if (surf == NULL) {
         SDL_LogError(SDL_ENOMEM, "Error creating a surface for the hit legend text: %s\n", SDL_GetError());
     }
@@ -127,11 +99,42 @@ static void o_legend_draw_text_hit (ctx_t * ctx) {
     SDL_FreeSurface(surf);
 }
 
+static void o_legend_draw_text_level (ctx_t * ctx) {
+    char level[30];
+    sprintf(level, "%s LEVEL", ctx->level->name);
+
+    // render the string to a surface
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, level, ctx->colors.lightgray, ctx->colors.bg);
+    if (surf == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the level legend text: %s\n", SDL_GetError());
+    }
+
+    // create the equivalent string texture
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the level legend text: %s\n", SDL_GetError());
+    }
+
+    SDL_Rect tgt = {
+        .x = (SCREEN_WIDTH - surf->w) / 2,
+        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf->h) / 2,
+        .w = surf->w,
+        .h = surf->h,
+    };
+
+    // render the string texture
+    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
+
+    // clean up resources
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+}
+
 static void o_legend_draw_text_miss (ctx_t * ctx) {
     char miss[5] = "MISS";
 
     // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, miss, ctx->colors.white, ctx->colors.bg);
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, miss, ctx->colors.lightgray, ctx->colors.bg);
     if (surf == NULL) {
         SDL_LogError(SDL_ENOMEM, "Error creating a surface for the miss legend text: %s\n", SDL_GetError());
     }
@@ -157,12 +160,76 @@ static void o_legend_draw_text_miss (ctx_t * ctx) {
     SDL_FreeSurface(surf);
 }
 
+static void o_legend_draw_text_nballoons (ctx_t * ctx) {
+    char nballoons[30];
+    sprintf(nballoons, "BALLOONS %d", ctx->nprespawn + ctx->nairborne);
+
+    // render the string to a surface
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nballoons, ctx->colors.lightgray, ctx->colors.bg);
+    if (surf == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nballoons legend text: %s\n", SDL_GetError());
+    }
+
+    // create the equivalent string texture
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nballoons legend text: %s\n", SDL_GetError());
+    }
+
+    SDL_Rect tgt = {
+        .x = (SCREEN_WIDTH - surf->w) / 2,
+        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf->h) / 2,
+        .w = surf->w,
+        .h = surf->h,
+    };
+
+    // render the string texture
+    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
+
+    // clean up resources
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+}
+
+static void o_legend_draw_text_nbullets (ctx_t * ctx) {
+    char nbullets[30];
+    sprintf(nbullets, "BULLETS %d", ctx->nbullets);
+
+    SDL_Color color = ctx->nbullets >= 30 ? ctx->colors.lightgray : ctx->colors.white;
+
+    // render the string to a surface
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nbullets, color, *ctx->legend.highlight.bg);
+    if (surf == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nbullets legend caption: %s\n", SDL_GetError());
+    }
+
+    // create the equivalent string texture
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nbullets legend caption: %s\n", SDL_GetError());
+    }
+
+    SDL_Rect tgt = {
+        .x = ctx->legend.highlight.tgt.x + (ctx->legend.highlight.tgt.w - surf->w) / 2,
+        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf->h) / 2,
+        .w = surf->w,
+        .h = surf->h,
+    };
+
+    // render the string texture
+    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
+
+    // clean up resources
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+}
+
 static void o_legend_draw_text_nhit (ctx_t * ctx) {
     char nhit[30];
     sprintf(nhit, "%d", ctx->nhit);
 
     // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nhit, ctx->colors.white, ctx->colors.bg);
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nhit, ctx->colors.lightgray, ctx->colors.bg);
     if (surf == NULL) {
         SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nhit legend text: %s\n", SDL_GetError());
     }
@@ -193,7 +260,7 @@ static void o_legend_draw_text_nmiss (ctx_t * ctx) {
     sprintf(nmiss, "%d", ctx->nmiss);
 
     // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nmiss, ctx->colors.white, ctx->colors.bg);
+    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nmiss, ctx->colors.lightgray, ctx->colors.bg);
     if (surf == NULL) {
         SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nmiss legend text: %s\n", SDL_GetError());
     }
@@ -221,12 +288,14 @@ static void o_legend_draw_text_nmiss (ctx_t * ctx) {
 
 void o_legend_draw (ctx_t * ctx) {
     o_legend_draw_bars(ctx);
-    o_legend_draw_rect_bullet_count(ctx);
-    o_legend_draw_text_bullet_count(ctx);
+    o_legend_draw_rect_nbullets(ctx);
+    o_legend_draw_text_nbullets(ctx);
     o_legend_draw_text_hit(ctx);
     o_legend_draw_text_miss(ctx);
     o_legend_draw_text_nhit(ctx);
     o_legend_draw_text_nmiss(ctx);
+    o_legend_draw_text_nballoons(ctx);
+    o_legend_draw_text_level(ctx);
 }
 
 ctx_t * o_legend_init (ctx_t * ctx) {
