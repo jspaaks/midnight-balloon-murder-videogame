@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <assert.h>
 #include "SDL_rect.h"
 #include "SDL_render.h"

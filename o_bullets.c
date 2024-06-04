@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <math.h>
 #include "SDL_rect.h"
 #include "SDL_render.h"

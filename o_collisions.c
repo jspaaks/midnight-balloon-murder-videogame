@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include "SDL_log.h"
 #include "SDL_render.h"
 #include "types.h"
