@@ -21,6 +21,8 @@
 #include "o_collisions.h"
 #include "o_flash.h"
 #include "o_turret.h"
+#include "o_legend.h"
+
 
 static void deinit (ctx_t *);
 static bool init (ctx_t *);
@@ -66,7 +68,7 @@ static bool init (ctx_t * ctx) {
     ctx = o_bullets_init(ctx);
     ctx = o_collisions_init(ctx);
     ctx = o_flash_init(ctx);
-
+    ctx = o_legend_init(ctx);
     return true;
 }
 

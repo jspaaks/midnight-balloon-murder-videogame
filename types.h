@@ -17,6 +17,7 @@ typedef struct collision_t collision_t;
 typedef struct colors_t colors_t;
 typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
+typedef struct legend_t legend_t;
 typedef struct level_t level_t;
 typedef struct turret_t turret_t;
 
@@ -64,6 +65,7 @@ struct colors_t {
     SDL_Color magenta;
     SDL_Color middle;
     SDL_Color miss;
+    SDL_Color none;
     SDL_Color orange;
     SDL_Color red;
     SDL_Color white;
@@ -75,6 +77,20 @@ struct flash_t {
     SDL_FRect sim;
     SDL_Rect src;
     SDL_Rect tgt;
+};
+
+struct legend_t {
+    int nbars;
+    struct {
+        SDL_Rect tgt;
+    } bars[10];
+    struct {
+        SDL_Rect tgt;
+        SDL_Color * bg;
+    } highlight;
+    struct {
+        SDL_Rect tgt;
+    } bg;
 };
 
 struct level_t {
@@ -111,6 +127,7 @@ struct ctx_t {
     struct collision_t * collisions;
     struct colors_t colors;
     struct flash_t flash;
+    struct legend_t legend;
     struct level_t * level;
     struct level_t * levels;
     struct turret_t turret;
