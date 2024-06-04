@@ -87,12 +87,16 @@ int main (void) {
 
     while (have_balloons && have_bullets) {
         tstart = SDL_GetTicks64();
+
         frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
         frame->draw(&ctx);
-        ctx.dt = ((float) (SDL_GetTicks64() - tstart)) / 1000;
+
         have_balloons = ctx.nprespawn + ctx.nairborne > 0;
         have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
+
+        SDL_Delay(1);
+        ctx.dt = ((float) (SDL_GetTicks64() - tstart)) / 1000;
     }
     if (!have_balloons) {
         SDL_Log("No more balloons.\n");
