@@ -62,7 +62,6 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 ## TODO
 
-1. level indicator text / bullets remaining
 1. hitpoints texts
 1. hitpoints shrapnel
 1. key help texts
