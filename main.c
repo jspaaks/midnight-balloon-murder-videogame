@@ -80,7 +80,7 @@ int main (void) {
         exit(EXIT_FAILURE);
     }
 
-    struct state * state = fsm_set_state (PLAYING);
+    struct state * state = fsm_set_state (START);
     struct state * frame = state;
     Uint64 tnow = SDL_GetTicks64();
     Uint64 tstart = tnow;

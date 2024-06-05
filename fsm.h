@@ -8,7 +8,8 @@
 #include "types.h"
 
 typedef enum {
-    PLAYING = 0,
+    START = 0,
+    PLAYING,
     PAUSED,
 } state_name_t;
 

@@ -1,8 +1,14 @@
 #include "fsm.h"
+#include "s_start.h"
 #include "s_playing.h"
 #include "s_paused.h"
 
 static struct state states[] = {
+    {
+        .draw = s_start_draw,
+        .label = START,
+        .update = s_start_update,
+    },
     {
         .draw = s_playing_draw,
         .label = PLAYING,
