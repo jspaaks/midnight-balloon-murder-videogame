@@ -62,6 +62,10 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 ## TODO
 
+1. start screen
+1. level finished screen
 1. hitpoints texts
 1. hitpoints shrapnel
 1. key help texts
+1. enter name screen
+1. hiscores screen
