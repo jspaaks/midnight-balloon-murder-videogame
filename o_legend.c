@@ -70,7 +70,7 @@ static void o_legend_draw_rect_nbullets (ctx_t * ctx) {
 }
 
 static void o_legend_draw_text_hit (ctx_t * ctx) {
-    char hit[4] = "HIT";
+    static const char hit[4] = "HIT";
 
     // render the string to a surface
     SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, hit, ctx->colors.lightgray, ctx->colors.bg);
@@ -131,7 +131,7 @@ static void o_legend_draw_text_level (ctx_t * ctx) {
 }
 
 static void o_legend_draw_text_miss (ctx_t * ctx) {
-    char miss[5] = "MISS";
+    static const char miss[5] = "MISS";
 
     // render the string to a surface
     SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, miss, ctx->colors.lightgray, ctx->colors.bg);
