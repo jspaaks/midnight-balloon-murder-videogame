@@ -7,8 +7,24 @@
 #include "SDL_rect.h"
 #include "SDL_ttf.h"
 
-typedef enum {BA_PRESPAWN, BA_AIRBORNE, BA_HIT, BA_MISS} balloon_state_t;
-typedef enum {BU_AIRBORNE, BU_HIT} bullet_state_t;
+typedef enum {
+    BA_PRESPAWN,
+    BA_AIRBORNE,
+    BA_HIT,
+    BA_MISS
+} balloon_state_t;
+
+typedef enum {
+    BU_AIRBORNE,
+    BU_HIT
+} bullet_state_t;
+
+typedef enum {
+    START = 0,
+    PLAYING,
+    PAUSED,
+    LEVEL_FINISHED,
+} state_name_t;
 
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
@@ -19,6 +35,7 @@ typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
 typedef struct legend_t legend_t;
 typedef struct level_t level_t;
+typedef struct state_t state_t;
 typedef struct turret_t turret_t;
 
 struct balloon_t {
@@ -103,6 +120,12 @@ struct level_t {
     } nprespawn;
 };
 
+struct state_t {
+    void (*draw)(ctx_t *);
+    ctx_t * (*update)(ctx_t *, struct state_t **);
+    state_name_t label;
+};
+
 struct turret_t {
     SDL_FRect sim;
     SDL_Rect src;
@@ -110,6 +133,7 @@ struct turret_t {
 };
 
 struct ctx_t {
+    unsigned int ilevel;
     unsigned int nhit;
     unsigned int nlevels;
     unsigned int nmiss;
@@ -129,16 +153,16 @@ struct ctx_t {
     SDL_Texture * spritesheet;
     SDL_Window * window;
     TTF_Font * font;
-    struct balloon_t * balloons;
-    struct barrel_t barrel;
-    struct bullet_t * bullets;
-    struct collision_t * collisions;
-    struct colors_t colors;
-    struct flash_t flash;
-    struct legend_t legend;
-    struct level_t * level;
-    struct level_t * levels;
-    struct turret_t turret;
+    balloon_t * balloons;
+    barrel_t barrel;
+    bullet_t * bullets;
+    collision_t * collisions;
+    colors_t colors;
+    flash_t flash;
+    legend_t legend;
+    level_t * level;
+    level_t * levels;
+    turret_t turret;
     Uint64 tspawn_latestbullet;
 };
 

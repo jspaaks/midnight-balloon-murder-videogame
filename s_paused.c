@@ -10,7 +10,7 @@ void s_paused_draw (ctx_t * ctx) {
     o_background_draw(ctx);
 }
 
-ctx_t * s_paused_update (ctx_t * ctx, struct state ** state) {
+ctx_t * s_paused_update (ctx_t * ctx, state_t ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {

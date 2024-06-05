@@ -2,8 +2,9 @@
 #include "s_start.h"
 #include "s_playing.h"
 #include "s_paused.h"
+#include "s_level_finished.h"
 
-static struct state states[] = {
+static state_t states[] = {
     {
         .draw = s_start_draw,
         .label = START,
@@ -19,8 +20,13 @@ static struct state states[] = {
         .label = PAUSED,
         .update = s_paused_update,
     },
+    {
+        .draw = s_level_finished_draw,
+        .label = LEVEL_FINISHED,
+        .update = s_level_finished_update,
+    },
 };
 
-struct state * fsm_set_state (state_name_t label) {
+state_t * fsm_set_state (state_name_t label) {
     return &states[label];
 }

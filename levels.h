@@ -4,5 +4,6 @@
 
 ctx_t * levels_deinit(ctx_t *);
 ctx_t * levels_init(ctx_t *);
+ctx_t * levels_set (ctx_t *, unsigned int);
 
 #endif

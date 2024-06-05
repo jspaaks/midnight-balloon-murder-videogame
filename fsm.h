@@ -7,18 +7,6 @@
 #include "SDL_events.h"
 #include "types.h"
 
-typedef enum {
-    START = 0,
-    PLAYING,
-    PAUSED,
-} state_name_t;
-
-struct state {
-    void (*draw)(ctx_t *);
-    ctx_t * (*update)(ctx_t *, struct state **);
-    state_name_t label;
-};
-
-struct state * fsm_set_state (state_name_t);
+state_t * fsm_set_state (state_name_t);
 
 #endif

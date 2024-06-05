@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -59,16 +58,8 @@ static bool init (ctx_t * ctx) {
     // --- abstract entities
     ctx = colors_init(ctx);
     ctx = fonts_init(ctx);
-    ctx = levels_init(ctx);
     ctx = keystate_init(ctx);
-    // --- concrete entities
-    ctx = o_turret_init(ctx);
-    ctx = o_barrel_init(ctx);
-    ctx = o_balloons_init(ctx);
-    ctx = o_bullets_init(ctx);
-    ctx = o_collisions_init(ctx);
-    ctx = o_flash_init(ctx);
-    ctx = o_legend_init(ctx);
+    ctx = levels_init(ctx);
     // --- time related
     ctx->dt.frame = 0.0000000000001;
     return true;
@@ -80,24 +71,19 @@ int main (void) {
         exit(EXIT_FAILURE);
     }
 
-    struct state * state = fsm_set_state (START);
-    struct state * frame = state;
+    state_t * state = fsm_set_state (START);
+    state_t * frame = state;
     Uint64 tnow = SDL_GetTicks64();
     Uint64 tstart = tnow;
 
-    bool have_balloons = true;
-    bool have_bullets = true;
-
     unsigned int nframes = 0;
 
-    while (have_balloons && have_bullets) {
+    while (true) {
 
         frame = state;  // so .update() and .draw() are of the same state
         frame->update(&ctx, &state);
         frame->draw(&ctx);
 
-        have_balloons = ctx.nprespawn.ba + ctx.nairborne.ba > 0;
-        have_bullets = ctx.nprespawn.bu + ctx.nairborne.bu > 0;
         nframes++;
 
         SDL_Delay(1);
@@ -108,13 +94,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    if (!have_balloons) {
-        SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss);
-    }
-    if (!have_bullets) {
-        SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss + ctx.nprespawn.ba + ctx.nairborne.ba);
-    }
-
     deinit(&ctx);
     return EXIT_SUCCESS;
 }

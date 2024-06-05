@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include "types.h"
 #include "levels.h"
+#include "o_balloons.h"
+#include "o_barrel.h"
+#include "o_bullets.h"
+#include "o_collisions.h"
+#include "o_flash.h"
+#include "o_turret.h"
+#include "o_legend.h"
 
 static level_t levels[] = {
     {
@@ -67,14 +74,26 @@ static level_t levels[] = {
 
 ctx_t * levels_deinit (ctx_t * ctx) {
     ctx->levels = NULL;
-    ctx->level = NULL;
-    ctx->nlevels = -1;
     return ctx;
 }
 
 ctx_t * levels_init (ctx_t * ctx) {
+    ctx = levels_set(ctx, 0);
+    return ctx;
+}
+
+ctx_t * levels_set (ctx_t * ctx, unsigned int ilevel) {
+    ctx->ilevel = ilevel;
+    ctx->level = &levels[ilevel];
     ctx->levels = &levels[0];
-    ctx->level = ctx->levels + 1;
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
+    // --- concrete entities
+    ctx = o_turret_init(ctx);
+    ctx = o_barrel_init(ctx);
+    ctx = o_balloons_init(ctx);
+    ctx = o_bullets_init(ctx);
+    ctx = o_collisions_init(ctx);
+    ctx = o_flash_init(ctx);
+    ctx = o_legend_init(ctx);
     return ctx;
 }

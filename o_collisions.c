@@ -44,7 +44,7 @@ ctx_t * o_collisions_init (ctx_t * ctx) {
 
 ctx_t * o_collisions_update (ctx_t * ctx) {
     balloon_t * ba = ctx->balloons;
-    for (unsigned int i = 0; i<ctx->level->nprespawn.ba; i++, ba++) {
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++, ba++) {
         bullet_t * bu = ctx->bullets;
         while (bu != NULL) {
             if (o_collisions_colliding(ba, bu)) {
