@@ -8,6 +8,7 @@
 #include "levels.h"
 #include "o_legend.h"
 #include "o_balloons.h"
+#include "wrapped.h"
 
 static void o_legend_draw_bars (ctx_t *);
 static void o_legend_draw_rect_nbullets (ctx_t *);
@@ -71,219 +72,140 @@ static void o_legend_draw_rect_nbullets (ctx_t * ctx) {
 
 static void o_legend_draw_text_hit (ctx_t * ctx) {
     static const char hit[4] = "HIT";
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, hit, ctx->colors.lightgray, ctx->colors.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the hit legend text: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, hit, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the hit legend text.\n");
+        exit(EXIT_FAILURE);
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the hit legend text: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
         .x = ctx->legend.bars[0].tgt.x,
-        .y = ctx->legend.bars[0].tgt.y - surf->h,
-        .w = surf->w,
-        .h = surf->h,
+        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 static void o_legend_draw_text_level (ctx_t * ctx) {
     char level[30];
     sprintf(level, "%s LEVEL", ctx->level->name);
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, level, ctx->colors.lightgray, ctx->colors.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the level legend text: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, level, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the level legend text.\n");
+        exit(EXIT_FAILURE);
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the level legend text: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
-        .x = (SCREEN_WIDTH - surf->w) / 2,
-        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf->h) / 2,
-        .w = surf->w,
-        .h = surf->h,
+        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
+        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf.payload->h) / 2,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 static void o_legend_draw_text_miss (ctx_t * ctx) {
     static const char miss[5] = "MISS";
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, miss, ctx->colors.lightgray, ctx->colors.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the miss legend text: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, miss, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the miss legend text.\n");
+        exit(EXIT_FAILURE);
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the miss legend text: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
-        .x = ctx->legend.bars[ctx->legend.nbars - 1].tgt.x + ctx->legend.bars[ctx->legend.nbars - 1].tgt.w - surf->w,
-        .y = ctx->legend.bars[0].tgt.y - surf->h,
-        .w = surf->w,
-        .h = surf->h,
+        .x = ctx->legend.bars[ctx->legend.nbars - 1].tgt.x + ctx->legend.bars[ctx->legend.nbars - 1].tgt.w - surf.payload->w,
+        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 static void o_legend_draw_text_nballoons (ctx_t * ctx) {
     char nballoons[30];
     sprintf(nballoons, "BALLOONS %d", ctx->nprespawn + ctx->nairborne);
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nballoons, ctx->colors.lightgray, ctx->colors.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nballoons legend text: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nballoons, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the nballoons legend text.\n");
+        exit(EXIT_FAILURE);
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nballoons legend text: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
-        .x = (SCREEN_WIDTH - surf->w) / 2,
-        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf->h) / 2,
-        .w = surf->w,
-        .h = surf->h,
+        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
+        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf.payload->h) / 2,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 static void o_legend_draw_text_nbullets (ctx_t * ctx) {
     char nbullets[30];
     sprintf(nbullets, "BULLETS %d", ctx->nbullets);
-
     SDL_Color color = ctx->nbullets >= 30 ? ctx->colors.lightgray : ctx->colors.white;
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nbullets, color, *ctx->legend.highlight.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nbullets legend caption: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nbullets, color, *ctx->legend.highlight.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the nbullets legend caption.\n");
+        exit(EXIT_FAILURE);
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nbullets legend caption: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
-        .x = ctx->legend.highlight.tgt.x + (ctx->legend.highlight.tgt.w - surf->w) / 2,
-        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf->h) / 2,
-        .w = surf->w,
-        .h = surf->h,
+        .x = ctx->legend.highlight.tgt.x + (ctx->legend.highlight.tgt.w - surf.payload->w) / 2,
+        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf.payload->h) / 2,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 static void o_legend_draw_text_nhit (ctx_t * ctx) {
     char nhit[30];
     sprintf(nhit, "%d", ctx->nhit);
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nhit, ctx->colors.lightgray, ctx->colors.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nhit legend text: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nhit, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the nhit legend text.\n");
+        exit(EXIT_FAILURE);
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nhit legend text: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
-        .x = ctx->legend.bars[0].tgt.x - surf->w - 10,
-        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf->h) / 2,
-        .w = surf->w,
-        .h = surf->h,
+        .x = ctx->legend.bars[0].tgt.x - surf.payload->w - 10,
+        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf.payload->h) / 2,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 static void o_legend_draw_text_nmiss (ctx_t * ctx) {
     char nmiss[30];
     sprintf(nmiss, "%d", ctx->nmiss);
-
-    // render the string to a surface
-    SDL_Surface * surf = TTF_RenderText_Shaded(ctx->font, nmiss, ctx->colors.lightgray, ctx->colors.bg);
-    if (surf == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a surface for the nmiss legend text: %s\n", SDL_GetError());
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nmiss, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the nmiss legend text.\n");
     }
-
-    // create the equivalent string texture
-    SDL_Texture * txre = SDL_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error creating a texture for the nmiss legend text: %s\n", SDL_GetError());
-    }
-
     SDL_Rect tgt = {
         .x = ctx->legend.bars[ctx->legend.nbars - 1].tgt.x + ctx->legend.bars[ctx->legend.nbars - 1].tgt.w + 10,
-        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf->h) / 2,
-        .w = surf->w,
-        .h = surf->h,
+        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf.payload->h) / 2,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
     };
-
-    // render the string texture
-    SDL_RenderCopy(ctx->renderer, txre, NULL, &tgt);
-
-    // clean up resources
-    SDL_DestroyTexture(txre);
-    SDL_FreeSurface(surf);
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
 }
 
 void o_legend_draw (ctx_t * ctx) {
