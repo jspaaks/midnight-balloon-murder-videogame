@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include "SDL_timer.h"
 #include "SDL_log.h"
