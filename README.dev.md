@@ -65,7 +65,3 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 1. hitpoints texts
 1. hitpoints shrapnel
 1. key help texts
-
-## Q
-
-1. what happens when `dt` is 0?
