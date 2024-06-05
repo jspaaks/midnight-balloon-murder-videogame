@@ -21,7 +21,7 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
     static Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
 
-    bool cond = ctx->nbullets > 0 &&
+    bool cond = ctx->nprespawn.bu > 0 &&
                 SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout &&
                 ctx->keys[SDL_SCANCODE_SPACE];
 
@@ -57,7 +57,8 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
         };
         bu->next = ctx->bullets;
         ctx->bullets = bu;
-        ctx->nbullets--;
+        ctx->nprespawn.bu--;
+        ctx->nairborne.bu++;
         ctx->tspawn_latestbullet = SDL_GetTicks64();
     }
     return ctx;
@@ -76,7 +77,7 @@ void o_bullets_draw (ctx_t * ctx) {
 ctx_t * o_bullets_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before bullets");
     ctx->bullets = NULL;
-    ctx->nbullets = ctx->level->nbullets;
+    ctx->nprespawn.bu = ctx->level->nprespawn.bu;
     return ctx;
 }
 

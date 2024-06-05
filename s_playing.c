@@ -41,13 +41,12 @@ ctx_t * s_playing_update (ctx_t * ctx, struct state ** state) {
             }
         }
     }
-    ctx = o_legend_update(ctx);
     ctx = o_turret_update(ctx);
     ctx = o_barrel_update(ctx);
     ctx = o_flash_update(ctx);
     ctx = o_balloons_update(ctx);
     ctx = o_bullets_update(ctx);
     ctx = o_collisions_update(ctx);
-
+    ctx = o_legend_update(ctx);
     return ctx;
 }

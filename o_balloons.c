@@ -110,7 +110,7 @@ static int o_balloons_compare (const void * a, const void * b) {
 }
 
 void o_balloons_draw (ctx_t * ctx) {
-    for (unsigned int i = 0; i < ctx->level->nballoons; i++) {
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
         if (ctx->balloons[i].state == BA_AIRBORNE) {
             SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &ctx->balloons[i].tgt);
         }
@@ -125,7 +125,7 @@ ctx_t * o_balloons_deinit (ctx_t * ctx) {
 
 ctx_t * o_balloons_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before balloons");
-    ctx->balloons = malloc(ctx->level->nballoons * sizeof(balloon_t));
+    ctx->balloons = malloc(ctx->level->nprespawn.ba * sizeof(balloon_t));
     if (ctx->balloons == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for the balloons: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
@@ -134,8 +134,8 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     ctx->balloons = o_balloons_randomize_x(ctx);
     ctx->balloons = o_balloons_randomize_t(ctx);
     ctx->balloons = o_balloons_sort(ctx);
-    ctx->nprespawn = ctx->level->nballoons;
-    ctx->nairborne = 0;
+    ctx->nprespawn.ba = ctx->level->nprespawn.ba;
+    ctx->nairborne.ba = 0;
     ctx->nhit = 0;
     ctx->nmiss = 0;
     return ctx;
@@ -158,9 +158,9 @@ static balloon_t * o_balloons_populate (ctx_t * ctx) {
 static balloon_t * o_balloons_randomize_t (ctx_t * ctx) {
     static const float spawn_rate = 0.35; // balloons per second
     balloon_t * b = ctx->balloons;
-    const int t_ampl = (int) 1000 * ctx->level->nballoons / spawn_rate;
+    const int t_ampl = (int) 1000 * ctx->level->nprespawn.ba / spawn_rate;
     Uint64 tnow = SDL_GetTicks64();
-    for (unsigned int i = 0; i < ctx->level->nballoons; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++, b++) {
         b->trelease = tnow + rand() % t_ampl;
     }
     return ctx->balloons;
@@ -170,7 +170,7 @@ static balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     const int x_ampl = (int) (0.5 * SCREEN_WIDTH);
     int r;
-    for (unsigned int i = 0; i < ctx->level->nballoons; i++, b++) {
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++, b++) {
         r = rand() % x_ampl;
         int x = (0.4 * SCREEN_WIDTH) + r;
         b->sim.x = x;
@@ -181,7 +181,7 @@ static balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
 
 static balloon_t * o_balloons_sort (ctx_t * ctx) {
     // TODO sort by balloon type
-    size_t nitems = ctx->level->nballoons;
+    size_t nitems = ctx->level->nprespawn.ba;
     size_t size = sizeof(balloon_t);
     void * base = (void *) ctx->balloons;
     qsort(base, nitems, size, o_balloons_compare);
@@ -189,7 +189,7 @@ static balloon_t * o_balloons_sort (ctx_t * ctx) {
 }
 
 ctx_t * o_balloons_update (ctx_t * ctx) {
-    for (unsigned int i = 0; i < ctx->level->nballoons; i++) {
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
         switch (ctx->balloons[i].state) {
             case BA_PRESPAWN: {
                 if (SDL_GetTicks64() > ctx->balloons[i].trelease) {

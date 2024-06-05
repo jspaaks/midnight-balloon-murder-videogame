@@ -93,12 +93,14 @@ struct legend_t {
 };
 
 struct level_t {
-    unsigned int nballoons;
-    unsigned int nbullets;
     unsigned int norange;
     unsigned int nred;
     unsigned int nyellow;
     char name[20];
+    struct {
+        unsigned int ba;
+        unsigned int bu;
+    } nprespawn;
 };
 
 struct turret_t {
@@ -108,16 +110,21 @@ struct turret_t {
 };
 
 struct ctx_t {
+    unsigned int nhit;
+    unsigned int nlevels;
+    unsigned int nmiss;
     const Uint8 * keys;
     struct {
         float frame;    // s
     } dt;
-    unsigned int nairborne;
-    unsigned int nbullets;
-    unsigned int nhit;
-    unsigned int nlevels;
-    unsigned int nmiss;
-    unsigned int nprespawn;
+    struct {
+        unsigned int ba;
+        unsigned int bu;
+    } nairborne;
+    struct {
+        unsigned int ba;
+        unsigned int bu;
+    } nprespawn;
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
     SDL_Window * window;

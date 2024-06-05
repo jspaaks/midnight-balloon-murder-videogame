@@ -22,8 +22,8 @@ static void o_legend_draw_text_nmiss (ctx_t *);
 
 static void o_legend_draw_bars (ctx_t * ctx) {
     int j = 0;
-    int nhit = ctx->legend.nbars * ctx->nhit / ctx->level->nballoons;
-    int nmiss = ctx->legend.nbars * ctx->nmiss / ctx->level->nballoons;
+    int nhit = ctx->legend.nbars * ctx->nhit / ctx->level->nprespawn.ba;
+    int nmiss = ctx->legend.nbars * ctx->nmiss / ctx->level->nprespawn.ba;
     int nmiddle = ctx->legend.nbars - nhit - nmiss;
     SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.hit.r,
                                           ctx->colors.hit.g,
@@ -50,13 +50,13 @@ static void o_legend_draw_bars (ctx_t * ctx) {
 
 static void o_legend_draw_rect_nbullets (ctx_t * ctx) {
     // choose a warning color or use background color if not low on ammo
-    if (ctx->nbullets < 5) {
+    if (ctx->nprespawn.bu < 5) {
         ctx->legend.highlight.bg = &ctx->colors.magenta;
-    } else if (ctx->nbullets < 10) {
+    } else if (ctx->nprespawn.bu < 10) {
         ctx->legend.highlight.bg = &ctx->colors.red;
-    } else if (ctx->nbullets < 20) {
+    } else if (ctx->nprespawn.bu < 20) {
         ctx->legend.highlight.bg = &ctx->colors.orange;
-    } else if (ctx->nbullets < 30) {
+    } else if (ctx->nprespawn.bu < 30) {
         ctx->legend.highlight.bg = &ctx->colors.green;
     } else {
         ctx->legend.highlight.bg = &ctx->colors.bg;
@@ -130,7 +130,7 @@ static void o_legend_draw_text_miss (ctx_t * ctx) {
 
 static void o_legend_draw_text_nballoons (ctx_t * ctx) {
     char nballoons[30];
-    sprintf(nballoons, "BALLOONS %d", ctx->nprespawn + ctx->nairborne);
+    sprintf(nballoons, "BALLOONS %d", ctx->nprespawn.ba + ctx->nairborne.ba);
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nballoons, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
@@ -150,8 +150,8 @@ static void o_legend_draw_text_nballoons (ctx_t * ctx) {
 
 static void o_legend_draw_text_nbullets (ctx_t * ctx) {
     char nbullets[30];
-    sprintf(nbullets, "BULLETS %d", ctx->nbullets);
-    SDL_Color color = ctx->nbullets >= 30 ? ctx->colors.lightgray : ctx->colors.white;
+    sprintf(nbullets, "BULLETS %d", ctx->nprespawn.bu);
+    SDL_Color color = ctx->nprespawn.bu >= 30 ? ctx->colors.lightgray : ctx->colors.white;
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nbullets, color, *ctx->legend.highlight.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
@@ -247,18 +247,19 @@ ctx_t * o_legend_init (ctx_t * ctx) {
 }
 
 ctx_t * o_legend_update (ctx_t * ctx) {
+    unsigned int nairborne_ba = 0;
+    unsigned int nairborne_bu = 0;
     unsigned int nhit = 0;
     unsigned int nmiss = 0;
-    unsigned int nprespawn = 0;
-    unsigned int nairborne = 0;
-    for (unsigned int i = 0; i < ctx->level->nballoons; i++) {
+    unsigned int nprespawn_ba = 0;
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
         switch (ctx->balloons[i].state) {
             case BA_PRESPAWN: {
-                nprespawn++;
+                nprespawn_ba++;
                 break;
             }
             case BA_AIRBORNE: {
-                nairborne++;
+                nairborne_ba++;
                 break;
             }
             case BA_HIT: {
@@ -275,9 +276,15 @@ ctx_t * o_legend_update (ctx_t * ctx) {
             }
         }
     }
-    ctx->nprespawn = nprespawn;
-    ctx->nairborne = nairborne;
+    bullet_t * bu = ctx->bullets;
+    while (bu != NULL) {
+        nairborne_bu += bu->state == BU_AIRBORNE ? 1 : 0;
+        bu = bu->next;
+    }
+    ctx->nairborne.ba = nairborne_ba;
+    ctx->nairborne.bu = nairborne_bu;
     ctx->nhit = nhit;
     ctx->nmiss = nmiss;
+    ctx->nprespawn.ba = nprespawn_ba;
     return ctx;
 }

@@ -96,8 +96,8 @@ int main (void) {
         frame->update(&ctx, &state);
         frame->draw(&ctx);
 
-        have_balloons = ctx.nprespawn + ctx.nairborne > 0;
-        have_bullets = ctx.nbullets > 0; // TODO take airborne bullets into account
+        have_balloons = ctx.nprespawn.ba + ctx.nairborne.ba > 0;
+        have_bullets = ctx.nprespawn.bu + ctx.nairborne.bu > 0;
         nframes++;
 
         SDL_Delay(1);
@@ -112,7 +112,7 @@ int main (void) {
         SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss);
     }
     if (!have_bullets) {
-        SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss + ctx.nprespawn + ctx.nairborne);
+        SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx.nhit, ctx.nmiss + ctx.nprespawn.ba + ctx.nairborne.ba);
     }
 
     deinit(&ctx);
