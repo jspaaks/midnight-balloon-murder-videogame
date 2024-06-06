@@ -63,7 +63,6 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 ## TODO
 
 1. refactor balloon data structure / spawning
-1. add condition on proceeding to next level
 1. add audio effects with SDL_mixer
 1. consider adding a 'counts' abstract module
 1. hitpoints texts
