@@ -7,8 +7,21 @@
 #include "levels.h"
 #include "types.h"
 
+#include "o_background.h"
+#include "o_barrel.h"
+#include "o_ground.h"
+#include "o_legend.h"
+#include "o_moon.h"
+#include "o_turret.h"
+
 void s_level_finished_draw (ctx_t * ctx) {
-    s_playing_draw(ctx);
+    o_background_draw(ctx);
+    o_moon_draw(ctx);
+    o_turret_draw(ctx);
+    o_barrel_draw(ctx);
+    o_legend_draw(ctx);
+    o_ground_draw(ctx);
+    SDL_RenderPresent(ctx->renderer);
 }
 
 ctx_t * s_level_finished_update (ctx_t * ctx, state_t ** state) {
