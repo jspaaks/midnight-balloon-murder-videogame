@@ -11,10 +11,9 @@ static const SDL_Rect rect = {
 };
 
 void o_ground_draw (ctx_t * ctx) {
-    static SDL_Color ground = { .r = 11, .g = 1, .b = 26, .a = 0 };
-    SDL_SetRenderDrawColor(ctx->renderer, ground.r,
-                                          ground.g,
-                                          ground.b,
-                                          ground.a);
+    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.ground.r,
+                                          ctx->colors.ground.g,
+                                          ctx->colors.ground.b,
+                                          ctx->colors.ground.a);
     SDL_RenderFillRect(ctx->renderer, &rect);
 }
