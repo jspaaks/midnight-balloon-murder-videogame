@@ -79,6 +79,7 @@ struct collision_t {
 struct colors_t {
     SDL_Color bg;
     SDL_Color green;
+    SDL_Color ground;
     SDL_Color hit;
     SDL_Color lightgray;
     SDL_Color magenta;
@@ -152,7 +153,12 @@ struct ctx_t {
     SDL_Renderer * renderer;
     SDL_Texture * spritesheet;
     SDL_Window * window;
-    TTF_Font * font;
+    struct {
+        TTF_Font * regular;
+        TTF_Font * large;
+        TTF_Font * xlarge;
+        TTF_Font * xxlarge;
+    } fonts;
     balloon_t * balloons;
     barrel_t barrel;
     bullet_t * bullets;
