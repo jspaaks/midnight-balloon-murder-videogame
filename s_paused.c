@@ -165,7 +165,7 @@ static void s_paused_draw_title (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT * 0.31,
+        .y = SCREEN_HEIGHT * 0.44 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };

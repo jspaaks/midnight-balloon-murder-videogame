@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include "types.h"
 #include "levels.h"
@@ -84,6 +85,7 @@ ctx_t * levels_deinit (ctx_t * ctx) {
 }
 
 ctx_t * levels_init (ctx_t * ctx) {
+    ctx->ilevel_unlocked = 0;
     ctx = levels_set(ctx, 0);
     return ctx;
 }

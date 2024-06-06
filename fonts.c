@@ -18,6 +18,12 @@ ctx_t * fonts_init(ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
     }
 
+    ptsize = 40;
+    ctx->fonts.doppel = TTF_OpenFont(fontfile, ptsize);
+    if (ctx->fonts.doppel == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
+    }
+
     ptsize = 70;
     ctx->fonts.large = TTF_OpenFont(fontfile, ptsize);
     if (ctx->fonts.large == NULL) {

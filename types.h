@@ -136,6 +136,7 @@ struct turret_t {
 
 struct ctx_t {
     unsigned int ilevel;
+    unsigned int ilevel_unlocked;
     unsigned int nhit;
     unsigned int nlevels;
     unsigned int nmiss;
@@ -156,6 +157,7 @@ struct ctx_t {
     SDL_Window * window;
     struct {
         TTF_Font * regular;
+        TTF_Font * doppel;
         TTF_Font * large;
         TTF_Font * xlarge;
         TTF_Font * xxlarge;
