@@ -72,7 +72,7 @@ static void o_legend_draw_rect_nbullets (ctx_t * ctx) {
 
 static void o_legend_draw_text_hit (ctx_t * ctx) {
     static const char hit[4] = "HIT";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, hit, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, hit, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the hit legend text.\n");
@@ -92,7 +92,7 @@ static void o_legend_draw_text_hit (ctx_t * ctx) {
 static void o_legend_draw_text_level (ctx_t * ctx) {
     char level[30];
     sprintf(level, "%s LEVEL", ctx->level->name);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, level, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, level, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the level legend text.\n");
@@ -111,7 +111,7 @@ static void o_legend_draw_text_level (ctx_t * ctx) {
 
 static void o_legend_draw_text_miss (ctx_t * ctx) {
     static const char miss[5] = "MISS";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, miss, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, miss, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the miss legend text.\n");
@@ -131,7 +131,7 @@ static void o_legend_draw_text_miss (ctx_t * ctx) {
 static void o_legend_draw_text_nballoons (ctx_t * ctx) {
     char nballoons[30];
     sprintf(nballoons, "BALLOONS %d", ctx->nprespawn.ba + ctx->nairborne.ba);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nballoons, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, nballoons, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nballoons legend text.\n");
@@ -152,7 +152,7 @@ static void o_legend_draw_text_nbullets (ctx_t * ctx) {
     char nbullets[30];
     sprintf(nbullets, "BULLETS %d", ctx->nprespawn.bu);
     SDL_Color color = ctx->nprespawn.bu >= 30 ? ctx->colors.lightgray : ctx->colors.white;
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nbullets, color, *ctx->legend.highlight.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, nbullets, color, *ctx->legend.highlight.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nbullets legend caption.\n");
@@ -172,7 +172,7 @@ static void o_legend_draw_text_nbullets (ctx_t * ctx) {
 static void o_legend_draw_text_nhit (ctx_t * ctx) {
     char nhit[30];
     sprintf(nhit, "%d", ctx->nhit);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nhit, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, nhit, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nhit legend text.\n");
@@ -192,7 +192,7 @@ static void o_legend_draw_text_nhit (ctx_t * ctx) {
 static void o_legend_draw_text_nmiss (ctx_t * ctx) {
     char nmiss[30];
     sprintf(nmiss, "%d", ctx->nmiss);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->font, nmiss, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, nmiss, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nmiss legend text.\n");
