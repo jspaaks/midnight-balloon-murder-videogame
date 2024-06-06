@@ -36,14 +36,13 @@ static void s_start_draw_keymap (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 2 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
-
 }
 
 static void s_start_draw_title (ctx_t * ctx) {
