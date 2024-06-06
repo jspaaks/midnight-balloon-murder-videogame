@@ -19,7 +19,8 @@
 #include "o_moon.h"
 #include "o_turret.h"
 
-static void s_playing_draw_keymap_middle (ctx_t *);
+static void s_playing_draw_keymap_middle_bottom (ctx_t *);
+static void s_playing_draw_keymap_middle_top (ctx_t *);
 
 void s_playing_draw (ctx_t * ctx) {
     o_background_draw(ctx);
@@ -32,13 +33,14 @@ void s_playing_draw (ctx_t * ctx) {
     o_bullets_draw(ctx);
     o_collisions_draw(ctx);
     o_ground_draw(ctx);
-    s_playing_draw_keymap_middle(ctx);
+    s_playing_draw_keymap_middle_bottom(ctx);
+    s_playing_draw_keymap_middle_top(ctx);
     SDL_RenderPresent(ctx->renderer);
 }
 
-static void s_playing_draw_keymap_middle (ctx_t * ctx) {
+static void s_playing_draw_keymap_middle_bottom (ctx_t * ctx) {
     char keymap[12] = "ESC TO PAUSE";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
@@ -46,6 +48,28 @@ static void s_playing_draw_keymap_middle (ctx_t * ctx) {
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
         .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .w = surf.payload->w,
+        .h = surf.payload->h,
+    };
+    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_DestroyTexture(txre.payload);
+    SDL_FreeSurface(surf.payload);
+}
+
+static void s_playing_draw_keymap_middle_top (ctx_t * ctx) {
+    if (ctx->ilevel == ctx->nlevels - 1) {
+        return;
+    }
+    char str[100];
+    sprintf(str, "HIT %d TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, ctx->colors.middlegray, ctx->colors.ground);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    if (txre.invalid) {
+        SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
+    }
+    SDL_Rect tgt = {
+        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
+        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -79,7 +103,9 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
             SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss);
         }
         if (no_more_bullets) {
-            SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss + ctx->nprespawn.ba + ctx->nairborne.ba);
+            ctx = o_balloons_update_remaining_as_hit(ctx);
+            ctx = o_legend_update(ctx);
+            SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss);
         }
         SDL_Log("level finished\n");
         *state = fsm_set_state(LEVEL_FINISHED);

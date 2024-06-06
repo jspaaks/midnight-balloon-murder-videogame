@@ -99,8 +99,8 @@ static void o_legend_draw_text_level (ctx_t * ctx) {
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = {
-        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf.payload->h) / 2,
+        .x = 2 * SCREEN_WIDTH / 4 - surf.payload->w / 2,
+        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -129,8 +129,13 @@ static void o_legend_draw_text_miss (ctx_t * ctx) {
 }
 
 static void o_legend_draw_text_nballoons (ctx_t * ctx) {
+    int nremaining = ctx->nprespawn.ba + ctx->nairborne.ba;
+    if (nremaining == 0) {
+        // we're in the level finished screen
+        return;
+    }
     char nballoons[30];
-    sprintf(nballoons, "BALLOONS %d", ctx->nprespawn.ba + ctx->nairborne.ba);
+    sprintf(nballoons, "BALLOONS %d / %d", nremaining, ctx->level->nprespawn.ba);
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, nballoons, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
@@ -138,8 +143,8 @@ static void o_legend_draw_text_nballoons (ctx_t * ctx) {
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = {
-        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf.payload->h) / 2,
+        .x = 3 * SCREEN_WIDTH / 4 - surf.payload->w / 2,
+        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -225,7 +230,7 @@ ctx_t * o_legend_init (ctx_t * ctx) {
     ctx->legend.nbars = n;
     SDL_Rect first = {
         .x = 60,
-        .y = 49,
+        .y = 55,
         .w = 15,
         .h = 20,
     };

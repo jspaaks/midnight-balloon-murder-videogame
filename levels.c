@@ -12,63 +12,69 @@
 static level_t levels[] = {
     {
         .name = "novice",
-        .nred = 2,
         .norange = 3,
-        .nyellow = 5,
         .nprespawn = {
             .ba = 10,
             .bu = 100,
-        }
+        },
+        .nproceed = 8,
+        .nred = 2,
+        .nyellow = 5,
     },
     {
         .name = "private",
-        .nred = 4,
         .norange = 6,
-        .nyellow = 10,
         .nprespawn = {
             .ba = 20,
             .bu = 70,
-        }
+        },
+        .nproceed = 18,
+        .nred = 4,
+        .nyellow = 10,
     },
     {
         .name = "gunny",
-        .nred = 8,
         .norange = 12,
-        .nyellow = 20,
         .nprespawn = {
             .ba = 40,
             .bu = 40,
-        }
+        },
+        .nproceed = 38,
+        .nred = 8,
+        .nyellow = 20,
     },
     {
         .name = "sharpshooter",
-        .nred = 14,
         .norange = 21,
-        .nyellow = 35,
         .nprespawn = {
             .ba = 70,
             .bu = 20,
-        }
+        },
+        .nproceed = 67,
+        .nred = 14,
+        .nyellow = 35,
     },
     {
         .name = "assassin",
-        .nred = 20,
         .norange = 30,
-        .nyellow = 50,
         .nprespawn = {
             .ba = 100,
             .bu = 10,
-        }
+        },
+        .nproceed = 95,
+        .nred = 20,
+        .nyellow = 50,
     },
     {
         .name = "berserker",
-        .nred = 200,
         .norange = 300,
-        .nyellow = 500,
         .nprespawn = {
             .ba = 1000,
             .bu = 10,
-        }
+        },
+        .nproceed = 1001,
+        .nred = 200,
+        .nyellow = 500,
     },
 };
 

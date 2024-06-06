@@ -112,6 +112,7 @@ struct legend_t {
 
 struct level_t {
     unsigned int norange;
+    unsigned int nproceed;
     unsigned int nred;
     unsigned int nyellow;
     char name[20];

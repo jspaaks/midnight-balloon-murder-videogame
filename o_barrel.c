@@ -32,7 +32,7 @@ ctx_t * o_barrel_init (ctx_t * ctx) {
     float x = ctx->turret.sim.x + (ctx->turret.sim.w - 1) / 2;
     float y = ctx->turret.sim.y + (ctx->turret.sim.w - 1) / 2 - (h - 1) / 2;
     ctx->barrel = (barrel_t) {
-        .angle = -55.0,
+        .angle = -25.0,
         .length = w,
         .speed = 17,
         .pivot = (SDL_FPoint) {

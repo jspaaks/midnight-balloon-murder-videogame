@@ -49,13 +49,13 @@ void s_paused_draw (ctx_t * ctx) {
 
 static void s_paused_draw_keymap_left_bottom_action (ctx_t * ctx) {
     char action[6] = "SHOOT";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, action, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, action, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 + 7,
+        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 + 3,
         .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
@@ -67,13 +67,13 @@ static void s_paused_draw_keymap_left_bottom_action (ctx_t * ctx) {
 
 static void s_paused_draw_keymap_left_bottom_button (ctx_t * ctx) {
     char button[6] = "SPACE";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, button, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, button, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w - 7,
+        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w - 3,
         .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
@@ -85,14 +85,14 @@ static void s_paused_draw_keymap_left_bottom_button (ctx_t * ctx) {
 
 static void s_paused_draw_keymap_left_top_action (ctx_t * ctx) {
     char action[12] = "MOVE BARREL";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, action, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, action, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 + 7,
-        .y = SCREEN_HEIGHT - 2 *GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 + 3,
+        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -103,13 +103,13 @@ static void s_paused_draw_keymap_left_top_action (ctx_t * ctx) {
 
 static void s_paused_draw_keymap_left_top_button (ctx_t * ctx) {
     char button[6] = "W / S";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, button, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, button, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w - 7,
+        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w - 3,
         .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
@@ -122,7 +122,7 @@ static void s_paused_draw_keymap_left_top_button (ctx_t * ctx) {
 
 static void s_paused_draw_keymap_middle (ctx_t * ctx) {
     char keymap[15] = "ESC TO UNPAUSE";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
@@ -140,7 +140,7 @@ static void s_paused_draw_keymap_middle (ctx_t * ctx) {
 
 static void s_paused_draw_keymap_right (ctx_t * ctx) {
     char keymap[10] = "Q TO QUIT";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.lightgray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right keymap on title screen: %s.\n", TTF_GetError());

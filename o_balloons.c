@@ -109,18 +109,18 @@ static int o_balloons_compare (const void * a, const void * b) {
     }
 }
 
+ctx_t * o_balloons_deinit (ctx_t * ctx) {
+    free(ctx->balloons);
+    ctx->balloons = NULL;
+    return ctx;
+}
+
 void o_balloons_draw (ctx_t * ctx) {
     for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
         if (ctx->balloons[i].state == BA_AIRBORNE) {
             SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &ctx->balloons[i].tgt);
         }
     }
-}
-
-ctx_t * o_balloons_deinit (ctx_t * ctx) {
-    free(ctx->balloons);
-    ctx->balloons = NULL;
-    return ctx;
 }
 
 ctx_t * o_balloons_init (ctx_t * ctx) {
@@ -139,6 +139,14 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     ctx->nhit = 0;
     ctx->nmiss = 0;
     return ctx;
+}
+
+
+static bool o_balloons_is_outside(balloon_t * balloon) {
+    return balloon->tgt.y + balloon->sim.h < 0 ||
+           balloon->tgt.y > SCREEN_HEIGHT  ||
+           balloon->tgt.x + balloon->sim.w < 0 ||
+           balloon->tgt.x > SCREEN_WIDTH;
 }
 
 static balloon_t * o_balloons_populate (ctx_t * ctx) {
@@ -224,9 +232,30 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
     return ctx;
 }
 
-static bool o_balloons_is_outside(balloon_t * balloon) {
-    return balloon->tgt.y + balloon->sim.h < 0 ||
-           balloon->tgt.y > SCREEN_HEIGHT  ||
-           balloon->tgt.x + balloon->sim.w < 0 ||
-           balloon->tgt.x > SCREEN_WIDTH;
+ctx_t * o_balloons_update_remaining_as_hit (ctx_t * ctx) {
+    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
+        switch (ctx->balloons[i].state) {
+            case BA_PRESPAWN: {
+                ctx->balloons[i].state = BA_MISS;
+                break;
+            }
+            case BA_AIRBORNE: {
+                ctx->balloons[i].state = BA_MISS;
+                break;
+            }
+            case BA_HIT: {
+                // do nothing
+                break;
+            }
+            case BA_MISS: {
+                // do nothing
+                break;
+            }
+            default: {
+                SDL_LogError(SDL_UNSUPPORTED, "Something is wrong with the balloon states.\n");
+                break;
+            }
+        }
+    }
+    return ctx;
 }
