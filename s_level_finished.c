@@ -41,16 +41,14 @@ void s_level_finished_draw (ctx_t * ctx) {
 }
 
 static void s_level_finished_draw_keymap_middle_top(ctx_t * ctx) {
-    if (ctx->nhit >= ctx->level->nproceed) {
-        // player has enough hits to proceed
-        return;
-    }
-    if (!next_exists) {
-        // there is no next level
-        return;
-    }
     char str[100];
-    sprintf(str, "HIT %d TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+    if (ctx->ilevel == ctx->nlevels - 1) {
+        sprintf(str, "FINAL LEVEL");
+    } else if (ctx->nhit < ctx->level->nproceed) {
+        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+    } else {
+        sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!", ctx->level->nproceed);
+    }
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {

@@ -57,11 +57,14 @@ static void s_playing_draw_keymap_middle_bottom (ctx_t * ctx) {
 }
 
 static void s_playing_draw_keymap_middle_top (ctx_t * ctx) {
-    if (ctx->ilevel == ctx->nlevels - 1) {
-        return;
-    }
     char str[100];
-    sprintf(str, "HIT %d TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+    if (ctx->ilevel == ctx->nlevels - 1) {
+        sprintf(str, "FINAL LEVEL");
+    } else if (ctx->nhit < ctx->level->nproceed) {
+        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+    } else {
+        sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!");
+    }
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, ctx->colors.middlegray, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
