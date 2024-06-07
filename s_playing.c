@@ -47,7 +47,7 @@ static void s_playing_draw_keymap_middle_bottom (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -77,7 +77,7 @@ static void s_playing_draw_keymap_middle_top (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -89,10 +89,18 @@ static void s_playing_draw_keymap_middle_top (ctx_t * ctx) {
 ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.sym == SDLK_ESCAPE) {
-                SDL_Log("pausing\n");
-                *state = fsm_set_state(PAUSED);
+        switch (event.type) {
+            case SDL_KEYDOWN: {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    SDL_Log("pausing\n");
+                    *state = fsm_set_state(PAUSED);
+                }
+                break;
+            }
+            case SDL_WINDOWEVENT_RESIZED:
+            case SDL_WINDOWEVENT_SIZE_CHANGED: {
+                ctx->resized = true;
+                break;
             }
         }
     }

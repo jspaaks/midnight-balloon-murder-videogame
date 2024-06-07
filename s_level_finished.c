@@ -61,7 +61,7 @@ static void s_level_finished_draw_keymap_middle_top(ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };

@@ -33,8 +33,10 @@ typedef struct collision_t collision_t;
 typedef struct colors_t colors_t;
 typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
+typedef struct ground_t ground_t;
 typedef struct legend_t legend_t;
 typedef struct level_t level_t;
+typedef struct scene_t scene_t;
 typedef struct state_t state_t;
 typedef struct turret_t turret_t;
 
@@ -99,6 +101,10 @@ struct flash_t {
     SDL_Rect tgt;
 };
 
+struct ground_t {
+    SDL_Rect tgt;
+};
+
 struct legend_t {
     unsigned int nbars;
     struct {
@@ -122,6 +128,10 @@ struct level_t {
     } nprespawn;
 };
 
+struct scene_t {
+    SDL_Rect tgt;
+};
+
 struct state_t {
     void (*draw)(ctx_t *);
     ctx_t * (*update)(ctx_t *, struct state_t **);
@@ -135,6 +145,7 @@ struct turret_t {
 };
 
 struct ctx_t {
+    bool resized;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
     unsigned int nhit;
@@ -168,9 +179,11 @@ struct ctx_t {
     collision_t * collisions;
     colors_t colors;
     flash_t flash;
+    ground_t ground;
     legend_t legend;
     level_t * level;
     level_t * levels;
+    scene_t scene;
     turret_t turret;
     Uint64 tspawn_latestbullet;
 };

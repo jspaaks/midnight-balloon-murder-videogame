@@ -76,6 +76,7 @@ void o_bullets_draw (ctx_t * ctx) {
 
 ctx_t * o_bullets_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before bullets");
+    assert(ctx->ground.tgt.w != 0 && "ground needs to be initialized before bullets");
     ctx->bullets = NULL;
     ctx->nprespawn.bu = ctx->level->nprespawn.bu;
     return ctx;
@@ -118,7 +119,7 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
                    this->tgt.y < 0 - this->tgt.h ||
                    this->tgt.x > SCREEN_WIDTH    ||
                    this->tgt.x < 0 - this->tgt.w ||
-                   this->tgt.y > SCREEN_HEIGHT - GROUND_HEIGHT;
+                   this->tgt.y > SCREEN_HEIGHT - ctx->ground.tgt.h;
         switch (isfirst << 1 | doremove ) {
             case 0: {
                 // not first, not remove

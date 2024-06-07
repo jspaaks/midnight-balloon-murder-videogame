@@ -55,6 +55,13 @@ static bool init (ctx_t * ctx) {
     ctx = window_init(ctx);
     ctx = renderer_init(ctx);
     ctx = spritesheet_init(ctx);
+    ctx->resized = true;
+    ctx->scene = (SDL_Rect) {
+        .x = 0,
+        .y = 0,
+        .w = 1280,
+        .h = 720,
+    };
     // --- abstract entities
     ctx = colors_init(ctx);
     ctx = fonts_init(ctx);

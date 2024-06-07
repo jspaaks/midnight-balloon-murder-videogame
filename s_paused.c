@@ -64,7 +64,7 @@ static void s_paused_draw_keymap_left_bottom_action (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 + 3,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -82,7 +82,7 @@ static void s_paused_draw_keymap_left_bottom_button (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w - 3,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -100,7 +100,7 @@ static void s_paused_draw_keymap_left_top_action (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 + 3,
-        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -118,7 +118,7 @@ static void s_paused_draw_keymap_left_top_button (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w - 3,
-        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -137,7 +137,7 @@ static void s_paused_draw_keymap_middle_bottom (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -167,7 +167,7 @@ static void s_paused_draw_keymap_middle_top (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -185,7 +185,7 @@ static void s_paused_draw_keymap_right_bottom (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = SCREEN_WIDTH - ctx->turret.tgt.x - ctx->turret.tgt.w / 2 - surf.payload->w / 2,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -207,7 +207,7 @@ static void s_paused_draw_keymap_right_top (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = SCREEN_WIDTH - ctx->turret.tgt.x - ctx->turret.tgt.w / 2 - surf.payload->w / 2,
-        .y = SCREEN_HEIGHT - 2 * GROUND_HEIGHT / 3 - surf.payload->h / 2,
+        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };

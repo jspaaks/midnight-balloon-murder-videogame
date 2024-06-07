@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "SDL_render.h"
 #include "SDL_rect.h"
 #include "types.h"
@@ -9,10 +10,11 @@ void o_turret_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_turret_init (ctx_t * ctx) {
+    assert(ctx->ground.tgt.w != 0 && "ground needs to be initialized before turret");
     float w = 69;
     float h = 47;
     float x = 180;
-    float y = SCREEN_HEIGHT - GROUND_HEIGHT - h;
+    float y = SCREEN_HEIGHT - ctx->ground.tgt.h - h;
     ctx->turret = (turret_t){
         .sim = (SDL_FRect) {
             .x = x,
