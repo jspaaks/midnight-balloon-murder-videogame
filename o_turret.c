@@ -14,7 +14,7 @@ ctx_t * o_turret_init (ctx_t * ctx) {
     float w = 69;
     float h = 47;
     float x = 180;
-    float y = SCREEN_HEIGHT - ctx->ground.tgt.h - h;
+    float y = ctx->scene.tgt.h - ctx->ground.tgt.h - h;
     ctx->turret = (turret_t){
         .sim = (SDL_FRect) {
             .x = x,

@@ -61,7 +61,7 @@ static void s_level_finished_draw_keymap_middle_top(ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -106,7 +106,7 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
         }
         SDL_Rect tgt = {
             .x = 6 * SCREEN_WIDTH / 7 - surf.payload->w / 2,
-            .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2,
+            .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2,
             .w = surf.payload->w,
             .h = surf.payload->h,
         };
@@ -123,7 +123,7 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
         }
         SDL_Rect tgt = {
             .x = 6 * SCREEN_WIDTH / 7 - surf.payload->w / 2,
-            .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2 + 30,
+            .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2 + 30,
             .w = surf.payload->w,
             .h = surf.payload->h,
         };
@@ -143,7 +143,7 @@ static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
             }
             SDL_Rect tgt = {
             .x = 1 * SCREEN_WIDTH / 7 - surf.payload->w / 2,
-                .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2 + 30,
+                .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2 + 30,
                 .w = surf.payload->w,
                 .h = surf.payload->h,
             };
@@ -161,7 +161,7 @@ static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             }
             SDL_Rect tgt = {
                 .x = 1 * SCREEN_WIDTH / 7 - surf.payload->w / 2,
-                .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2,
+                .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2,
                 .w = surf.payload->w,
                 .h = surf.payload->h,
             };
@@ -184,7 +184,7 @@ static void s_level_finished_draw_title (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT * 0.44 - surf.payload->h / 2,
+        .y = ctx->scene.tgt.h * 0.44 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };

@@ -36,7 +36,7 @@ static void s_start_draw_keymap (ctx_t * ctx) {
     }
     SDL_Rect tgt = {
         .x = (SCREEN_WIDTH - surf.payload->w) / 2,
-        .y = SCREEN_HEIGHT - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };
@@ -90,25 +90,25 @@ static void s_start_draw_title (ctx_t * ctx) {
 
     tgts.left = (SDL_Rect){
         .x = (SCREEN_WIDTH - surfs.middle.payload->w) / 2 - surfs.left.payload->w,
-        .y = SCREEN_HEIGHT * 0.31 - 7,
+        .y = ctx->scene.tgt.h * 0.31 - 7,
         .w = surfs.left.payload->w,
         .h = surfs.left.payload->h,
     };
     tgts.middle = (SDL_Rect){
         .x = (SCREEN_WIDTH - surfs.middle.payload->w) / 2,
-        .y = SCREEN_HEIGHT * 0.31,
+        .y = ctx->scene.tgt.h * 0.31,
         .w = surfs.middle.payload->w,
         .h = surfs.middle.payload->h,
     };
     tgts.right = (SDL_Rect){
         .x = (SCREEN_WIDTH - surfs.middle.payload->w) / 2 + surfs.middle.payload->w,
-        .y = SCREEN_HEIGHT * 0.31 - 7,
+        .y = ctx->scene.tgt.h * 0.31 - 7,
         .w = surfs.right.payload->w,
         .h = surfs.right.payload->h,
     };
     tgts.underline = (SDL_Rect){
         .x = (SCREEN_WIDTH - surfs.middle.payload->w) / 2,
-        .y = SCREEN_HEIGHT * 0.31 + surfs.middle.payload->h - 51,
+        .y = ctx->scene.tgt.h * 0.31 + surfs.middle.payload->h - 51,
         .w = surfs.middle.payload->w,
         .h = 3,
     };

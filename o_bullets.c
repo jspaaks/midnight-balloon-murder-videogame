@@ -119,7 +119,7 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
                    this->tgt.y < 0 - this->tgt.h ||
                    this->tgt.x > SCREEN_WIDTH    ||
                    this->tgt.x < 0 - this->tgt.w ||
-                   this->tgt.y > SCREEN_HEIGHT - ctx->ground.tgt.h;
+                   this->tgt.y > ctx->scene.tgt.h - ctx->ground.tgt.h;
         switch (isfirst << 1 | doremove ) {
             case 0: {
                 // not first, not remove

@@ -13,10 +13,10 @@ void o_ground_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_ground_init (ctx_t * ctx) {
-    int h = 100;
+    int h = GROUND_HEIGHT;
     ctx->ground.tgt = (SDL_Rect){
         .x = 0,
-        .y = SCREEN_HEIGHT - h,
+        .y = ctx->scene.tgt.h - h,
         .w = SCREEN_WIDTH,
         .h = h
     };
