@@ -17,7 +17,7 @@ ctx_t * o_ground_init (ctx_t * ctx) {
     ctx->ground.tgt = (SDL_Rect){
         .x = 0,
         .y = ctx->scene.tgt.h - h,
-        .w = SCREEN_WIDTH,
+        .w = ctx->scene.tgt.w,
         .h = h
     };
     return ctx;

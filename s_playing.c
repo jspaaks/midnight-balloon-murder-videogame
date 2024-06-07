@@ -46,7 +46,7 @@ static void s_playing_draw_keymap_middle_bottom (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
+        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
         .y = ctx->scene.tgt.h - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
@@ -76,7 +76,7 @@ static void s_playing_draw_keymap_middle_top (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = (SCREEN_WIDTH - surf.payload->w) / 2,
+        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
         .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,

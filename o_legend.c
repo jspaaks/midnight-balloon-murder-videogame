@@ -99,7 +99,7 @@ static void o_legend_draw_text_level (ctx_t * ctx) {
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = {
-        .x = 2 * SCREEN_WIDTH / 4 - surf.payload->w / 2,
+        .x = 2 * ctx->scene.tgt.w / 4 - surf.payload->w / 2,
         .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
@@ -143,7 +143,7 @@ static void o_legend_draw_text_nballoons (ctx_t * ctx) {
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = {
-        .x = 3 * SCREEN_WIDTH / 4 - surf.payload->w / 2,
+        .x = 3 * ctx->scene.tgt.w / 4 - surf.payload->w / 2,
         .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
