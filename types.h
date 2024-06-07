@@ -36,6 +36,7 @@ typedef struct flash_t flash_t;
 typedef struct ground_t ground_t;
 typedef struct legend_t legend_t;
 typedef struct level_t level_t;
+typedef struct moon_t moon_t;
 typedef struct scene_t scene_t;
 typedef struct state_t state_t;
 typedef struct turret_t turret_t;
@@ -128,6 +129,11 @@ struct level_t {
     } nprespawn;
 };
 
+struct moon_t {
+    SDL_Rect src;
+    SDL_Rect tgt;
+};
+
 struct scene_t {
     SDL_Rect tgt;
 };
@@ -180,6 +186,7 @@ struct ctx_t {
     colors_t colors;
     flash_t flash;
     ground_t ground;
+    moon_t moon;
     legend_t legend;
     level_t * level;
     level_t * levels;

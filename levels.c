@@ -8,8 +8,9 @@
 #include "o_collisions.h"
 #include "o_flash.h"
 #include "o_ground.h"
-#include "o_turret.h"
 #include "o_legend.h"
+#include "o_moon.h"
+#include "o_turret.h"
 
 static level_t levels[] = {
     {
@@ -99,6 +100,7 @@ ctx_t * levels_set (ctx_t * ctx, unsigned int ilevel) {
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
     // --- concrete entities
     ctx = o_ground_init(ctx);
+    ctx = o_moon_init(ctx);
     ctx = o_turret_init(ctx);
     ctx = o_barrel_init(ctx);
     ctx = o_balloons_init(ctx);
