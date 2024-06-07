@@ -158,7 +158,7 @@ static void s_paused_draw_keymap_right (ctx_t * ctx) {
 
 static void s_paused_draw_title (ctx_t * ctx) {
     char title[7] = "PAUSED";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.large, title, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.xlarge, title, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n", TTF_GetError());

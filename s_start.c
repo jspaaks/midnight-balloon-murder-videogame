@@ -75,9 +75,9 @@ static void s_start_draw_title (ctx_t * ctx) {
         SDL_Rect underline;
     } tgts;
 
-    surfs.left = TTFW_RenderText_Shaded(ctx->fonts.xxlarge, titleparts.left, ctx->colors.lightgray, ctx->colors.bg);
-    surfs.middle = TTFW_RenderText_Shaded(ctx->fonts.xlarge, titleparts.middle, ctx->colors.lightgray, ctx->colors.bg);
-    surfs.right = TTFW_RenderText_Shaded(ctx->fonts.xxlarge, titleparts.right, ctx->colors.lightgray, ctx->colors.bg);
+    surfs.left = TTFW_RenderText_Shaded(ctx->fonts.xxxlarge, titleparts.left, ctx->colors.lightgray, ctx->colors.bg);
+    surfs.middle = TTFW_RenderText_Shaded(ctx->fonts.xxlarge, titleparts.middle, ctx->colors.lightgray, ctx->colors.bg);
+    surfs.right = TTFW_RenderText_Shaded(ctx->fonts.xxxlarge, titleparts.right, ctx->colors.lightgray, ctx->colors.bg);
 
     txres.left = SDLW_CreateTextureFromSurface(ctx->renderer, surfs.left);
     txres.middle = SDLW_CreateTextureFromSurface(ctx->renderer, surfs.middle);

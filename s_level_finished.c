@@ -96,7 +96,7 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
     }
     {
         char keymap[7] = "RETURN";
-        SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.doppel, keymap, color, ctx->colors.bg);
+        SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.large, keymap, color, ctx->colors.bg);
         SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
         if (txre.invalid) {
             SDL_LogError(SDL_ENOMEM, "Error creating the proceed button keymap on level finished screen: %s.\n", TTF_GetError());
@@ -120,7 +120,7 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
         }
         SDL_Rect tgt = {
             .x = 6 * SCREEN_WIDTH / 7 - surf.payload->w / 2,
-            .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2 + 40,
+            .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2 + 30,
             .w = surf.payload->w,
             .h = surf.payload->h,
         };
@@ -140,7 +140,7 @@ static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
             }
             SDL_Rect tgt = {
             .x = 1 * SCREEN_WIDTH / 7 - surf.payload->w / 2,
-                .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2 + 40,
+                .y = SCREEN_HEIGHT / 2 - surf.payload->h / 2 + 30,
                 .w = surf.payload->w,
                 .h = surf.payload->h,
             };
@@ -151,7 +151,7 @@ static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
 
 static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             char keymap[2] = "R";
-            SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.doppel, keymap, ctx->colors.lightgray, ctx->colors.bg);
+            SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.large, keymap, ctx->colors.lightgray, ctx->colors.bg);
             SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
             if (txre.invalid) {
                 SDL_LogError(SDL_ENOMEM, "Error creating the repeat button keymap on level finished screen: %s.\n", TTF_GetError());
@@ -174,7 +174,7 @@ static void s_level_finished_draw_title (ctx_t * ctx) {
     } else {
         strncpy(title, "LEVEL FINISHED", 15);
     }
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.large, title, ctx->colors.lightgray, ctx->colors.bg);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.xlarge, title, ctx->colors.lightgray, ctx->colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n", TTF_GetError());

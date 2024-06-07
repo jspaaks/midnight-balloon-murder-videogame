@@ -18,26 +18,26 @@ ctx_t * fonts_init(ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
     }
 
-    ptsize = 40;
-    ctx->fonts.doppel = TTF_OpenFont(fontfile, ptsize);
-    if (ctx->fonts.doppel == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
-    }
-
-    ptsize = 70;
+    ptsize = 32;
     ctx->fonts.large = TTF_OpenFont(fontfile, ptsize);
     if (ctx->fonts.large == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
     }
 
-    ptsize = 100;
+    ptsize = 70;
     ctx->fonts.xlarge = TTF_OpenFont(fontfile, ptsize);
+    if (ctx->fonts.large == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
+    }
+
+    ptsize = 100;
+    ctx->fonts.xxlarge = TTF_OpenFont(fontfile, ptsize);
     if (ctx->fonts.xlarge == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
     }
 
     ptsize = 114;
-    ctx->fonts.xxlarge = TTF_OpenFont(fontfile, ptsize);
+    ctx->fonts.xxxlarge = TTF_OpenFont(fontfile, ptsize);
     if (ctx->fonts.xxlarge == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
     }
@@ -49,10 +49,12 @@ ctx_t * fonts_deinit(ctx_t * ctx) {
     TTF_CloseFont(ctx->fonts.large);
     TTF_CloseFont(ctx->fonts.xlarge);
     TTF_CloseFont(ctx->fonts.xxlarge);
+    TTF_CloseFont(ctx->fonts.xxxlarge);
     ctx->fonts.regular = NULL;
     ctx->fonts.large = NULL;
     ctx->fonts.xlarge = NULL;
     ctx->fonts.xxlarge = NULL;
+    ctx->fonts.xxxlarge = NULL;
     TTF_Quit();
     return ctx;
 }

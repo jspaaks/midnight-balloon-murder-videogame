@@ -157,10 +157,10 @@ struct ctx_t {
     SDL_Window * window;
     struct {
         TTF_Font * regular;
-        TTF_Font * doppel;
         TTF_Font * large;
         TTF_Font * xlarge;
         TTF_Font * xxlarge;
+        TTF_Font * xxxlarge;
     } fonts;
     balloon_t * balloons;
     barrel_t barrel;
