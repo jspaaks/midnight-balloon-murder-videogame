@@ -96,9 +96,11 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
                 }
                 break;
             }
-            case SDL_WINDOWEVENT_RESIZED:
-            case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                ctx->resized = true;
+            case SDL_WINDOWEVENT: {
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    SDL_Log("resize\n");
+                    ctx->resized = true;
+                }
                 break;
             }
         }

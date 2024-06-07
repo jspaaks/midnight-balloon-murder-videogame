@@ -12,7 +12,7 @@ ctx_t * window_deinit(ctx_t * ctx) {
 }
 
 ctx_t * window_init(ctx_t * ctx) {
-    int flags = SDL_WINDOW_BORDERLESS | SDL_WINDOW_RESIZABLE;
+    int flags = SDL_WINDOW_RESIZABLE;
     ctx->window = SDL_CreateWindow("Midnight Balloon Murder", SDL_WINDOWPOS_CENTERED,
                                    SDL_WINDOWPOS_CENTERED, ctx->scene.tgt.w, ctx->scene.tgt.h, flags);
     if (ctx->window == NULL) {
