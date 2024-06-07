@@ -6,7 +6,6 @@
 #include "SDL_render.h"
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
-#include "constants.h"
 #include "fsm.h"
 #include "s_start.h"
 #include "types.h"

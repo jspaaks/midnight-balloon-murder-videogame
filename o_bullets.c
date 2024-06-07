@@ -8,7 +8,6 @@
 #include "SDL_scancode.h"
 #include "SDL_log.h"
 #include "SDL_error.h"
-#include "constants.h"
 #include "o_bullets.h"
 
 static ctx_t * o_bullets_update_add (ctx_t *);
@@ -115,10 +114,10 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
     bool doremove = false;
     while (this != NULL) {
         isfirst = prev == NULL;
-        doremove = this->state == BU_HIT         ||
-                   this->tgt.y < 0 - this->tgt.h ||
-                   this->tgt.x > SCREEN_WIDTH    ||
-                   this->tgt.x < 0 - this->tgt.w ||
+        doremove = this->state == BU_HIT          ||
+                   this->tgt.y < 0 - this->tgt.h  ||
+                   this->tgt.x > ctx->scene.tgt.w ||
+                   this->tgt.x < 0 - this->tgt.w  ||
                    this->tgt.y > ctx->scene.tgt.h - ctx->ground.tgt.h;
         switch (isfirst << 1 | doremove ) {
             case 0: {

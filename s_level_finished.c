@@ -2,7 +2,6 @@
 #include "SDL_events.h"
 #include "SDL_keycode.h"
 #include "SDL_log.h"
-#include "constants.h"
 #include "fsm.h"
 #include "s_playing.h"
 #include "s_level_finished.h"

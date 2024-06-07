@@ -3,7 +3,6 @@
 #include "SDL_keycode.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
-#include "constants.h"
 #include "types.h"
 #include "fsm.h"
 #include "levels.h"

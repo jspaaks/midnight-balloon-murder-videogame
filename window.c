@@ -2,7 +2,6 @@
 #include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_video.h"
-#include "constants.h"
 #include "types.h"
 #include "window.h"
 

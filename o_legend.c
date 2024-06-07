@@ -2,7 +2,6 @@
 #include "SDL_pixels.h"
 #include "SDL_log.h"
 #include "SDL_ttf.h"
-#include "constants.h"
 #include "types.h"
 #include "colors.h"
 #include "levels.h"
