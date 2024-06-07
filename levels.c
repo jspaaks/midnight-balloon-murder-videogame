@@ -85,8 +85,9 @@ ctx_t * levels_deinit (ctx_t * ctx) {
 }
 
 ctx_t * levels_init (ctx_t * ctx) {
-    ctx->ilevel_unlocked = 0;
-    ctx = levels_set(ctx, 0);
+    unsigned int unl = 0;
+    ctx->ilevel_unlocked = unl;
+    ctx = levels_set(ctx, unl);
     return ctx;
 }
 

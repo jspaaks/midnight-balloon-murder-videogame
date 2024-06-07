@@ -41,15 +41,20 @@ void s_level_finished_draw (ctx_t * ctx) {
 }
 
 static void s_level_finished_draw_keymap_middle_top(ctx_t * ctx) {
+    SDL_Color color = ctx->colors.middlegray;
     char str[100];
     if (ctx->ilevel == ctx->nlevels - 1) {
         sprintf(str, "FINAL LEVEL");
-    } else if (ctx->nhit < ctx->level->nproceed) {
-        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+    } else if (ctx->nmiss > ctx->level->nprespawn.ba - ctx->level->nproceed) {
+        sprintf(str, "NOT ENOUGH HITS TO PROCEED TO NEXT LEVEL");
+        color = ctx->colors.lightgray;
+    } else if (ctx->nhit >= ctx->level->nproceed) {
+        sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!");
+        color = ctx->colors.lightgray;
     } else {
-        sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!", ctx->level->nproceed);
+        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
     }
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, ctx->colors.middlegray, ctx->colors.ground);
+    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, color, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on level finished screen: %s.\n", TTF_GetError());
@@ -71,11 +76,11 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
     switch (c) {
         case 0: {
             // next level doesnt exist, dont show anything
-            break;
+            return;
         }
         case 1: {
             // next level doesnt exist, dont show anything
-            break;
+            return;
         }
         case 2: {
             // level exists but is locked
