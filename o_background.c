@@ -4,17 +4,11 @@
 #include "o_background.h"
 
 void o_background_draw (ctx_t * ctx) {
-    if (ctx->resized) {
-        int w;
-        int h;
-        SDL_GetWindowSize(ctx->window, &w,&h);
-        SDL_Log("resized, now %d x %d", w, h);
-        ctx->resized = false;
-    }
-    static SDL_Color bgcolor = { .r = 0, .g = 22, .b = 43, .a = 0 };
-    SDL_SetRenderDrawColor(ctx->renderer, bgcolor.r,
-                                          bgcolor.g,
-                                          bgcolor.b,
-                                          bgcolor.a);
+    SDL_SetRenderDrawColor(ctx->renderer, 0, 0, 0, 0);
     SDL_RenderClear(ctx->renderer);
+    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.bg.r,
+                                          ctx->colors.bg.g,
+                                          ctx->colors.bg.b,
+                                          ctx->colors.bg.a);
+    SDL_RenderFillRect(ctx->renderer, &ctx->scene.tgt);
 }
