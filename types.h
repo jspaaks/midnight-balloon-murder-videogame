@@ -110,10 +110,10 @@ struct ground_t {
 struct legend_t {
     unsigned int nbars;
     struct {
-        SDL_Rect tgt;
+        SDL_FRect sim;
     } bars[10];
     struct {
-        SDL_Rect tgt;
+        SDL_FRect sim;
         SDL_Color * bg;
     } highlight;
 };

@@ -17,12 +17,12 @@ void o_keymap_draw_move_barrel (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w / 2,
-        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->turret.sim.x + ctx->turret.sim.w / 2 - surf.payload->w / 2,
+        .y = ctx->scene.sim.h - 2 * ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -35,12 +35,12 @@ void o_keymap_draw_pause (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surf.payload->w) / 2,
+        .y = ctx->scene.sim.h - ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -65,12 +65,12 @@ void o_keymap_draw_proceedhint (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surf.payload->w) / 2,
+        .y = ctx->scene.sim.h - 2 * ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -83,12 +83,12 @@ void o_keymap_draw_quit (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right bottom keymap on paused screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = ctx->scene.tgt.w - ctx->turret.tgt.x - ctx->turret.tgt.w / 2 - surf.payload->w / 2,
-        .y = ctx->scene.tgt.h - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->scene.sim.w - ctx->turret.sim.x - ctx->turret.sim.w / 2 - surf.payload->w / 2,
+        .y = ctx->scene.sim.h - ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -105,12 +105,12 @@ void o_keymap_draw_restart (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right top keymap on paused screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = ctx->scene.tgt.w - ctx->turret.tgt.x - ctx->turret.tgt.w / 2 - surf.payload->w / 2,
-        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->scene.sim.w - ctx->turret.sim.x - ctx->turret.sim.w / 2 - surf.payload->w / 2,
+        .y = ctx->scene.sim.h - 2 * ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -123,12 +123,12 @@ void o_keymap_draw_shoot (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = ctx->turret.tgt.x + ctx->turret.tgt.w / 2 - surf.payload->w / 2,
-        .y = ctx->scene.tgt.h - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->turret.sim.x + ctx->turret.sim.w / 2 - surf.payload->w / 2,
+        .y = ctx->scene.sim.h - ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -159,12 +159,12 @@ void o_keymap_draw_unpause (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h - ctx->ground.tgt.h / 3 - surf.payload->h / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surf.payload->w) / 2,
+        .y = ctx->scene.sim.h - ctx->ground.sim.h / 3 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);

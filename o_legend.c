@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "SDL_pixels.h"
+#include "SDL_rect.h"
 #include "SDL_log.h"
 #include "SDL_ttf.h"
 #include "types.h"
@@ -7,6 +8,7 @@
 #include "levels.h"
 #include "o_legend.h"
 #include "o_balloons.h"
+#include "o_scene.h"
 #include "wrapped.h"
 
 static void o_legend_draw_bars (ctx_t *);
@@ -29,21 +31,24 @@ static void o_legend_draw_bars (ctx_t * ctx) {
                                           ctx->colors.hit.b,
                                           ctx->colors.hit.a);
     for (int i = 0; i < nhit; i++, j++) {
-        SDL_RenderFillRect(ctx->renderer, &ctx->legend.bars[j].tgt);
+        SDL_Rect tgt = sim2tgt(ctx->scene, ctx->legend.bars[j].sim);
+        SDL_RenderFillRect(ctx->renderer, &tgt);
     }
     SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.middlegray.r,
                                           ctx->colors.middlegray.g,
                                           ctx->colors.middlegray.b,
                                           ctx->colors.middlegray.a);
     for (int i = 0; i < nmiddle; i++, j++) {
-        SDL_RenderFillRect(ctx->renderer, &ctx->legend.bars[j].tgt);
+        SDL_Rect tgt = sim2tgt(ctx->scene, ctx->legend.bars[j].sim);
+        SDL_RenderFillRect(ctx->renderer, &tgt);
     }
     SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.miss.r,
                                           ctx->colors.miss.g,
                                           ctx->colors.miss.b,
                                           ctx->colors.miss.a);
     for (int i = 0; i < nmiss; i++, j++) {
-        SDL_RenderFillRect(ctx->renderer, &ctx->legend.bars[j].tgt);
+        SDL_Rect tgt = sim2tgt(ctx->scene, ctx->legend.bars[j].sim);
+        SDL_RenderFillRect(ctx->renderer, &tgt);
     }
 }
 
@@ -66,7 +71,8 @@ static void o_legend_draw_rect_nbullets (ctx_t * ctx) {
                                           ctx->legend.highlight.bg->g,
                                           ctx->legend.highlight.bg->b,
                                           ctx->legend.highlight.bg->a);
-    SDL_RenderFillRect(ctx->renderer, &ctx->legend.highlight.tgt);
+    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->legend.highlight.sim);
+    SDL_RenderFillRect(ctx->renderer, &tgt);
 }
 
 static void o_legend_draw_text_hit (ctx_t * ctx) {
@@ -77,12 +83,12 @@ static void o_legend_draw_text_hit (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the hit legend text.\n");
         exit(EXIT_FAILURE);
     }
-    SDL_Rect tgt = {
-        .x = ctx->legend.bars[0].tgt.x,
-        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->legend.bars[0].sim.x,
+        .y = ctx->legend.bars[0].sim.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -97,12 +103,12 @@ static void o_legend_draw_text_level (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the level legend text.\n");
         exit(EXIT_FAILURE);
     }
-    SDL_Rect tgt = {
-        .x = 2 * ctx->scene.tgt.w / 4 - surf.payload->w / 2,
-        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = 2 * ctx->scene.sim.w / 4 - surf.payload->w / 2,
+        .y = ctx->legend.bars[0].sim.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -116,12 +122,12 @@ static void o_legend_draw_text_miss (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the miss legend text.\n");
         exit(EXIT_FAILURE);
     }
-    SDL_Rect tgt = {
-        .x = ctx->legend.bars[ctx->legend.nbars - 1].tgt.x + ctx->legend.bars[ctx->legend.nbars - 1].tgt.w - surf.payload->w,
-        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->legend.bars[ctx->legend.nbars - 1].sim.x + ctx->legend.bars[ctx->legend.nbars - 1].sim.w - surf.payload->w,
+        .y = ctx->legend.bars[0].sim.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -141,12 +147,12 @@ static void o_legend_draw_text_nballoons (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nballoons legend text.\n");
         exit(EXIT_FAILURE);
     }
-    SDL_Rect tgt = {
-        .x = 3 * ctx->scene.tgt.w / 4 - surf.payload->w / 2,
-        .y = ctx->legend.bars[0].tgt.y - surf.payload->h,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = 3 * ctx->scene.sim.w / 4 - surf.payload->w / 2,
+        .y = ctx->legend.bars[0].sim.y - surf.payload->h,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -162,12 +168,12 @@ static void o_legend_draw_text_nbullets (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nbullets legend caption.\n");
         exit(EXIT_FAILURE);
     }
-    SDL_Rect tgt = {
-        .x = ctx->legend.highlight.tgt.x + (ctx->legend.highlight.tgt.w - surf.payload->w) / 2,
-        .y = ctx->legend.highlight.tgt.y + (ctx->legend.highlight.tgt.h - surf.payload->h) / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->legend.highlight.sim.x + (ctx->legend.highlight.sim.w - surf.payload->w) / 2,
+        .y = ctx->legend.highlight.sim.y + (ctx->legend.highlight.sim.h - surf.payload->h) / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -182,12 +188,12 @@ static void o_legend_draw_text_nhit (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nhit legend text.\n");
         exit(EXIT_FAILURE);
     }
-    SDL_Rect tgt = {
-        .x = ctx->legend.bars[0].tgt.x - surf.payload->w - 10,
-        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf.payload->h) / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->legend.bars[0].sim.x - surf.payload->w - 10,
+        .y = ctx->legend.bars[0].sim.y + (ctx->legend.bars[0].sim.h - surf.payload->h) / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -201,12 +207,12 @@ static void o_legend_draw_text_nmiss (ctx_t * ctx) {
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nmiss legend text.\n");
     }
-    SDL_Rect tgt = {
-        .x = ctx->legend.bars[ctx->legend.nbars - 1].tgt.x + ctx->legend.bars[ctx->legend.nbars - 1].tgt.w + 10,
-        .y = ctx->legend.bars[0].tgt.y + (ctx->legend.bars[0].tgt.h - surf.payload->h) / 2,
+    SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = ctx->legend.bars[ctx->legend.nbars - 1].sim.x + ctx->legend.bars[ctx->legend.nbars - 1].sim.w + 10,
+        .y = ctx->legend.bars[0].sim.y + (ctx->legend.bars[0].sim.h - surf.payload->h) / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
-    };
+    });
     SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
@@ -234,17 +240,17 @@ ctx_t * o_legend_init (ctx_t * ctx) {
         .h = 20,
     };
     for (unsigned int i = 0; i < ctx->legend.nbars; i++) {
-        ctx->legend.bars[i].tgt = (SDL_Rect) {
+        ctx->legend.bars[i].sim = (SDL_FRect) {
             .x = first.x + i * (first.w + 5),
             .y = first.y,
             .w = first.w,
             .h = first.h,
         };
     }
-    ctx->legend.highlight.tgt = (SDL_Rect) {
-        .x = ctx->legend.bars[0].tgt.x,
-        .y = ctx->legend.bars[0].tgt.y + ctx->legend.bars[0].tgt.h + 7,
-        .w = (ctx->legend.bars[n-1].tgt.x + ctx->legend.bars[n-1].tgt.w) - ctx->legend.bars[0].tgt.x,
+    ctx->legend.highlight.sim = (SDL_FRect) {
+        .x = ctx->legend.bars[0].sim.x,
+        .y = ctx->legend.bars[0].sim.y + ctx->legend.bars[0].sim.h + 7,
+        .w = (ctx->legend.bars[n-1].sim.x + ctx->legend.bars[n-1].sim.w) - ctx->legend.bars[0].sim.x,
         .h = 40,
     };
     return ctx;

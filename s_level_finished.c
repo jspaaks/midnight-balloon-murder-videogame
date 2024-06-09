@@ -75,12 +75,12 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
         if (txre.invalid) {
             SDL_LogError(SDL_ENOMEM, "Error creating the proceed button keymap on level finished screen: %s.\n", TTF_GetError());
         }
-        SDL_Rect tgt = {
-            .x = 6 * ctx->scene.tgt.w / 7 - surf.payload->w / 2,
-            .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2,
+        SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+            .x = 6 * ctx->scene.sim.w / 7 - surf.payload->w / 2,
+            .y = ctx->scene.sim.h / 2 - surf.payload->h / 2,
             .w = surf.payload->w,
             .h = surf.payload->h,
-        };
+        });
         SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
         SDL_DestroyTexture(txre.payload);
         SDL_FreeSurface(surf.payload);
@@ -92,12 +92,12 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
         if (txre.invalid) {
             SDL_LogError(SDL_ENOMEM, "Error creating the proceed action keymap on level finished screen: %s.\n", TTF_GetError());
         }
-        SDL_Rect tgt = {
-            .x = 6 * ctx->scene.tgt.w / 7 - surf.payload->w / 2,
-            .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2 + 30,
+        SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+            .x = 6 * ctx->scene.sim.w / 7 - surf.payload->w / 2,
+            .y = ctx->scene.sim.h / 2 - surf.payload->h / 2 + 30,
             .w = surf.payload->w,
             .h = surf.payload->h,
-        };
+        });
         SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
         SDL_DestroyTexture(txre.payload);
         SDL_FreeSurface(surf.payload);
@@ -111,12 +111,12 @@ static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
             if (txre.invalid) {
                 SDL_LogError(SDL_ENOMEM, "Error creating the repeat action keymap on level finished screen: %s.\n", TTF_GetError());
             }
-            SDL_Rect tgt = {
-            .x = 1 * ctx->scene.tgt.w / 7 - surf.payload->w / 2,
-                .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2 + 30,
+            SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+                .x = 1 * ctx->scene.sim.w / 7 - surf.payload->w / 2,
+                .y = ctx->scene.sim.h / 2 - surf.payload->h / 2 + 30,
                 .w = surf.payload->w,
                 .h = surf.payload->h,
-            };
+            });
             SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
             SDL_DestroyTexture(txre.payload);
             SDL_FreeSurface(surf.payload);
@@ -129,12 +129,12 @@ static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             if (txre.invalid) {
                 SDL_LogError(SDL_ENOMEM, "Error creating the repeat button keymap on level finished screen: %s.\n", TTF_GetError());
             }
-            SDL_Rect tgt = {
-                .x = 1 * ctx->scene.tgt.w / 7 - surf.payload->w / 2,
-                .y = ctx->scene.tgt.h / 2 - surf.payload->h / 2,
+            SDL_Rect tgt = sim2tgt(ctx->scene, (SDL_FRect){
+                .x = 1 * ctx->scene.sim.w / 7 - surf.payload->w / 2,
+                .y = ctx->scene.sim.h / 2 - surf.payload->h / 2,
                 .w = surf.payload->w,
                 .h = surf.payload->h,
-            };
+            });
             SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
             SDL_DestroyTexture(txre.payload);
             SDL_FreeSurface(surf.payload);
