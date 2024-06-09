@@ -14,8 +14,8 @@
 #include "o_legend.h"
 #include "o_moon.h"
 #include "o_turret.h"
+#include "o_keymap.h"
 
-static void s_level_finished_draw_keymap_middle_top(ctx_t *);
 static void s_level_finished_draw_keymap_proceed(ctx_t *);
 static void s_level_finished_draw_keymap_repeat_action(ctx_t *);
 static void s_level_finished_draw_keymap_repeat_button(ctx_t *);
@@ -31,42 +31,12 @@ void s_level_finished_draw (ctx_t * ctx) {
     o_barrel_draw(ctx);
     o_legend_draw(ctx);
     o_ground_draw(ctx);
+    o_keymap_draw_proceedhint(ctx);
     s_level_finished_draw_title(ctx);
     s_level_finished_draw_keymap_proceed(ctx);
     s_level_finished_draw_keymap_repeat_button(ctx);
     s_level_finished_draw_keymap_repeat_action(ctx);
-    s_level_finished_draw_keymap_middle_top(ctx);
     SDL_RenderPresent(ctx->renderer);
-}
-
-static void s_level_finished_draw_keymap_middle_top(ctx_t * ctx) {
-    SDL_Color color = ctx->colors.middlegray;
-    char str[100];
-    if (ctx->ilevel == ctx->nlevels - 1) {
-        sprintf(str, "FINAL LEVEL");
-    } else if (ctx->nmiss > ctx->level->nprespawn.ba - ctx->level->nproceed) {
-        sprintf(str, "NOT ENOUGH HITS TO PROCEED TO NEXT LEVEL");
-        color = ctx->colors.lightgray;
-    } else if (ctx->nhit >= ctx->level->nproceed) {
-        sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!");
-        color = ctx->colors.lightgray;
-    } else {
-        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
-    }
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, color, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on level finished screen: %s.\n", TTF_GetError());
-    }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
-        .w = surf.payload->w,
-        .h = surf.payload->h,
-    };
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
 }
 
 static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
@@ -130,7 +100,6 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
         SDL_DestroyTexture(txre.payload);
         SDL_FreeSurface(surf.payload);
     }
-
 }
 
 static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {

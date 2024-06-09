@@ -6,6 +6,7 @@
 #include "SDL_render.h"
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
+#include "SDL_video.h"
 #include "fsm.h"
 #include "s_start.h"
 #include "types.h"
@@ -13,35 +14,17 @@
 #include "o_background.h"
 #include "o_ground.h"
 #include "o_moon.h"
+#include "o_keymap.h"
 
-static void s_start_draw_keymap (ctx_t *);
 static void s_start_draw_title (ctx_t *);
 
 void s_start_draw (ctx_t * ctx) {
     o_background_draw(ctx);
     o_moon_draw(ctx);
     o_ground_draw(ctx);
+    o_keymap_draw_start(ctx);
     s_start_draw_title(ctx);
-    s_start_draw_keymap(ctx);
     SDL_RenderPresent(ctx->renderer);
-}
-
-static void s_start_draw_keymap (ctx_t * ctx) {
-    char keymap[20] = "PRESS ENTER TO PLAY";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.lightgray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
-    }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h - 2 * ctx->ground.tgt.h / 3 - surf.payload->h / 2,
-        .w = surf.payload->w,
-        .h = surf.payload->h,
-    };
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
 }
 
 static void s_start_draw_title (ctx_t * ctx) {
@@ -134,10 +117,20 @@ static void s_start_draw_title (ctx_t * ctx) {
 ctx_t * s_start_update (ctx_t * ctx, state_t ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.sym == SDLK_RETURN) {
-                SDL_Log("playing\n");
-                *state = fsm_set_state(PLAYING);
+        switch (event.type) {
+            case SDL_KEYDOWN: {
+                if (event.key.keysym.sym == SDLK_RETURN) {
+                    SDL_Log("playing\n");
+                    *state = fsm_set_state(PLAYING);
+                }
+                break;
+            }
+            case SDL_WINDOWEVENT: {
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    SDL_Log("resize\n");
+                    ctx->scene.resized = true;
+                }
+                break;
             }
         }
     }
