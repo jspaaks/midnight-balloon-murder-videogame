@@ -7,18 +7,22 @@ void o_moon_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_moon_init (ctx_t * ctx) {
+    unsigned int x = 75;
+    unsigned int y = 1;
+    unsigned int w = 90;
+    unsigned int h = 90;
     ctx->moon = (moon_t){
         .src = (SDL_Rect){
-            .x = 75,
-            .y = 1,
-            .w = 90,
-            .h = 90,
+            .x = x,
+            .y = y,
+            .w = w,
+            .h = h,
         },
         .tgt = (SDL_Rect){
-            .x = ctx->scene.tgt.w - 90 - 40,
-            .y = 40,
-            .w = 90,
-            .h = 90,
+            .x = ctx->scene.tgt.w - w - 40,
+            .y = ctx->scene.tgt.y + 40,
+            .w = w,
+            .h = h,
         },
     };
     return ctx;
