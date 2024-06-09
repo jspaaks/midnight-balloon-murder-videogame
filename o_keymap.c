@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "SDL_log.h"
 #include "SDL_pixels.h"
 #include "SDL_rect.h"
