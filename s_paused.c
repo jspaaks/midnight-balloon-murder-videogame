@@ -19,8 +19,7 @@
 #include "o_legend.h"
 #include "o_moon.h"
 #include "o_turret.h"
-
-static void s_paused_draw_title (ctx_t *);
+#include "o_titles.h"
 
 void s_paused_draw (ctx_t * ctx) {
     o_background_draw(ctx);
@@ -39,7 +38,7 @@ void s_paused_draw (ctx_t * ctx) {
     o_keymap_draw_unpause(ctx);
     o_keymap_draw_restart(ctx);
     o_keymap_draw_quit(ctx);
-    s_paused_draw_title(ctx);
+    o_titles_draw_paused(ctx);
     SDL_RenderPresent(ctx->renderer);
 }
 
@@ -66,22 +65,4 @@ ctx_t * s_paused_update (ctx_t * ctx, state_t ** state) {
         }
     }
     return ctx;
-}
-
-static void s_paused_draw_title (ctx_t * ctx) {
-    char title[7] = "PAUSED";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.xlarge, title, ctx->colors.lightgray, ctx->colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n", TTF_GetError());
-    }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h * 0.44 - surf.payload->h / 2,
-        .w = surf.payload->w,
-        .h = surf.payload->h,
-    };
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
 }

@@ -15,11 +15,11 @@
 #include "o_moon.h"
 #include "o_turret.h"
 #include "o_keymap.h"
+#include "o_titles.h"
 
 static void s_level_finished_draw_keymap_proceed(ctx_t *);
 static void s_level_finished_draw_keymap_repeat_action(ctx_t *);
 static void s_level_finished_draw_keymap_repeat_button(ctx_t *);
-static void s_level_finished_draw_title (ctx_t *);
 
 static bool next_unlocked;
 static bool next_exists;
@@ -32,7 +32,7 @@ void s_level_finished_draw (ctx_t * ctx) {
     o_legend_draw(ctx);
     o_ground_draw(ctx);
     o_keymap_draw_proceedhint(ctx);
-    s_level_finished_draw_title(ctx);
+    o_titles_draw_level_finished(ctx);
     s_level_finished_draw_keymap_proceed(ctx);
     s_level_finished_draw_keymap_repeat_button(ctx);
     s_level_finished_draw_keymap_repeat_action(ctx);
@@ -136,29 +136,6 @@ static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
             SDL_DestroyTexture(txre.payload);
             SDL_FreeSurface(surf.payload);
-}
-
-static void s_level_finished_draw_title (ctx_t * ctx) {
-    char title[15];
-    if (ctx->nmiss == 0) {
-        strncpy(title, "PERFECT SCORE!", 15);
-    } else {
-        strncpy(title, "LEVEL FINISHED", 15);
-    }
-    SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.xlarge, title, ctx->colors.lightgray, ctx->colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n", TTF_GetError());
-    }
-    SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h * 0.44 - surf.payload->h / 2,
-        .w = surf.payload->w,
-        .h = surf.payload->h,
-    };
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
 }
 
 ctx_t * s_level_finished_update (ctx_t * ctx, state_t ** state) {
