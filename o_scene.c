@@ -40,8 +40,8 @@ ctx_t * o_scene_update (ctx_t * ctx) {
         int w0;
         int h0;
         SDL_GetRendererOutputSize(ctx->renderer, &w0, &h0);
-        float w = (float) (w0);
-        float h = (float) (h0);
+        float w = w0 < ctx->scene.sim.w ? ctx->scene.sim.w : (float) (w0);
+        float h = h0 < ctx->scene.sim.h ? ctx->scene.sim.h : (float) (h0);
         float ratio = w / h;
         if (ratio > ctx->scene.ratio) {
             SDL_Log("%d, %d -- too wide\n", w0, h0);
