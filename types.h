@@ -131,12 +131,15 @@ struct level_t {
 };
 
 struct moon_t {
+    SDL_FRect sim;
     SDL_Rect src;
     SDL_Rect tgt;
 };
 
 struct scene_t {
     bool resized;
+    float scale;
+    float ratio;
     SDL_FRect sim;
     SDL_Rect tgt;
 };

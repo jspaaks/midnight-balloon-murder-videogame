@@ -11,11 +11,12 @@
 #include "o_background.h"
 #include "o_barrel.h"
 #include "o_ground.h"
+#include "o_keymap.h"
 #include "o_legend.h"
 #include "o_moon.h"
-#include "o_turret.h"
-#include "o_keymap.h"
+#include "o_scene.h"
 #include "o_titles.h"
+#include "o_turret.h"
 
 static void s_level_finished_draw_keymap_proceed(ctx_t *);
 static void s_level_finished_draw_keymap_repeat_action(ctx_t *);
@@ -26,6 +27,7 @@ static bool next_exists;
 
 void s_level_finished_draw (ctx_t * ctx) {
     o_background_draw(ctx);
+    o_scene_draw(ctx);
     o_moon_draw(ctx);
     o_turret_draw(ctx);
     o_barrel_draw(ctx);
@@ -146,19 +148,31 @@ ctx_t * s_level_finished_update (ctx_t * ctx, state_t ** state) {
     next_exists = ctx->ilevel + 1 < ctx->nlevels;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN) {
-            if (next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
-                ctx->ilevel += next_exists ? 1 : 0;
-                levels_set(ctx, ctx->ilevel);
-                SDL_Log("playing -- next level\n");
-                *state = fsm_set_state(PLAYING);
+        switch (event.type) {
+            case SDL_KEYDOWN: {
+                if (next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
+                    ctx->ilevel += next_exists ? 1 : 0;
+                    levels_set(ctx, ctx->ilevel);
+                    SDL_Log("playing -- next level\n");
+                    *state = fsm_set_state(PLAYING);
+                } else if (event.key.keysym.sym == SDLK_r) {
+                    levels_set(ctx, ctx->ilevel);
+                    SDL_Log("playing -- same level\n");
+                    *state = fsm_set_state(PLAYING);
+                }
+                break;
             }
-            if (event.key.keysym.sym == SDLK_r) {
-                levels_set(ctx, ctx->ilevel);
-                SDL_Log("playing -- same level\n");
-                *state = fsm_set_state(PLAYING);
+            case SDL_WINDOWEVENT: {
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    SDL_Log("resize\n");
+                    ctx->scene.resized = true;
+                }
+                break;
             }
         }
     }
+    ctx = o_scene_update(ctx);
+    ctx = o_ground_update(ctx);
+    ctx = o_moon_update(ctx);
     return ctx;
 }

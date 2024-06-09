@@ -7,6 +7,7 @@
 #include "types.h"
 #include "wrapped.h"
 #include "o_titles.h"
+#include "o_scene.h"
 
 void o_titles_draw_level_finished (ctx_t * ctx) {
     char title[15];
@@ -74,31 +75,30 @@ void o_titles_draw_opening_title (ctx_t * ctx) {
         exit(EXIT_FAILURE);
     }
 
-    tgts.left = (SDL_Rect){
-        .x = (ctx->scene.tgt.w - surfs.middle.payload->w) / 2 - surfs.left.payload->w,
-        .y = ctx->scene.tgt.h * 0.31 - 7,
+    tgts.left = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surfs.middle.payload->w) / 2 - surfs.left.payload->w,
+        .y = ctx->scene.sim.h * 0.31 - 7,
         .w = surfs.left.payload->w,
         .h = surfs.left.payload->h,
-    };
-    tgts.middle = (SDL_Rect){
-        .x = (ctx->scene.tgt.w - surfs.middle.payload->w) / 2,
-        .y = ctx->scene.tgt.h * 0.31,
+    });
+    tgts.middle = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surfs.middle.payload->w) / 2,
+        .y = ctx->scene.sim.h * 0.31,
         .w = surfs.middle.payload->w,
         .h = surfs.middle.payload->h,
-    };
-    tgts.right = (SDL_Rect){
-        .x = (ctx->scene.tgt.w - surfs.middle.payload->w) / 2 + surfs.middle.payload->w,
-        .y = ctx->scene.tgt.h * 0.31 - 7,
+    });
+    tgts.right = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surfs.middle.payload->w) / 2 + surfs.middle.payload->w,
+        .y = ctx->scene.sim.h * 0.31 - 7,
         .w = surfs.right.payload->w,
         .h = surfs.right.payload->h,
-    };
-    tgts.underline = (SDL_Rect){
-        .x = (ctx->scene.tgt.w - surfs.middle.payload->w) / 2,
-        .y = ctx->scene.tgt.h * 0.31 + surfs.middle.payload->h - 51,
+    });
+    tgts.underline = sim2tgt(ctx->scene, (SDL_FRect){
+        .x = (ctx->scene.sim.w - surfs.middle.payload->w) / 2,
+        .y = ctx->scene.sim.h * 0.31 + surfs.middle.payload->h - 51,
         .w = surfs.middle.payload->w,
         .h = 3,
-    };
-
+    });
     SDL_RenderCopy(ctx->renderer, txres.left.payload, NULL, &tgts.left);
     SDL_RenderCopy(ctx->renderer, txres.middle.payload, NULL, &tgts.middle);
     SDL_RenderCopy(ctx->renderer, txres.right.payload, NULL, &tgts.right);
@@ -125,8 +125,8 @@ void o_titles_draw_paused (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n", TTF_GetError());
     }
     SDL_Rect tgt = {
-        .x = (ctx->scene.tgt.w - surf.payload->w) / 2,
-        .y = ctx->scene.tgt.h * 0.44 - surf.payload->h / 2,
+        .x = ctx->scene.tgt.x + (ctx->scene.tgt.w - surf.payload->w) / 2,
+        .y = ctx->scene.tgt.y + ctx->scene.tgt.h * 0.44 - surf.payload->h / 2,
         .w = surf.payload->w,
         .h = surf.payload->h,
     };

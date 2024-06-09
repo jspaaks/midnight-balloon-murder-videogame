@@ -4,5 +4,6 @@
 
 void o_ground_draw (ctx_t *);
 ctx_t * o_ground_init (ctx_t *);
+ctx_t * o_ground_update (ctx_t *);
 
 #endif

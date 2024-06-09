@@ -17,10 +17,12 @@
 #include "o_keymap.h"
 #include "o_legend.h"
 #include "o_moon.h"
+#include "o_scene.h"
 #include "o_turret.h"
 
 void s_playing_draw (ctx_t * ctx) {
     o_background_draw(ctx);
+    o_scene_draw(ctx);
     o_moon_draw(ctx);
     o_turret_draw(ctx);
     o_barrel_draw(ctx);
@@ -49,12 +51,15 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
             case SDL_WINDOWEVENT: {
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                     SDL_Log("resize\n");
-                    ctx->resized = true;
+                    ctx->scene.resized = true;
                 }
                 break;
             }
         }
     }
+    ctx = o_scene_update(ctx);
+    ctx = o_ground_update(ctx);
+    ctx = o_moon_update(ctx);
     ctx = o_turret_update(ctx);
     ctx = o_barrel_update(ctx);
     ctx = o_flash_update(ctx);

@@ -14,7 +14,7 @@
 #include "spritesheet.h"
 #include "types.h"
 #include "window.h"
-#include "scene.h"
+#include "o_scene.h"
 #include "o_balloons.h"
 #include "o_barrel.h"
 #include "o_bullets.h"
@@ -52,7 +52,7 @@ static bool init (ctx_t * ctx) {
         return false;
     }
     // --- sdl infrastructure
-    ctx = scene_init(ctx);
+    ctx = o_scene_init(ctx);
     ctx = window_init(ctx);
     ctx = renderer_init(ctx);
     ctx = spritesheet_init(ctx);

@@ -7,6 +7,7 @@
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
 #include "SDL_video.h"
+#include "o_scene.h"
 #include "fsm.h"
 #include "s_start.h"
 #include "types.h"
@@ -19,6 +20,7 @@
 
 void s_start_draw (ctx_t * ctx) {
     o_background_draw(ctx);
+    o_scene_draw(ctx);
     o_moon_draw(ctx);
     o_ground_draw(ctx);
     o_keymap_draw_start(ctx);
@@ -46,5 +48,8 @@ ctx_t * s_start_update (ctx_t * ctx, state_t ** state) {
             }
         }
     }
+    ctx = o_scene_update(ctx);
+    ctx = o_ground_update(ctx);
+    ctx = o_moon_update(ctx);
     return ctx;
 }
