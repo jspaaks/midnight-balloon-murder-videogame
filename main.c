@@ -6,7 +6,6 @@
 #include "SDL_timer.h"
 #include "SDL.h"
 #include "colors.h"
-#include "constants.h"
 #include "fonts.h"
 #include "fsm.h"
 #include "keystate.h"
@@ -15,6 +14,7 @@
 #include "spritesheet.h"
 #include "types.h"
 #include "window.h"
+#include "scene.h"
 #include "o_balloons.h"
 #include "o_barrel.h"
 #include "o_bullets.h"
@@ -52,13 +52,7 @@ static bool init (ctx_t * ctx) {
         return false;
     }
     // --- sdl infrastructure
-    ctx->resized = true;
-    ctx->scene.tgt = (SDL_Rect) {
-        .x = 0,
-        .y = 0,
-        .w = SCREEN_WIDTH,
-        .h = SCREEN_HEIGHT,
-    };
+    ctx = scene_init(ctx);
     ctx = window_init(ctx);
     ctx = renderer_init(ctx);
     ctx = spritesheet_init(ctx);

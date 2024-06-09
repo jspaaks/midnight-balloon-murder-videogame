@@ -103,6 +103,7 @@ struct flash_t {
 };
 
 struct ground_t {
+    SDL_FRect sim;
     SDL_Rect tgt;
 };
 
@@ -135,6 +136,8 @@ struct moon_t {
 };
 
 struct scene_t {
+    bool resized;
+    SDL_FRect sim;
     SDL_Rect tgt;
 };
 

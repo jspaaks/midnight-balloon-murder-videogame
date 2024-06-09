@@ -1,9 +1,11 @@
+#include <assert.h>
 #include "SDL_pixels.h"
 #include "SDL_log.h"
 #include "types.h"
 #include "o_background.h"
 
 void o_background_draw (ctx_t * ctx) {
+    assert(ctx->scene.tgt.w != 0 && "scene needs to be initialized before background");
     SDL_SetRenderDrawColor(ctx->renderer, 0, 0, 0, 0);
     SDL_RenderClear(ctx->renderer);
     SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.bg.r,
