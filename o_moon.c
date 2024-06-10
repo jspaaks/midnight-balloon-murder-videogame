@@ -4,7 +4,8 @@
 #include "o_scene.h"
 
 void o_moon_draw (ctx_t * ctx) {
-    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->moon.src, &ctx->moon.tgt);
+    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->moon.sim);
+    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->moon.src, &tgt);
 }
 
 ctx_t * o_moon_init (ctx_t * ctx) {
@@ -22,11 +23,9 @@ ctx_t * o_moon_init (ctx_t * ctx) {
             .h = 90,
         },
     };
-    ctx->moon.tgt = sim2tgt(ctx->scene, ctx->moon.sim);
     return ctx;
 }
 
 ctx_t * o_moon_update (ctx_t * ctx) {
-    ctx->moon.tgt = sim2tgt(ctx->scene, ctx->moon.sim);
     return ctx;
 }

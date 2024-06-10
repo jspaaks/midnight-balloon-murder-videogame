@@ -19,10 +19,15 @@ static float o_barrel_clip(float v) {
 }
 
 void o_barrel_draw (ctx_t * ctx) {
+    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->barrel.sim);
+    SDL_Point pivot_offset = (SDL_Point) {
+        .x = (int) (ctx->barrel.sim2.pivot_offset.x * ctx->scene.scale),
+        .y = (int) (ctx->barrel.sim2.pivot_offset.y * ctx->scene.scale),
+    };
     SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &ctx->barrel.src,
-                                                      &ctx->barrel.tgt,
+                                                      &tgt,
                                                       ctx->barrel.sim2.angle,
-                                                      &ctx->barrel.tgt2.pivot_offset,
+                                                      &pivot_offset,
                                                       SDL_FLIP_NONE);
 }
 
@@ -74,24 +79,17 @@ static float o_barrel_min(float a, float b) {
 }
 
 ctx_t * o_barrel_update (ctx_t * ctx) {
-    if (!ctx->ispaused) {
-        int flags = ctx->keys[SDL_SCANCODE_W] |
-                    ctx->keys[SDL_SCANCODE_S] << 1;
-        switch (flags) {
-            case 1: {
-                ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + -1 * ctx->barrel.sim2.speed * ctx->dt.frame);
-                break;
-            }
-            case 2: {
-                ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + 1 * ctx->barrel.sim2.speed * ctx->dt.frame);
-                break;
-            }
+    int flags = ctx->keys[SDL_SCANCODE_W] |
+                ctx->keys[SDL_SCANCODE_S] << 1;
+    switch (flags) {
+        case 1: {
+            ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + -1 * ctx->barrel.sim2.speed * ctx->dt.frame);
+            break;
+        }
+        case 2: {
+            ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + 1 * ctx->barrel.sim2.speed * ctx->dt.frame);
+            break;
         }
     }
-    ctx->barrel.tgt = sim2tgt(ctx->scene, ctx->barrel.sim);
-    ctx->barrel.tgt2.pivot_offset = (SDL_Point) {
-        .x = (int) (ctx->barrel.sim2.pivot_offset.x * ctx->scene.scale),
-        .y = (int) (ctx->barrel.sim2.pivot_offset.y * ctx->scene.scale),
-    };
     return ctx;
 }

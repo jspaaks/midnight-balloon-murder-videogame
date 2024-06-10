@@ -16,9 +16,6 @@ static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
-    if (ctx->ispaused) {
-        return ctx;
-    }
     static const float PI = 3.14159265358979323846f;
     static Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
@@ -51,12 +48,6 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
                 .v = sin(a) * speed,
             },
             .src = &src_bullet,
-            .tgt = {
-                .x = (int) x,
-                .y = (int) y,
-                .w = src_bullet.w,
-                .h = src_bullet.h,
-            },
             .next = NULL,
         };
         bu->next = ctx->bullets;
@@ -81,7 +72,7 @@ void o_bullets_draw (ctx_t * ctx) {
 
 ctx_t * o_bullets_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before bullets");
-    assert(ctx->ground.tgt.w != 0 && "ground needs to be initialized before bullets");
+    assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before bullets");
     ctx->bullets = NULL;
     ctx->nprespawn.bu = ctx->level->nprespawn.bu;
     return ctx;
@@ -103,22 +94,15 @@ static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
     const float gravity = 70; // pixels per second per second
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
-        if (!ctx->ispaused) {
-            bu->sim2.v += gravity * ctx->dt.frame;
-            bu->sim.x += bu->sim2.u * ctx->dt.frame;
-            bu->sim.y += bu->sim2.v * ctx->dt.frame;
-        }
-        bu->tgt.x = (int) bu->sim.x;
-        bu->tgt.y = (int) bu->sim.y;
+        bu->sim2.v += gravity * ctx->dt.frame;
+        bu->sim.x += bu->sim2.u * ctx->dt.frame;
+        bu->sim.y += bu->sim2.v * ctx->dt.frame;
         bu = bu->next;
     }
     return ctx;
 }
 
 static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
-    if (ctx->ispaused) {
-        return ctx;
-    }
     bullet_t * this = ctx->bullets;
     bullet_t * prev = NULL;
     bool isfirst = false;

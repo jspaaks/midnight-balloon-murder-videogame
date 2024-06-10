@@ -38,7 +38,6 @@ void s_playing_draw (ctx_t * ctx) {
 }
 
 ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
-    ctx->ispaused = false;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {

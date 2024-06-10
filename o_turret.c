@@ -6,7 +6,8 @@
 #include "o_scene.h"
 
 void o_turret_draw (ctx_t * ctx) {
-    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->turret.src, &ctx->turret.tgt);
+    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->turret.sim);
+    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->turret.src, &tgt);
 }
 
 ctx_t * o_turret_init (ctx_t * ctx) {
@@ -26,12 +27,10 @@ ctx_t * o_turret_init (ctx_t * ctx) {
             .x = 4,
             .y = 1,
         },
-        .tgt = sim2tgt(ctx->scene, sim),
     };
     return ctx;
 }
 
 ctx_t * o_turret_update (ctx_t * ctx) {
-    ctx->turret.tgt = sim2tgt(ctx->scene, ctx->turret.sim);
     return ctx;
 }

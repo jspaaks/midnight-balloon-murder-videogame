@@ -6,11 +6,12 @@
 #include "o_scene.h"
 
 void o_ground_draw (ctx_t * ctx) {
+    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->ground.sim);
     SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.ground.r,
                                           ctx->colors.ground.g,
                                           ctx->colors.ground.b,
                                           ctx->colors.ground.a);
-    SDL_RenderFillRect(ctx->renderer, &ctx->ground.tgt);
+    SDL_RenderFillRect(ctx->renderer, &tgt);
 }
 
 ctx_t * o_ground_init (ctx_t * ctx) {
@@ -22,11 +23,9 @@ ctx_t * o_ground_init (ctx_t * ctx) {
         .x = 0,
         .y = ctx->scene.sim.h - h,
     };
-    ctx->ground.tgt = sim2tgt(ctx->scene, ctx->ground.sim);
     return ctx;
 }
 
 ctx_t * o_ground_update (ctx_t * ctx) {
-    ctx->ground.tgt = sim2tgt(ctx->scene, ctx->ground.sim);
     return ctx;
 }

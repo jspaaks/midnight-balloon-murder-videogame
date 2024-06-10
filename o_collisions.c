@@ -58,7 +58,7 @@ ctx_t * o_collisions_update (ctx_t * ctx) {
                 bu->state = BU_HIT;
 
                 // spawn collision effect
-                o_collisions_add(ctx, ba->tgt.x, ba->tgt.y);
+                o_collisions_add(ctx, ba->sim.x, ba->sim.y);
             }
             bu = bu->next;
         }

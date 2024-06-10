@@ -45,7 +45,6 @@ void s_paused_draw (ctx_t * ctx) {
 }
 
 ctx_t * s_paused_update (ctx_t * ctx, state_t ** state) {
-    ctx->ispaused = true;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -78,13 +77,5 @@ ctx_t * s_paused_update (ctx_t * ctx, state_t ** state) {
         }
     }
     ctx = o_scene_update(ctx);
-    ctx = o_ground_update(ctx);
-    ctx = o_moon_update(ctx);
-    ctx = o_turret_update(ctx);
-    ctx = o_barrel_update(ctx);
-    ctx = o_balloons_update(ctx);
-    ctx = o_bullets_update(ctx);
-    ctx = o_collisions_update(ctx);
-    ctx = o_legend_update(ctx);
     return ctx;
 }

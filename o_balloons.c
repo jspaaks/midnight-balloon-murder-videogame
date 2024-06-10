@@ -39,7 +39,8 @@ ctx_t * o_balloons_deinit (ctx_t * ctx) {
 void o_balloons_draw (ctx_t * ctx) {
     for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
         if (ctx->balloons[i].state == BA_AIRBORNE) {
-            SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &ctx->balloons[i].tgt);
+            SDL_Rect tgt = sim2tgt(ctx->scene, ctx->balloons[i].sim);
+            SDL_RenderCopy(ctx->renderer, ctx->spritesheet, ctx->balloons[i].src, &tgt);
         }
     }
 }
@@ -160,9 +161,7 @@ static balloon_t * o_balloons_randomize_x (ctx_t * ctx) {
     int r;
     for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++, b++) {
         r = rand() % x_ampl;
-        int x = (0.4 * SCREEN_WIDTH) + r;
-        b->sim.x = x;
-        b->tgt.x = x;
+        b->sim.x = (0.4 * ctx->scene.sim.w) + r;
     }
     return ctx->balloons;
 }
@@ -186,12 +185,8 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             case BA_AIRBORNE: {
-                if (!ctx->ispaused) {
-                    ctx->balloons[i].sim.x += ctx->balloons[i].sim2.u * ctx->dt.frame;
-                    ctx->balloons[i].sim.y += ctx->balloons[i].sim2.v * ctx->dt.frame;
-                }
-                ctx->balloons[i].tgt = sim2tgt(ctx->scene, ctx->balloons[i].sim);
-
+                ctx->balloons[i].sim.x += ctx->balloons[i].sim2.u * ctx->dt.frame;
+                ctx->balloons[i].sim.y += ctx->balloons[i].sim2.v * ctx->dt.frame;
                 if (ctx->balloons[i].sim.y + ctx->balloons[i].sim.h < ctx->scene.sim.x ||
                     ctx->balloons[i].sim.y > ctx->scene.sim.h ||
                     ctx->balloons[i].sim.x + ctx->balloons[i].sim.w < 0 ||

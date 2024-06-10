@@ -52,7 +52,5 @@ ctx_t * s_start_update (ctx_t * ctx, state_t ** state) {
         }
     }
     ctx = o_scene_update(ctx);
-    ctx = o_ground_update(ctx);
-    ctx = o_moon_update(ctx);
     return ctx;
 }

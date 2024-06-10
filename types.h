@@ -50,7 +50,6 @@ struct balloon_t {
         float v;
     } sim2;
     const SDL_Rect * src;
-    SDL_Rect tgt;
     Uint64 trelease;
 };
 
@@ -64,16 +63,11 @@ struct barrel_t {
         float speed;
     } sim2;
     SDL_Rect src;
-    SDL_Rect tgt;
-    struct {
-        SDL_Point pivot_offset;
-    } tgt2;
 };
 
 struct bullet_t {
     bullet_state_t state;
     const SDL_Rect * src;
-    SDL_Rect tgt;
     SDL_FRect sim;
     struct {
         float u;
@@ -111,15 +105,10 @@ struct flash_t {
         SDL_FPoint pivot_offset;
     } sim2;
     SDL_Rect src;
-    SDL_Rect tgt;
-    struct {
-        SDL_Point pivot_offset;
-    } tgt2;
 };
 
 struct ground_t {
     SDL_FRect sim;
-    SDL_Rect tgt;
 };
 
 struct legend_t {
@@ -148,7 +137,6 @@ struct level_t {
 struct moon_t {
     SDL_FRect sim;
     SDL_Rect src;
-    SDL_Rect tgt;
 };
 
 struct scene_t {
@@ -168,13 +156,11 @@ struct state_t {
 struct turret_t {
     SDL_FRect sim;
     SDL_Rect src;
-    SDL_Rect tgt;
 };
 
 struct ctx_t {
     bool resized;
     bool isfullscreen;
-    bool ispaused;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
     unsigned int nhit;

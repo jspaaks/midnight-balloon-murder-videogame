@@ -9,10 +9,15 @@
 
 void o_flash_draw (ctx_t * ctx) {
     if (ctx->flash.show) {
+        SDL_Rect tgt = sim2tgt(ctx->scene, ctx->flash.sim);
+        SDL_Point pivot_offset = (SDL_Point) {
+            .x = (int) (ctx->flash.sim2.pivot_offset.x * ctx->scene.scale),
+            .y = (int) (ctx->flash.sim2.pivot_offset.y * ctx->scene.scale),
+        };
         SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &ctx->flash.src,
-                                                          &ctx->flash.tgt,
+                                                          &tgt,
                                                           ctx->barrel.sim2.angle,
-                                                          &ctx->flash.tgt2.pivot_offset,
+                                                          &pivot_offset,
                                                           SDL_FLIP_NONE);
     }
 }
@@ -51,10 +56,5 @@ ctx_t * o_flash_init (ctx_t * ctx) {
 ctx_t * o_flash_update (ctx_t * ctx) {
     static Uint64 timeout = 25;
     ctx->flash.show = SDL_GetTicks64() < ctx->tspawn_latestbullet  + timeout;
-    ctx->flash.tgt = sim2tgt(ctx->scene, ctx->flash.sim);
-    ctx->flash.tgt2.pivot_offset = (SDL_Point) {
-        .x = (int) (ctx->flash.sim2.pivot_offset.x * ctx->scene.scale),
-        .y = (int) (ctx->flash.sim2.pivot_offset.y * ctx->scene.scale),
-    };
     return ctx;
 }
