@@ -4,6 +4,7 @@
 #include "SDL_render.h"
 #include "types.h"
 #include "o_barrel.h"
+#include "o_scene.h"
 
 static float o_barrel_max (float, float);
 static float o_barrel_min (float, float);
@@ -20,47 +21,46 @@ static float o_barrel_clip(float v) {
 void o_barrel_draw (ctx_t * ctx) {
     SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &ctx->barrel.src,
                                                       &ctx->barrel.tgt,
-                                                      ctx->barrel.angle,
-                                                      &ctx->barrel.pivot_offset,
+                                                      ctx->barrel.sim2.angle,
+                                                      &ctx->barrel.tgt2.pivot_offset,
                                                       SDL_FLIP_NONE);
 }
 
 ctx_t * o_barrel_init (ctx_t * ctx) {
-    assert(ctx->turret.tgt.x != 0 && "turret needs to be initialized before barrel");
-    float w = 55.;
-    float h = 11.;
-    float x = ctx->turret.sim.x + (ctx->turret.sim.w - 1) / 2;
-    float y = ctx->turret.sim.y + (ctx->turret.sim.w - 1) / 2 - (h - 1) / 2;
+    assert(ctx->turret.sim.x != 0 && "turret needs to be initialized before barrel");
+    SDL_Rect src = {
+        .h = 11,
+        .w = 55,
+        .x = 4,
+        .y = 68,
+    };
+    SDL_FRect sim = {
+        .h = src.h,
+        .w = src.w,
+        .x = ctx->turret.sim.x + (ctx->turret.sim.w - 1) / 2,
+        .y = ctx->turret.sim.y + (ctx->turret.sim.w - 1) / 2 - (src.h - 1) / 2,
+    };
     ctx->barrel = (barrel_t) {
-        .angle = -25.0,
-        .length = w,
-        .speed = 17,
-        .pivot = (SDL_FPoint) {
-            .x = ctx->turret.sim.x + ctx->turret.sim.w / 2,
-            .y = ctx->turret.sim.y + ctx->turret.sim.w / 2,
+        .sim = {
+            .h = sim.h,
+            .w = sim.w,
+            .x = sim.x,
+            .y = sim.y,
         },
-        .sim = (SDL_FRect) {
-            .x = x,
-            .y = y,
-            .w = w,
-            .h = h,
+        .sim2 = {
+            .angle = -25.0,
+            .length = sim.w,
+            .pivot = (SDL_FPoint) {
+                .x = ctx->turret.sim.x + ctx->turret.sim.w / 2,
+                .y = ctx->turret.sim.y + ctx->turret.sim.w / 2,
+            },
+            .pivot_offset = (SDL_FPoint) {
+                .x = 0,
+                .y = (int) sim.h / 2,
+            },
+            .speed = 17,
         },
-        .pivot_offset = (SDL_Point) {
-            .x = 0,
-            .y = (int) h / 2,
-        },
-        .src = (SDL_Rect) {
-            .x = 4,
-            .y = 68,
-            .w = w,
-            .h = h,
-        },
-        .tgt = (SDL_Rect) {
-            .x = x,
-            .y = y,
-            .w = w,
-            .h = h,
-        }
+        .src = src,
     };
     return ctx;
 }
@@ -78,13 +78,18 @@ ctx_t * o_barrel_update (ctx_t * ctx) {
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            ctx->barrel.angle = o_barrel_clip(ctx->barrel.angle + -1 * ctx->barrel.speed * ctx->dt.frame);
+            ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + -1 * ctx->barrel.sim2.speed * ctx->dt.frame);
             break;
         }
         case 2: {
-            ctx->barrel.angle = o_barrel_clip(ctx->barrel.angle + 1 * ctx->barrel.speed * ctx->dt.frame);
+            ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + 1 * ctx->barrel.sim2.speed * ctx->dt.frame);
             break;
         }
     }
+    ctx->barrel.tgt = sim2tgt(ctx->scene, ctx->barrel.sim);
+    ctx->barrel.tgt2.pivot_offset = (SDL_Point) {
+        .x = (int) (ctx->barrel.sim2.pivot_offset.x * ctx->scene.scale),
+        .y = (int) (ctx->barrel.sim2.pivot_offset.y * ctx->scene.scale),
+    };
     return ctx;
 }

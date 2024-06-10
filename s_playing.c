@@ -50,8 +50,7 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
             }
             case SDL_WINDOWEVENT: {
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    SDL_Log("resize\n");
-                    ctx->scene.resized = true;
+                     ctx->scene.resized = true;
                 }
                 break;
             }

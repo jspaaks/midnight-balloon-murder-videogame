@@ -44,19 +44,19 @@ ctx_t * o_scene_update (ctx_t * ctx) {
         float h = h0 < ctx->scene.sim.h ? ctx->scene.sim.h : (float) (h0);
         float ratio = w / h;
         if (ratio > ctx->scene.ratio) {
-            SDL_Log("%d, %d -- too wide\n", w0, h0);
+            // -- too wide
             ctx->scene.tgt.h = h;
             ctx->scene.tgt.w = (int)(ctx->scene.ratio * h);
             ctx->scene.tgt.x = (int) ((w - ctx->scene.tgt.w) / 2);
             ctx->scene.tgt.y = 0;
         } else if (ratio < ctx->scene.ratio) {
-            SDL_Log("%d, %d -- too tall\n", w0, h0);
+            // -- too tall
             ctx->scene.tgt.w = w;
             ctx->scene.tgt.h = (int)(w / ctx->scene.ratio);
             ctx->scene.tgt.x = 0;
             ctx->scene.tgt.y = (int) ((h - ctx->scene.tgt.h) / 2);
         } else {
-            SDL_Log("%d, %d -- correct aspect ratio\n", w0, h0);
+            // -- correct aspect ratio
             ctx->scene.tgt.w = (int) (w);
             ctx->scene.tgt.h = (int) (h);
             ctx->scene.tgt.x = 0;

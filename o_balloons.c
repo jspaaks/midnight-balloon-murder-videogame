@@ -10,92 +10,13 @@
 #include "constants.h"
 #include "levels.h"
 #include "o_balloons.h"
+#include "o_scene.h"
 
 static int o_balloons_compare (const void *, const void *);
 static balloon_t * o_balloons_populate (ctx_t *);
 static balloon_t * o_balloons_randomize_t (ctx_t *);
 static balloon_t * o_balloons_randomize_x (ctx_t *);
 static balloon_t * o_balloons_sort (ctx_t *);
-static bool o_balloons_is_outside(balloon_t *);
-
-static const SDL_Rect src_yellow = {
-    .h = 16,
-    .w = 12,
-    .x = 166,
-    .y = 1,
-};
-static const SDL_Rect src_orange = {
-    .h = 12,
-    .w = 9,
-    .x = 184,
-    .y = 1,
-};
-static const SDL_Rect src_red = {
-    .h = 7,
-    .w = 6,
-    .x = 184,
-    .y = 20,
-};
-static balloon_t balloon_red = {
-    .sim = {
-        .h = src_red.h,
-        .w = src_red.w,
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    },
-    .src = &src_red,
-    .state = BA_PRESPAWN,
-    .tgt = {
-        .h = src_red.h,
-        .w = src_red.w,
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    },
-    .trelease = 0,
-    .u = 0.0,
-    .v = -30.0,
-    .value = 5,
-};
-static balloon_t balloon_orange = {
-    .sim = {
-        .h = src_orange.h,
-        .w = src_orange.w,
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    },
-    .src = &src_orange,
-    .state = BA_PRESPAWN,
-    .tgt = {
-        .h = src_orange.h,
-        .w = src_orange.w,
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    },
-    .trelease = 0,
-    .u = 0.0,
-    .v = -30.0,
-    .value = 4,
-};
-static balloon_t balloon_yellow = {
-    .sim = {
-        .h = src_yellow.h,
-        .w = src_yellow.w,
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    },
-    .src = &src_yellow,
-    .state = BA_PRESPAWN,
-    .tgt = {
-        .h = src_yellow.h,
-        .w = src_yellow.w,
-        .x = 0,
-        .y = SCREEN_HEIGHT - GROUND_HEIGHT,
-    },
-    .trelease = 0,
-    .u = 0.0,
-    .v = -30.0,
-    .value = 3,
-};
 
 static int o_balloons_compare (const void * a, const void * b) {
     const balloon_t * aa = a;
@@ -141,15 +62,74 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     return ctx;
 }
 
-
-static bool o_balloons_is_outside(balloon_t * balloon) {
-    return balloon->tgt.y + balloon->sim.h < 0 ||
-           balloon->tgt.y > SCREEN_HEIGHT  ||
-           balloon->tgt.x + balloon->sim.w < 0 ||
-           balloon->tgt.x > SCREEN_WIDTH;
-}
-
 static balloon_t * o_balloons_populate (ctx_t * ctx) {
+    static const SDL_Rect src_yellow = {
+        .h = 16,
+        .w = 12,
+        .x = 166,
+        .y = 1,
+    };
+    static const SDL_Rect src_orange = {
+        .h = 12,
+        .w = 9,
+        .x = 184,
+        .y = 1,
+    };
+    static const SDL_Rect src_red = {
+        .h = 7,
+        .w = 6,
+        .x = 184,
+        .y = 20,
+    };
+    static balloon_t balloon_red = {
+        .sim = {
+            .h = src_red.h,
+            .w = src_red.w,
+            .x = 0,
+            .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+        },
+        .sim2 = {
+            .u = 0.0,
+            .v = -30.0,
+        },
+        .src = &src_red,
+        .state = BA_PRESPAWN,
+        .trelease = 0,
+        .value = 5,
+    };
+    static balloon_t balloon_orange = {
+        .sim = {
+            .h = src_orange.h,
+            .w = src_orange.w,
+            .x = 0,
+            .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+        },
+        .sim2 = {
+            .u = 0.0,
+            .v = -30.0,
+        },
+        .src = &src_orange,
+        .state = BA_PRESPAWN,
+        .trelease = 0,
+        .value = 4,
+    };
+    static balloon_t balloon_yellow = {
+        .sim = {
+            .h = src_yellow.h,
+            .w = src_yellow.w,
+            .x = 0,
+            .y = SCREEN_HEIGHT - GROUND_HEIGHT,
+        },
+        .sim2 = {
+            .u = 0.0,
+            .v = -30.0,
+        },
+        .src = &src_yellow,
+        .state = BA_PRESPAWN,
+        .trelease = 0,
+        .value = 3,
+    };
+
     balloon_t * b = ctx->balloons;
     for (unsigned int i = 0; i < ctx->level->nred; i++, b++) {
         *b = balloon_red;
@@ -206,11 +186,15 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             case BA_AIRBORNE: {
-                ctx->balloons[i].sim.x += ctx->balloons[i].u * ctx->dt.frame;
-                ctx->balloons[i].sim.y += ctx->balloons[i].v * ctx->dt.frame;
-                ctx->balloons[i].tgt.x = (int) ctx->balloons[i].sim.x;
-                ctx->balloons[i].tgt.y = (int) ctx->balloons[i].sim.y;
-                if (o_balloons_is_outside(&ctx->balloons[i])) {
+                ctx->balloons[i].sim.x += ctx->balloons[i].sim2.u * ctx->dt.frame;
+                ctx->balloons[i].sim.y += ctx->balloons[i].sim2.v * ctx->dt.frame;
+                ctx->balloons[i].tgt = sim2tgt(ctx->scene, ctx->balloons[i].sim);
+
+
+                if (ctx->balloons[i].sim.y + ctx->balloons[i].sim.h < ctx->scene.sim.x ||
+                    ctx->balloons[i].sim.y > ctx->scene.sim.h ||
+                    ctx->balloons[i].sim.x + ctx->balloons[i].sim.w < 0 ||
+                    ctx->balloons[i].sim.x > ctx->scene.sim.w) {
                     ctx->balloons[i].state = BA_MISS;
                 }
                 break;

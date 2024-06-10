@@ -72,15 +72,15 @@ static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
         return false;
     }
 
-    int ba_l = ba->tgt.x;
-    int ba_r = ba->tgt.x + ba->tgt.w;
-    int ba_t = ba->tgt.y;
-    int ba_b = ba->tgt.y + ba->tgt.h;
+    int ba_l = ba->sim.x;
+    int ba_r = ba->sim.x + ba->sim.w;
+    int ba_t = ba->sim.y;
+    int ba_b = ba->sim.y + ba->sim.h;
 
-    int bu_l = bu->tgt.x;
-    int bu_r = bu->tgt.x + bu->tgt.w;
-    int bu_t = bu->tgt.y;
-    int bu_b = bu->tgt.y + bu->tgt.h;
+    int bu_l = bu->sim.x;
+    int bu_r = bu->sim.x + bu->sim.w;
+    int bu_t = bu->sim.y;
+    int bu_b = bu->sim.y + bu->sim.h;
 
     bool separated = ba_t > bu_b ||
                      ba_r < bu_l ||

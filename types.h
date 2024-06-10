@@ -42,34 +42,43 @@ typedef struct state_t state_t;
 typedef struct turret_t turret_t;
 
 struct balloon_t {
-    float u;
-    float v;
     unsigned int value;
     balloon_state_t state;
     SDL_FRect sim;
+    struct {
+        float u;
+        float v;
+    } sim2;
     const SDL_Rect * src;
     SDL_Rect tgt;
     Uint64 trelease;
 };
 
 struct barrel_t {
-    float angle;
-    float length;
-    float speed;
-    SDL_FPoint pivot;
     SDL_FRect sim;
-    SDL_Point pivot_offset;
+    struct {
+        float angle;
+        SDL_FPoint pivot;
+        SDL_FPoint pivot_offset;
+        float length;
+        float speed;
+    } sim2;
     SDL_Rect src;
     SDL_Rect tgt;
+    struct {
+        SDL_Point pivot_offset;
+    } tgt2;
 };
 
 struct bullet_t {
-    float u;
-    float v;
     bullet_state_t state;
     const SDL_Rect * src;
     SDL_Rect tgt;
     SDL_FRect sim;
+    struct {
+        float u;
+        float v;
+    } sim2;
     struct bullet_t * next;
 };
 
@@ -95,11 +104,17 @@ struct colors_t {
 };
 
 struct flash_t {
-    SDL_Point pivot_offset;
+
     bool show;
     SDL_FRect sim;
+    struct {
+        SDL_FPoint pivot_offset;
+    } sim2;
     SDL_Rect src;
     SDL_Rect tgt;
+    struct {
+        SDL_Point pivot_offset;
+    } tgt2;
 };
 
 struct ground_t {

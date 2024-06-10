@@ -9,6 +9,7 @@
 #include "SDL_log.h"
 #include "SDL_error.h"
 #include "o_bullets.h"
+#include "o_scene.h"
 
 static ctx_t * o_bullets_update_add (ctx_t *);
 static ctx_t * o_bullets_update_pos (ctx_t *);
@@ -30,20 +31,22 @@ static ctx_t * o_bullets_update_add (ctx_t * ctx) {
             SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new bullet.\n");
             exit(EXIT_FAILURE);
         }
-        float a = PI * ctx->barrel.angle / 180;
-        float x = ctx->barrel.pivot.x + cos(a) * (ctx->barrel.length + 20) - (src_bullet.w - 1) / 2;
-        float y = ctx->barrel.pivot.y + sin(a) * (ctx->barrel.length + 20) - (src_bullet.h - 1) / 2;
+        float a = PI * ctx->barrel.sim2.angle / 180;
+        float x = ctx->barrel.sim2.pivot.x + cos(a) * (ctx->barrel.sim2.length + 20) - (src_bullet.w - 1) / 2;
+        float y = ctx->barrel.sim2.pivot.y + sin(a) * (ctx->barrel.sim2.length + 20) - (src_bullet.h - 1) / 2;
 
         float speed = 380;
         *bu = (bullet_t) {
-            .u = cos(a) * speed,
-            .v = sin(a) * speed,
             .state = BU_AIRBORNE,
             .sim = {
                 .x = x,
                 .y = y,
                 .w = src_bullet.w,
                 .h = src_bullet.h,
+            },
+            .sim2 = {
+                .u = cos(a) * speed,
+                .v = sin(a) * speed,
             },
             .src = &src_bullet,
             .tgt = {
@@ -67,7 +70,8 @@ void o_bullets_draw (ctx_t * ctx) {
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
         if (bu->state == BU_AIRBORNE) {
-            SDL_RenderCopy(ctx->renderer, ctx->spritesheet, bu->src, &bu->tgt);
+            SDL_Rect tgt = sim2tgt(ctx->scene, bu->sim);
+            SDL_RenderCopy(ctx->renderer, ctx->spritesheet, bu->src, &tgt);
         }
         bu = bu->next;
     }
@@ -97,9 +101,9 @@ static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
     const float gravity = 70; // pixels per second per second
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
-        bu->v += gravity * ctx->dt.frame;
-        bu->sim.x += bu->u * ctx->dt.frame;
-        bu->sim.y += bu->v * ctx->dt.frame;
+        bu->sim2.v += gravity * ctx->dt.frame;
+        bu->sim.x += bu->sim2.u * ctx->dt.frame;
+        bu->sim.y += bu->sim2.v * ctx->dt.frame;
         bu->tgt.x = (int) bu->sim.x;
         bu->tgt.y = (int) bu->sim.y;
         bu = bu->next;

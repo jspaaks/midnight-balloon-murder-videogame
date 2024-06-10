@@ -3,40 +3,35 @@
 #include "SDL_rect.h"
 #include "types.h"
 #include "o_turret.h"
+#include "o_scene.h"
 
 void o_turret_draw (ctx_t * ctx) {
     SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->turret.src, &ctx->turret.tgt);
 }
 
 ctx_t * o_turret_init (ctx_t * ctx) {
-    assert(ctx->ground.tgt.w != 0 && "ground needs to be initialized before turret");
-    float w = 69;
+    assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before turret");
     float h = 47;
-    float x = 180;
-    float y = ctx->scene.tgt.h - ctx->ground.tgt.h - h;
+    SDL_FRect sim = {
+        .h = h,
+        .w = 69,
+        .x = 180,
+        .y = ctx->scene.sim.h - ctx->ground.sim.h - h,
+    };
     ctx->turret = (turret_t){
-        .sim = (SDL_FRect) {
-            .x = x,
-            .y = y,
-            .w = w,
-            .h = h,
-        },
+        .sim = sim,
         .src = (SDL_Rect) {
+            .h = 47,
+            .w = 69,
             .x = 4,
             .y = 1,
-            .w = w,
-            .h = h,
         },
-        .tgt = (SDL_Rect) {
-            .x = x,
-            .y = y,
-            .w = w,
-            .h = h,
-        },
+        .tgt = sim2tgt(ctx->scene, sim),
     };
     return ctx;
 }
 
 ctx_t * o_turret_update (ctx_t * ctx) {
+    ctx->turret.tgt = sim2tgt(ctx->scene, ctx->turret.sim);
     return ctx;
 }
