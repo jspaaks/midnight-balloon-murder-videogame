@@ -16,7 +16,9 @@ static ctx_t * o_bullets_update_pos (ctx_t *);
 static ctx_t * o_bullets_update_remove (ctx_t *);
 
 static ctx_t * o_bullets_update_add (ctx_t * ctx) {
-
+    if (ctx->ispaused) {
+        return ctx;
+    }
     static const float PI = 3.14159265358979323846f;
     static Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
@@ -101,9 +103,11 @@ static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
     const float gravity = 70; // pixels per second per second
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
-        bu->sim2.v += gravity * ctx->dt.frame;
-        bu->sim.x += bu->sim2.u * ctx->dt.frame;
-        bu->sim.y += bu->sim2.v * ctx->dt.frame;
+        if (!ctx->ispaused) {
+            bu->sim2.v += gravity * ctx->dt.frame;
+            bu->sim.x += bu->sim2.u * ctx->dt.frame;
+            bu->sim.y += bu->sim2.v * ctx->dt.frame;
+        }
         bu->tgt.x = (int) bu->sim.x;
         bu->tgt.y = (int) bu->sim.y;
         bu = bu->next;
@@ -112,6 +116,9 @@ static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
 }
 
 static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
+    if (ctx->ispaused) {
+        return ctx;
+    }
     bullet_t * this = ctx->bullets;
     bullet_t * prev = NULL;
     bool isfirst = false;
@@ -119,10 +126,10 @@ static ctx_t * o_bullets_update_remove (ctx_t * ctx) {
     while (this != NULL) {
         isfirst = prev == NULL;
         doremove = this->state == BU_HIT          ||
-                   this->tgt.y < 0 - this->tgt.h  ||
-                   this->tgt.x > ctx->scene.tgt.w ||
-                   this->tgt.x < 0 - this->tgt.w  ||
-                   this->tgt.y > ctx->scene.tgt.h - ctx->ground.tgt.h;
+                   this->sim.y < 0 - this->sim.h  ||
+                   this->sim.x > ctx->scene.sim.w ||
+                   this->sim.x < 0 - this->sim.w  ||
+                   this->sim.y > ctx->scene.sim.h - ctx->ground.sim.h;
         switch (isfirst << 1 | doremove ) {
             case 0: {
                 // not first, not remove

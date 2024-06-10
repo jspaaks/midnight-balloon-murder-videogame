@@ -21,5 +21,7 @@ ctx_t * window_init(ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error creating window: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
+    SDL_ShowCursor(SDL_DISABLE);
+    ctx->isfullscreen = false;
     return ctx;
 }

@@ -61,6 +61,7 @@ static bool init (ctx_t * ctx) {
     ctx = fonts_init(ctx);
     ctx = keystate_init(ctx);
     ctx = levels_init(ctx);
+    ctx->ispaused = false;
     // --- time related
     ctx->dt.frame = 0.0000000000001;
     return true;

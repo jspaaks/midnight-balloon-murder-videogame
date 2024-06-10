@@ -186,10 +186,11 @@ ctx_t * o_balloons_update (ctx_t * ctx) {
                 break;
             }
             case BA_AIRBORNE: {
-                ctx->balloons[i].sim.x += ctx->balloons[i].sim2.u * ctx->dt.frame;
-                ctx->balloons[i].sim.y += ctx->balloons[i].sim2.v * ctx->dt.frame;
+                if (!ctx->ispaused) {
+                    ctx->balloons[i].sim.x += ctx->balloons[i].sim2.u * ctx->dt.frame;
+                    ctx->balloons[i].sim.y += ctx->balloons[i].sim2.v * ctx->dt.frame;
+                }
                 ctx->balloons[i].tgt = sim2tgt(ctx->scene, ctx->balloons[i].sim);
-
 
                 if (ctx->balloons[i].sim.y + ctx->balloons[i].sim.h < ctx->scene.sim.x ||
                     ctx->balloons[i].sim.y > ctx->scene.sim.h ||

@@ -36,6 +36,9 @@ ctx_t * s_start_update (ctx_t * ctx, state_t ** state) {
                 if (event.key.keysym.sym == SDLK_RETURN) {
                     SDL_Log("playing\n");
                     *state = fsm_set_state(PLAYING);
+                } else if (event.key.keysym.sym == SDLK_F11) {
+                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;
             }

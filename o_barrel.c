@@ -74,16 +74,18 @@ static float o_barrel_min(float a, float b) {
 }
 
 ctx_t * o_barrel_update (ctx_t * ctx) {
-    int flags = ctx->keys[SDL_SCANCODE_W] |
-                ctx->keys[SDL_SCANCODE_S] << 1;
-    switch (flags) {
-        case 1: {
-            ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + -1 * ctx->barrel.sim2.speed * ctx->dt.frame);
-            break;
-        }
-        case 2: {
-            ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + 1 * ctx->barrel.sim2.speed * ctx->dt.frame);
-            break;
+    if (!ctx->ispaused) {
+        int flags = ctx->keys[SDL_SCANCODE_W] |
+                    ctx->keys[SDL_SCANCODE_S] << 1;
+        switch (flags) {
+            case 1: {
+                ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + -1 * ctx->barrel.sim2.speed * ctx->dt.frame);
+                break;
+            }
+            case 2: {
+                ctx->barrel.sim2.angle = o_barrel_clip(ctx->barrel.sim2.angle + 1 * ctx->barrel.sim2.speed * ctx->dt.frame);
+                break;
+            }
         }
     }
     ctx->barrel.tgt = sim2tgt(ctx->scene, ctx->barrel.sim);

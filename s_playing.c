@@ -38,6 +38,7 @@ void s_playing_draw (ctx_t * ctx) {
 }
 
 ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
+    ctx->ispaused = false;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -45,6 +46,9 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     SDL_Log("pausing\n");
                     *state = fsm_set_state(PAUSED);
+                } else if (event.key.keysym.sym == SDLK_F11) {
+                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;
             }

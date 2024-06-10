@@ -173,6 +173,8 @@ struct turret_t {
 
 struct ctx_t {
     bool resized;
+    bool isfullscreen;
+    bool ispaused;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
     unsigned int nhit;

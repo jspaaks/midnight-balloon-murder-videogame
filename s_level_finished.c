@@ -159,6 +159,9 @@ ctx_t * s_level_finished_update (ctx_t * ctx, state_t ** state) {
                     levels_set(ctx, ctx->ilevel);
                     SDL_Log("playing -- same level\n");
                     *state = fsm_set_state(PLAYING);
+                } else if (event.key.keysym.sym == SDLK_F11) {
+                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;
             }
