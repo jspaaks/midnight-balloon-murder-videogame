@@ -67,6 +67,5 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 1. consider adding a 'counts' abstract module
 1. hitpoints texts
 1. hitpoints shrapnel
-1. fullscreen / aspect ratio
 1. review directory structure (src / bin / test etc)
 1. packaging / distribution
