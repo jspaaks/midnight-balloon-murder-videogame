@@ -1,5 +1,6 @@
 #include "SDL_error.h"
 #include "SDL_render.h"
+#include "SDL_hints.h"
 #include "renderer.h"
 #include "types.h"
 
@@ -16,5 +17,6 @@ ctx_t * renderer_init (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Error initializing renderer: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     return ctx;
 }

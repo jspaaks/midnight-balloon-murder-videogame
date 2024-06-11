@@ -24,8 +24,8 @@ void s_playing_draw (ctx_t * ctx) {
     o_background_draw(ctx);
     o_scene_draw(ctx);
     o_moon_draw(ctx);
-    o_turret_draw(ctx);
     o_barrel_draw(ctx);
+    o_turret_draw(ctx);
     o_flash_draw(ctx);
     o_legend_draw(ctx);
     o_balloons_draw(ctx);

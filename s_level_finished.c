@@ -29,8 +29,8 @@ void s_level_finished_draw (ctx_t * ctx) {
     o_background_draw(ctx);
     o_scene_draw(ctx);
     o_moon_draw(ctx);
-    o_turret_draw(ctx);
     o_barrel_draw(ctx);
+    o_turret_draw(ctx);
     o_legend_draw(ctx);
     o_ground_draw(ctx);
     o_keymap_draw_proceedhint(ctx);
