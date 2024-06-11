@@ -69,3 +69,5 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 1. hitpoints shrapnel
 1. review directory structure (src / bin / test etc)
 1. packaging / distribution
+1. consider splitting ctx into smaller objects
+1. consider adding tests, cmocka maybe
