@@ -43,10 +43,13 @@ void o_balloons_draw (ctx_t * ctx) {
 ctx_t * o_balloons_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before balloons");
     ctx->balloons = NULL;
-    ctx->nballoons.prespawn = ctx->level->nballoons.prespawn;
     ctx->nballoons.airborne = 0;
     ctx->nballoons.hit = 0;
     ctx->nballoons.miss = 0;
+    ctx->nballoons.orange = ctx->level->nballoons.orange;
+    ctx->nballoons.prespawn = ctx->level->nballoons.prespawn;
+    ctx->nballoons.red = ctx->level->nballoons.red;
+    ctx->nballoons.yellow = ctx->level->nballoons.yellow;
     return ctx;
 }
 
@@ -73,23 +76,19 @@ static ctx_t * o_balloons_update_spawn (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new balloon.\n");
         exit(EXIT_FAILURE);
     }
-    switch (rand() % 3) {
-        case 0: {
-            o_balloons_update_spawn_yellow(ctx, b);
-            break;
-        }
-        case 1: {
-            o_balloons_update_spawn_orange(ctx, b);
-            break;
-        }
-        case 2: {
-            o_balloons_update_spawn_red(ctx, b);
-            break;
-        }
-        default: {
-            SDL_Log("uh oh");
-            break;
-        }
+    unsigned int remaining = ctx->nballoons.yellow + ctx->nballoons.orange + ctx->nballoons.red;
+    float y = (float)(ctx->nballoons.yellow) / remaining;
+    float o = (float)(ctx->nballoons.orange) / remaining;
+    float u = o_balloons_unitrand();
+    if (u < y) {
+        o_balloons_update_spawn_yellow(ctx, b);
+        ctx->nballoons.yellow--;
+    } else if (u < (y + o)) {
+        o_balloons_update_spawn_orange(ctx, b);
+        ctx->nballoons.orange--;
+    } else {
+        o_balloons_update_spawn_red(ctx, b);
+        ctx->nballoons.red--;
     }
     ctx->balloons = b;
     ctx->nballoons.airborne++;

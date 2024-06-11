@@ -189,7 +189,10 @@ struct ctx_t {
         unsigned int airborne;
         unsigned int hit;
         unsigned int miss;
+        unsigned int orange;
         unsigned int prespawn;
+        unsigned int red;
+        unsigned int yellow;
     } nballoons;
     struct {
         unsigned int airborne;
