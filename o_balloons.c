@@ -42,7 +42,6 @@ void o_balloons_draw (ctx_t * ctx) {
 
 ctx_t * o_balloons_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before balloons");
-    // TODO free balloons from previous levels
     ctx->balloons = NULL;
     ctx->nballoons.prespawn = ctx->level->nballoons.prespawn;
     ctx->nballoons.airborne = 0;

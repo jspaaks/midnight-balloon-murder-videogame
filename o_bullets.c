@@ -39,7 +39,6 @@ void o_bullets_draw (ctx_t * ctx) {
 ctx_t * o_bullets_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before bullets");
     assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before bullets");
-    // TODO free balloons from previous levels
     ctx->bullets = NULL;
     ctx->nbullets.prespawn = ctx->level->nbullets.prespawn;
     ctx->nbullets.airborne = 0;
