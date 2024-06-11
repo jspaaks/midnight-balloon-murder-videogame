@@ -64,11 +64,9 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 1. reimplement different balloon classes
 1. add audio effects with SDL_mixer
-1. consider adding a 'counts' abstract module
 1. hitpoints texts
 1. hitpoints shrapnel
 1. review directory structure (src / bin / test etc)
 1. packaging / distribution
 1. consider splitting ctx into smaller objects
 1. consider adding tests, cmocka maybe
-1. look into potential memory leak of balloons, bullets, and collisions, in between levels
