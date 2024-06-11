@@ -122,15 +122,17 @@ struct legend_t {
 };
 
 struct level_t {
-    unsigned int norange;
-    unsigned int nproceed;
-    unsigned int nred;
-    unsigned int nyellow;
     char name[20];
     struct {
-        unsigned int ba;
-        unsigned int bu;
-    } nprespawn;
+        unsigned int orange;
+        unsigned int prespawn;
+        unsigned int proceed;
+        unsigned int red;
+        unsigned int yellow;
+    } nballoons;
+    struct {
+        unsigned int prespawn;
+    } nbullets;
 };
 
 struct moon_t {
@@ -158,28 +160,15 @@ struct turret_t {
 };
 
 struct ctx_t {
-    bool resized;
-    bool isfullscreen;
-    unsigned int ilevel;
-    unsigned int ilevel_unlocked;
-    unsigned int nhit;
-    unsigned int nlevels;
-    unsigned int nmiss;
-    const Uint8 * keys;
+    balloon_t * balloons;
+    barrel_t barrel;
+    bullet_t * bullets;
+    collision_t * collisions;
+    colors_t colors;
     struct {
         float frame;    // s
     } dt;
-    struct {
-        unsigned int ba;
-        unsigned int bu;
-    } nairborne;
-    struct {
-        unsigned int ba;
-        unsigned int bu;
-    } nprespawn;
-    SDL_Renderer * renderer;
-    SDL_Texture * spritesheet;
-    SDL_Window * window;
+    flash_t flash;
     struct {
         TTF_Font * regular;
         TTF_Font * large;
@@ -187,20 +176,33 @@ struct ctx_t {
         TTF_Font * xxlarge;
         TTF_Font * xxxlarge;
     } fonts;
-    balloon_t * balloons;
-    barrel_t barrel;
-    bullet_t * bullets;
-    collision_t * collisions;
-    colors_t colors;
-    flash_t flash;
     ground_t ground;
-    moon_t moon;
+    unsigned int ilevel;
+    unsigned int ilevel_unlocked;
+    bool isfullscreen;
+    const Uint8 * keys;
     legend_t legend;
     level_t * level;
     level_t * levels;
+    moon_t moon;
+    struct {
+        unsigned int airborne;
+        unsigned int hit;
+        unsigned int miss;
+        unsigned int prespawn;
+    } nballoons;
+    struct {
+        unsigned int airborne;
+        unsigned int prespawn;
+    } nbullets;
+    unsigned int nlevels;
+    SDL_Renderer * renderer;
+    bool resized;
     scene_t scene;
-    turret_t turret;
+    SDL_Texture * spritesheet;
     Uint64 tspawn_latestbullet;
+    turret_t turret;
+    SDL_Window * window;
 };
 
 #endif

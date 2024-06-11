@@ -11,7 +11,7 @@
 
 void o_titles_draw_level_finished (ctx_t * ctx) {
     char title[15];
-    if (ctx->nmiss == 0) {
+    if (ctx->nballoons.miss == 0) {
         strncpy(title, "PERFECT SCORE!", 15);
     } else {
         strncpy(title, "LEVEL FINISHED", 15);

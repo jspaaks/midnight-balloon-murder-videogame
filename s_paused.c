@@ -56,7 +56,7 @@ ctx_t * s_paused_update (ctx_t * ctx, state_t ** state) {
                     SDL_Log("quitting\n");
                     exit(EXIT_SUCCESS);
                 } else if (event.key.keysym.sym == SDLK_r) {
-                    if (ctx->nprespawn.ba < ctx->level->nprespawn.ba || ctx->nprespawn.bu < ctx->level->nprespawn.bu ) {
+                    if (ctx->nballoons.prespawn < ctx->level->nballoons.prespawn || ctx->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
                         SDL_Log("restarting level\n");
                         ctx = levels_set(ctx, ctx->ilevel);
                         *state = fsm_set_state(PLAYING);

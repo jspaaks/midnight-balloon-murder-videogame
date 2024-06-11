@@ -15,69 +15,81 @@
 static level_t levels[] = {
     {
         .name = "novice",
-        .norange = 3,
-        .nprespawn = {
-            .ba = 10,
-            .bu = 100,
+        .nballoons = {
+            .orange = 3,
+            .prespawn = 10,
+            .proceed = 8,
+            .red = 2,
+            .yellow = 5,
         },
-        .nproceed = 8,
-        .nred = 2,
-        .nyellow = 5,
+        .nbullets = {
+            .prespawn = 100,
+        },
     },
     {
         .name = "private",
-        .norange = 6,
-        .nprespawn = {
-            .ba = 20,
-            .bu = 70,
+        .nballoons = {
+            .orange = 6,
+            .prespawn = 20,
+            .proceed = 18,
+            .red = 4,
+            .yellow = 10,
         },
-        .nproceed = 18,
-        .nred = 4,
-        .nyellow = 10,
+        .nbullets = {
+            .prespawn = 70,
+        },
     },
     {
         .name = "gunny",
-        .norange = 12,
-        .nprespawn = {
-            .ba = 40,
-            .bu = 40,
+        .nballoons = {
+            .orange = 12,
+            .prespawn = 40,
+            .proceed = 38,
+            .red = 8,
+            .yellow = 20,
         },
-        .nproceed = 38,
-        .nred = 8,
-        .nyellow = 20,
+        .nbullets = {
+            .prespawn = 40,
+        },
     },
     {
         .name = "sharpshooter",
-        .norange = 21,
-        .nprespawn = {
-            .ba = 70,
-            .bu = 20,
+        .nballoons = {
+            .orange = 21,
+            .prespawn = 70,
+            .proceed = 67,
+            .red = 14,
+            .yellow = 35,
         },
-        .nproceed = 67,
-        .nred = 14,
-        .nyellow = 35,
+        .nbullets = {
+            .prespawn = 20,
+        },
     },
     {
         .name = "assassin",
-        .norange = 30,
-        .nprespawn = {
-            .ba = 100,
-            .bu = 10,
+        .nballoons = {
+            .orange = 30,
+            .prespawn = 100,
+            .proceed = 95,
+            .red = 20,
+            .yellow = 50,
         },
-        .nproceed = 95,
-        .nred = 20,
-        .nyellow = 50,
+        .nbullets = {
+            .prespawn = 10,
+        },
     },
     {
         .name = "berserker",
-        .norange = 300,
-        .nprespawn = {
-            .ba = 1000,
-            .bu = 10,
+        .nballoons = {
+            .orange = 300,
+            .prespawn = 1000,
+            .proceed = 1001,
+            .red = 200,
+            .yellow = 500,
         },
-        .nproceed = 1001,
-        .nred = 200,
-        .nyellow = 500,
+        .nbullets = {
+            .prespawn = 10,
+        },
     },
 };
 

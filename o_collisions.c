@@ -132,7 +132,7 @@ static ctx_t * o_collisions_update_spawn (ctx_t * ctx) {
             if (o_collisions_colliding(ba, bu)) {
 
                 // increase nbullets
-                ctx->nprespawn.bu += ba->value;
+                ctx->nbullets.prespawn += ba->value;
 
                 // mark bullet and balloon for deletion
                 ba->state = HIT;

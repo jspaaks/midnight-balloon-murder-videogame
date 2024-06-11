@@ -70,19 +70,19 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
     ctx = o_collisions_update(ctx);
     ctx = o_legend_update(ctx);
 
-    bool no_more_balloons = ctx->nprespawn.ba + ctx->nairborne.ba == 0;
-    bool no_more_bullets = ctx->nprespawn.bu + ctx->nairborne.bu == 0;
+    bool no_more_balloons = ctx->nballoons.prespawn + ctx->nballoons.airborne == 0;
+    bool no_more_bullets = ctx->nbullets.prespawn + ctx->nbullets.airborne == 0;
     if (no_more_balloons || no_more_bullets) {
         if (no_more_balloons) {
-            SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss);
+            SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx->nballoons.hit, ctx->nballoons.miss);
         }
         if (no_more_bullets) {
             ctx = o_legend_update(ctx);
-            SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss);
+            SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx->nballoons.hit, ctx->nballoons.miss);
         }
-        ctx->nmiss += ctx->nprespawn.ba + ctx->nairborne.ba;
-        ctx->nprespawn.ba = 0;
-        ctx->nairborne.ba = 0;
+        ctx->nballoons.miss += ctx->nballoons.prespawn + ctx->nballoons.airborne;
+        ctx->nballoons.prespawn = 0;
+        ctx->nballoons.airborne = 0;
         SDL_Log("level finished\n");
         *state = fsm_set_state(LEVEL_FINISHED);
     }

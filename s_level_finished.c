@@ -141,7 +141,7 @@ static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
 }
 
 ctx_t * s_level_finished_update (ctx_t * ctx, state_t ** state) {
-    if (ctx->nhit >= ctx->level->nproceed) {
+    if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }
     next_unlocked = ctx->ilevel + 1 <= ctx->ilevel_unlocked;

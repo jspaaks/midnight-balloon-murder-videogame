@@ -41,8 +41,8 @@ ctx_t * o_bullets_init (ctx_t * ctx) {
     assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before bullets");
     // TODO free balloons from previous levels
     ctx->bullets = NULL;
-    ctx->nprespawn.bu = ctx->level->nprespawn.bu;
-    ctx->nairborne.bu = 0;
+    ctx->nbullets.prespawn = ctx->level->nbullets.prespawn;
+    ctx->nbullets.airborne = 0;
     return ctx;
 }
 
@@ -66,7 +66,7 @@ static ctx_t * o_bullets_update_spawn (ctx_t * ctx) {
     static Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
 
-    bool cond = ctx->nprespawn.bu > 0 &&
+    bool cond = ctx->nbullets.prespawn > 0 &&
                 SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout &&
                 ctx->keys[SDL_SCANCODE_SPACE];
 
@@ -97,8 +97,8 @@ static ctx_t * o_bullets_update_spawn (ctx_t * ctx) {
             .state = ALIVE,
         };
         ctx->bullets = b;
-        ctx->nprespawn.bu--;
-        ctx->nairborne.bu++;
+        ctx->nbullets.prespawn--;
+        ctx->nbullets.airborne++;
         ctx->tspawn_latestbullet = SDL_GetTicks64();
     }
     return ctx;
@@ -136,7 +136,7 @@ ctx_t * o_bullets_update_remove (ctx_t * ctx) {
                 bullet_t * tmp = this;
                 prev->next = this->next;
                 if (this->state == HIT || this->state == EXITED) {
-                    ctx->nairborne.bu--;
+                    ctx->nbullets.airborne--;
                 }
                 this = this->next;
                 free(tmp);
@@ -152,7 +152,7 @@ ctx_t * o_bullets_update_remove (ctx_t * ctx) {
                 // first, remove
                 bullet_t * tmp = this;
                 if (this->state == HIT || this->state == EXITED) {
-                    ctx->nairborne.bu--;
+                    ctx->nbullets.airborne--;
                 }
                 ctx->bullets = this->next;
                 this = this->next;

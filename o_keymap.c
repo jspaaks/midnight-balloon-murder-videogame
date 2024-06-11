@@ -51,14 +51,14 @@ void o_keymap_draw_proceedhint (ctx_t * ctx) {
     char str[100];
     if (ctx->ilevel == ctx->nlevels - 1) {
         sprintf(str, "FINAL LEVEL");
-    } else if (ctx->nmiss > ctx->level->nprespawn.ba - ctx->level->nproceed) {
+    } else if (ctx->nballoons.miss > ctx->level->nballoons.prespawn - ctx->level->nballoons.proceed) {
         sprintf(str, "NOT ENOUGH HITS TO PROCEED TO NEXT LEVEL");
         color = ctx->colors.lightgray;
-    } else if (ctx->nhit >= ctx->level->nproceed) {
+    } else if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
         sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!");
         color = ctx->colors.lightgray;
     } else {
-        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nproceed);
+        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nballoons.proceed);
     }
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, color, ctx->colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
@@ -95,7 +95,7 @@ void o_keymap_draw_quit (ctx_t * ctx) {
 }
 
 void o_keymap_draw_restart (ctx_t * ctx) {
-    if (ctx->nprespawn.ba == ctx->level->nprespawn.ba && ctx->nprespawn.bu == ctx->level->nprespawn.bu) {
+    if (ctx->nballoons.prespawn == ctx->level->nballoons.prespawn && ctx->nbullets.prespawn == ctx->level->nbullets.prespawn) {
         // we're effectively at the start of the level already
         return;
     }
