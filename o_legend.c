@@ -257,44 +257,5 @@ ctx_t * o_legend_init (ctx_t * ctx) {
 }
 
 ctx_t * o_legend_update (ctx_t * ctx) {
-    unsigned int nairborne_ba = 0;
-    unsigned int nairborne_bu = 0;
-    unsigned int nhit = 0;
-    unsigned int nmiss = 0;
-    unsigned int nprespawn_ba = 0;
-    for (unsigned int i = 0; i < ctx->level->nprespawn.ba; i++) {
-        switch (ctx->balloons[i].state) {
-            case BA_PRESPAWN: {
-                nprespawn_ba++;
-                break;
-            }
-            case BA_AIRBORNE: {
-                nairborne_ba++;
-                break;
-            }
-            case BA_HIT: {
-                nhit++;
-                break;
-            }
-            case BA_MISS: {
-                nmiss++;
-                break;
-            }
-            default: {
-                SDL_LogError(SDL_UNSUPPORTED, "Something went wrong with counting the balloon states.\n");
-                break;
-            }
-        }
-    }
-    bullet_t * bu = ctx->bullets;
-    while (bu != NULL) {
-        nairborne_bu += bu->state == BU_AIRBORNE ? 1 : 0;
-        bu = bu->next;
-    }
-    ctx->nairborne.ba = nairborne_ba;
-    ctx->nairborne.bu = nairborne_bu;
-    ctx->nhit = nhit;
-    ctx->nmiss = nmiss;
-    ctx->nprespawn.ba = nprespawn_ba;
     return ctx;
 }

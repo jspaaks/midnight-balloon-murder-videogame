@@ -8,18 +8,6 @@
 #include "SDL_ttf.h"
 
 typedef enum {
-    BA_PRESPAWN,
-    BA_AIRBORNE,
-    BA_HIT,
-    BA_MISS
-} balloon_state_t;
-
-typedef enum {
-    BU_AIRBORNE,
-    BU_HIT
-} bullet_state_t;
-
-typedef enum {
     START = 0,
     PLAYING,
     PAUSED,
@@ -42,15 +30,15 @@ typedef struct state_t state_t;
 typedef struct turret_t turret_t;
 
 struct balloon_t {
-    unsigned int value;
-    balloon_state_t state;
+    bool delete;
+    struct balloon_t * next;
     SDL_FRect sim;
     struct {
         float u;
         float v;
     } sim2;
-    const SDL_Rect * src;
-    Uint64 trelease;
+    SDL_Rect src;
+    unsigned int value;
 };
 
 struct barrel_t {
@@ -66,7 +54,7 @@ struct barrel_t {
 };
 
 struct bullet_t {
-    bullet_state_t state;
+    bool delete;
     const SDL_Rect * src;
     SDL_FRect sim;
     struct {
@@ -77,8 +65,11 @@ struct bullet_t {
 };
 
 struct collision_t {
-    Uint64 tspawn;
     SDL_FPoint sim;
+    struct {
+        float u;
+        float v;
+    } sim2;
     struct collision_t * next;
 };
 

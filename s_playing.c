@@ -77,10 +77,12 @@ ctx_t * s_playing_update (ctx_t * ctx, state_t ** state) {
             SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss);
         }
         if (no_more_bullets) {
-            ctx = o_balloons_update_remaining_as_hit(ctx);
             ctx = o_legend_update(ctx);
             SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx->nhit, ctx->nmiss);
         }
+        ctx->nmiss += ctx->nprespawn.ba + ctx->nairborne.ba;
+        ctx->nprespawn.ba = 0;
+        ctx->nairborne.ba = 0;
         SDL_Log("level finished\n");
         *state = fsm_set_state(LEVEL_FINISHED);
     }
