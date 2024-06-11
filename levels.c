@@ -94,6 +94,11 @@ ctx_t * levels_init (ctx_t * ctx) {
 }
 
 ctx_t * levels_set (ctx_t * ctx, unsigned int ilevel) {
+    // --- deinit entities from previous levels
+    ctx = o_balloons_deinit(ctx);
+    ctx = o_bullets_deinit(ctx);
+    ctx = o_collisions_deinit(ctx);
+    // --- new level
     ctx->ilevel = ilevel;
     ctx->level = &levels[ilevel];
     ctx->levels = &levels[0];

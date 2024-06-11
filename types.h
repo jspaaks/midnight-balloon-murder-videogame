@@ -8,6 +8,13 @@
 #include "SDL_ttf.h"
 
 typedef enum {
+    ALIVE = 0,
+    EXITED,
+    HIT,
+    TIMEOUT_ENDED,
+} delete_reason_t;
+
+typedef enum {
     START = 0,
     PLAYING,
     PAUSED,
@@ -30,7 +37,6 @@ typedef struct state_t state_t;
 typedef struct turret_t turret_t;
 
 struct balloon_t {
-    bool delete;
     struct balloon_t * next;
     SDL_FRect sim;
     struct {
@@ -38,6 +44,7 @@ struct balloon_t {
         float v;
     } sim2;
     SDL_Rect src;
+    delete_reason_t state;
     unsigned int value;
 };
 
@@ -54,23 +61,24 @@ struct barrel_t {
 };
 
 struct bullet_t {
-    bool delete;
+    struct bullet_t * next;
     const SDL_Rect * src;
     SDL_FRect sim;
     struct {
         float u;
         float v;
     } sim2;
-    struct bullet_t * next;
+    delete_reason_t state;
 };
 
 struct collision_t {
-    SDL_FPoint sim;
+    struct collision_t * next;
+    SDL_FRect sim;
     struct {
         float u;
         float v;
     } sim2;
-    struct collision_t * next;
+    delete_reason_t state;
 };
 
 struct colors_t {

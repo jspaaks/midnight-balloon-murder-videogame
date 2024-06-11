@@ -30,6 +30,8 @@ static bool init (ctx_t *);
 static void deinit (ctx_t * ctx) {
     // --- concrete entities
     ctx = o_balloons_deinit(ctx);
+    ctx = o_bullets_deinit(ctx);
+    ctx = o_collisions_deinit(ctx);
     // --- abstract entities
     ctx = levels_deinit(ctx);
     ctx = fonts_deinit(ctx);

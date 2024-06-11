@@ -10,6 +10,10 @@
 #include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
+static ctx_t * o_collisions_update_pos (ctx_t *);
+static ctx_t * o_collisions_update_remove(ctx_t *);
+static ctx_t * o_collisions_update_spawn (ctx_t *);
+static ctx_t * o_collisions_update_test_exited (ctx_t *);
 
 static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
@@ -30,6 +34,17 @@ static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     return !separated;
 }
 
+ctx_t * o_collisions_deinit (ctx_t * ctx) {
+    collision_t * c = ctx->collisions;
+    while (c != NULL) {
+        collision_t * tmp = c;
+        c = c->next;
+        free(tmp);
+    }
+    ctx->collisions = NULL;
+    return ctx;
+}
+
 void o_collisions_draw (ctx_t * ctx) {
     collision_t * c = ctx->collisions;
     SDL_SetRenderDrawColor(ctx->renderer, 166, 166, 166, 0);
@@ -39,12 +54,77 @@ void o_collisions_draw (ctx_t * ctx) {
 }
 
 ctx_t * o_collisions_init (ctx_t * ctx) {
-    // TODO free collisions from previous levels
     ctx->collisions = NULL;
     return ctx;
 }
 
 ctx_t * o_collisions_update (ctx_t * ctx) {
+    ctx = o_collisions_update_test_exited(ctx);
+    ctx = o_collisions_update_remove(ctx);
+    ctx = o_collisions_update_pos(ctx);
+    ctx = o_collisions_update_spawn(ctx);
+    return ctx;
+}
+
+static ctx_t * o_collisions_update_pos (ctx_t * ctx) {
+    const float gravity = 70; // pixels per second per second
+    collision_t * c = ctx->collisions;
+    while (c != NULL) {
+        c->sim2.v += gravity * ctx->dt.frame;
+        c->sim.x += c->sim2.u * ctx->dt.frame;
+        c->sim.y += c->sim2.v * ctx->dt.frame;
+        c = c->next;
+    }
+    return ctx;
+}
+
+ctx_t * o_collisions_update_remove (ctx_t * ctx) {
+    collision_t * this = ctx->collisions;
+    collision_t * prev = NULL;
+    bool isfirst = false;
+    bool doremove = false;
+    while (this != NULL) {
+        isfirst = prev == NULL;
+        doremove = this->state != ALIVE;
+        switch (isfirst << 1 | doremove ) {
+            case 0: {
+                // not first, not remove
+                prev = this;
+                this = this->next;
+                break;
+            }
+            case 1: {
+                // not first, remove
+                collision_t * tmp = this;
+                prev->next = this->next;
+                this = this->next;
+                free(tmp);
+                break;
+            }
+            case 2: {
+                // first, not remove
+                prev = this;
+                this = this->next;
+                break;
+            }
+            case 3: {
+                // first, remove
+                collision_t * tmp = this;
+                ctx->collisions = this->next;
+                this = this->next;
+                free(tmp);
+                break;
+            }
+            default: {
+                SDL_LogError(SDL_UNSUPPORTED, "Something went wrong in removing a collision from the list.\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
+    return ctx;
+}
+
+static ctx_t * o_collisions_update_spawn (ctx_t * ctx) {
     balloon_t * ba = ctx->balloons;
     while (ba != NULL) {
         bullet_t * bu = ctx->bullets;
@@ -53,13 +133,10 @@ ctx_t * o_collisions_update (ctx_t * ctx) {
 
                 // increase nbullets
                 ctx->nprespawn.bu += ba->value;
-                ctx->nhit++;
-                ctx->nairborne.ba--;
-                ctx->nairborne.bu--;
 
                 // mark bullet and balloon for deletion
-                ba->delete = true;
-                bu->delete = true;
+                ba->state = HIT;
+                bu->state = HIT;
 
                 // spawn collision effect
                 // TODO
@@ -67,6 +144,22 @@ ctx_t * o_collisions_update (ctx_t * ctx) {
             bu = bu->next;
         }
         ba = ba->next;
+    }
+    return ctx;
+}
+
+static ctx_t * o_collisions_update_test_exited (ctx_t * ctx) {
+    collision_t * this = ctx->collisions;
+    bool exited;
+    while (this != NULL) {
+        exited = this->sim.y < 0 - this->sim.h  ||
+                 this->sim.x > ctx->scene.sim.w ||
+                 this->sim.x < 0 - this->sim.w  ||
+                 this->sim.y > ctx->scene.sim.h - ctx->ground.sim.h;
+        if (exited) {
+            this->state = EXITED;
+        }
+        this = this->next;
     }
     return ctx;
 }

@@ -13,11 +13,17 @@
 #include "o_scene.h"
 
 static float o_balloons_unitrand(void);
-static ctx_t * o_balloons_update_add (ctx_t *);
 static ctx_t * o_balloons_update_pos (ctx_t *);
+static ctx_t * o_balloons_update_spawn (ctx_t *);
+static ctx_t * o_balloons_update_test_exited (ctx_t *);
 
 ctx_t * o_balloons_deinit (ctx_t * ctx) {
-    free(ctx->balloons);
+    balloon_t * b = ctx->balloons;
+    while (b != NULL) {
+        balloon_t * tmp = b;
+        b = b->next;
+        free(tmp);
+    }
     ctx->balloons = NULL;
     return ctx;
 }
@@ -42,14 +48,19 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     return ctx;
 }
 
+static float o_balloons_unitrand(void) {
+    return (float)(rand()) / (float)(RAND_MAX);
+}
+
 ctx_t * o_balloons_update (ctx_t * ctx) {
-    ctx = o_balloons_update_pos(ctx);
-    ctx = o_balloons_update_add(ctx);
+    ctx = o_balloons_update_test_exited(ctx);
     ctx = o_balloons_update_remove(ctx);
+    ctx = o_balloons_update_pos(ctx);
+    ctx = o_balloons_update_spawn(ctx);
     return ctx;
 }
 
-static ctx_t * o_balloons_update_add (ctx_t * ctx) {
+static ctx_t * o_balloons_update_spawn (ctx_t * ctx) {
     static const float spawn_rate = 0.35; // balloons per second
     float spawn_chance = ctx->nairborne.ba == 0 ? 1 : spawn_rate * ctx->dt.frame;
     if (ctx->nprespawn.ba <= 0 || o_balloons_unitrand() > spawn_chance) {
@@ -61,7 +72,6 @@ static ctx_t * o_balloons_update_add (ctx_t * ctx) {
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
-        .delete = false,
         .next = ctx->balloons,
         .sim = (SDL_FRect){
             .h = 16,
@@ -79,6 +89,7 @@ static ctx_t * o_balloons_update_add (ctx_t * ctx) {
             .x = 166,
             .y = 1,
         },
+        .state = ALIVE,
         .value = 3,
     };
     ctx->balloons = b;
@@ -104,11 +115,7 @@ ctx_t * o_balloons_update_remove (ctx_t * ctx) {
     bool doremove = false;
     while (this != NULL) {
         isfirst = prev == NULL;
-        doremove = this->delete ||
-                   this->sim.y < 0 - this->sim.h  ||
-                   this->sim.x > ctx->scene.sim.w ||
-                   this->sim.x < 0 - this->sim.w  ||
-                   this->sim.y > ctx->scene.sim.h - ctx->ground.sim.h;
+        doremove = this->state != ALIVE;
         switch (isfirst << 1 | doremove ) {
             case 0: {
                 // not first, not remove
@@ -120,8 +127,14 @@ ctx_t * o_balloons_update_remove (ctx_t * ctx) {
                 // not first, remove
                 balloon_t * tmp = this;
                 prev->next = this->next;
-                ctx->nairborne.ba -= this->delete ? 0 : 1;
-                ctx->nmiss += this->delete ? 0 : 1;
+                if (this->state == EXITED) {
+                    ctx->nmiss++;
+                    ctx->nairborne.ba--;
+                }
+                if (this->state == HIT) {
+                    ctx->nhit++;
+                    ctx->nairborne.ba--;
+                }
                 this = this->next;
                 free(tmp);
                 break;
@@ -136,8 +149,14 @@ ctx_t * o_balloons_update_remove (ctx_t * ctx) {
                 // first, remove
                 balloon_t * tmp = this;
                 ctx->balloons = this->next;
-                ctx->nairborne.ba -= this->delete ? 0 : 1;
-                ctx->nmiss += this->delete ? 0 : 1;
+                if (this->state == EXITED) {
+                    ctx->nmiss++;
+                    ctx->nairborne.ba--;
+                }
+                if (this->state == HIT) {
+                    ctx->nhit++;
+                    ctx->nairborne.ba--;
+                }
                 this = this->next;
                 free(tmp);
                 break;
@@ -151,6 +170,18 @@ ctx_t * o_balloons_update_remove (ctx_t * ctx) {
     return ctx;
 }
 
-static float o_balloons_unitrand(void) {
-    return (float)(rand()) / (float)(RAND_MAX);
+static ctx_t * o_balloons_update_test_exited (ctx_t * ctx) {
+    balloon_t * this = ctx->balloons;
+    bool exited;
+    while (this != NULL) {
+        exited = this->sim.y < 0 - this->sim.h  ||
+                 this->sim.x > ctx->scene.sim.w ||
+                 this->sim.x < 0 - this->sim.w  ||
+                 this->sim.y > ctx->scene.sim.h - ctx->ground.sim.h;
+        if (exited) {
+            this->state = EXITED;
+        }
+        this = this->next;
+    }
+    return ctx;
 }
