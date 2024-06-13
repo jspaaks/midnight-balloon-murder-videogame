@@ -32,6 +32,17 @@ make
 make install
 ```
 
+Compile and install SDL_mixer from the bundled submodule (`third_party/sdl_mixer`):
+
+```shell
+cd <project dir>
+mkdir -p build/sdl_mixer
+cd build/sdl_mixer
+../../third_party/sdl_mixer/configure --prefix <project dir>/lib
+make
+make install
+```
+
 ## Uninstalling SDL2
 
 ```shell
@@ -43,6 +54,13 @@ make uninstall
 
 ```shell
 cd <your project dir>/build/sdl_ttf
+make uninstall
+```
+
+## Uninstalling SDL_mixer
+
+```shell
+cd <your project dir>/build/sdl_mixer
 make uninstall
 ```
 
