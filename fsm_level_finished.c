@@ -3,8 +3,8 @@
 #include "SDL_keycode.h"
 #include "SDL_log.h"
 #include "fsm.h"
-#include "s_playing.h"
-#include "s_level_finished.h"
+#include "fsm_playing.h"
+#include "fsm_level_finished.h"
 #include "levels.h"
 #include "types.h"
 #include "wrapped.h"
@@ -18,14 +18,14 @@
 #include "o_titles.h"
 #include "o_turret.h"
 
-static void s_level_finished_draw_keymap_proceed(ctx_t *);
-static void s_level_finished_draw_keymap_repeat_action(ctx_t *);
-static void s_level_finished_draw_keymap_repeat_button(ctx_t *);
+static void fsm_level_finished_draw_keymap_proceed(ctx_t *);
+static void fsm_level_finished_draw_keymap_repeat_action(ctx_t *);
+static void fsm_level_finished_draw_keymap_repeat_button(ctx_t *);
 
 static bool next_unlocked;
 static bool next_exists;
 
-void s_level_finished_draw (ctx_t * ctx) {
+void fsm_level_finished_draw (ctx_t * ctx) {
     o_background_draw(ctx);
     o_scene_draw(ctx);
     o_moon_draw(ctx);
@@ -35,13 +35,13 @@ void s_level_finished_draw (ctx_t * ctx) {
     o_ground_draw(ctx);
     o_keymap_draw_proceedhint(ctx);
     o_titles_draw_level_finished(ctx);
-    s_level_finished_draw_keymap_proceed(ctx);
-    s_level_finished_draw_keymap_repeat_button(ctx);
-    s_level_finished_draw_keymap_repeat_action(ctx);
+    fsm_level_finished_draw_keymap_proceed(ctx);
+    fsm_level_finished_draw_keymap_repeat_button(ctx);
+    fsm_level_finished_draw_keymap_repeat_action(ctx);
     SDL_RenderPresent(ctx->renderer);
 }
 
-static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
+static void fsm_level_finished_draw_keymap_proceed(ctx_t * ctx) {
     SDL_Color color;
     int c = next_exists << 1 | next_unlocked;
     switch (c) {
@@ -104,7 +104,7 @@ static void s_level_finished_draw_keymap_proceed(ctx_t * ctx) {
     }
 }
 
-static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
+static void fsm_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
             char keymap[13] = "REPEAT LEVEL";
             SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.lightgray, ctx->colors.bg);
             SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
@@ -122,7 +122,7 @@ static void s_level_finished_draw_keymap_repeat_action(ctx_t * ctx) {
             SDL_FreeSurface(surf.payload);
 }
 
-static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
+static void fsm_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             char keymap[2] = "R";
             SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.large, keymap, ctx->colors.lightgray, ctx->colors.bg);
             SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
@@ -140,7 +140,7 @@ static void s_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             SDL_FreeSurface(surf.payload);
 }
 
-ctx_t * s_level_finished_update (ctx_t * ctx, state_t ** state) {
+ctx_t * fsm_level_finished_update (ctx_t * ctx, state_t ** state) {
     if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }

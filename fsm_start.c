@@ -9,7 +9,7 @@
 #include "SDL_video.h"
 #include "o_scene.h"
 #include "fsm.h"
-#include "s_start.h"
+#include "fsm_start.h"
 #include "types.h"
 #include "wrapped.h"
 #include "o_background.h"
@@ -18,7 +18,7 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void s_start_draw (ctx_t * ctx) {
+void fsm_start_draw (ctx_t * ctx) {
     o_background_draw(ctx);
     o_scene_draw(ctx);
     o_moon_draw(ctx);
@@ -28,7 +28,7 @@ void s_start_draw (ctx_t * ctx) {
     SDL_RenderPresent(ctx->renderer);
 }
 
-ctx_t * s_start_update (ctx_t * ctx, state_t ** state) {
+ctx_t * fsm_start_update (ctx_t * ctx, state_t ** state) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {

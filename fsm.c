@@ -1,29 +1,29 @@
 #include "fsm.h"
-#include "s_start.h"
-#include "s_playing.h"
-#include "s_paused.h"
-#include "s_level_finished.h"
+#include "fsm_start.h"
+#include "fsm_playing.h"
+#include "fsm_paused.h"
+#include "fsm_level_finished.h"
 
 static state_t states[] = {
     {
-        .draw = s_start_draw,
+        .draw = fsm_start_draw,
         .label = START,
-        .update = s_start_update,
+        .update = fsm_start_update,
     },
     {
-        .draw = s_playing_draw,
+        .draw = fsm_playing_draw,
         .label = PLAYING,
-        .update = s_playing_update,
+        .update = fsm_playing_update,
     },
     {
-        .draw = s_paused_draw,
+        .draw = fsm_paused_draw,
         .label = PAUSED,
-        .update = s_paused_update,
+        .update = fsm_paused_update,
     },
     {
-        .draw = s_level_finished_draw,
+        .draw = fsm_level_finished_draw,
         .label = LEVEL_FINISHED,
-        .update = s_level_finished_update,
+        .update = fsm_level_finished_update,
     },
 };
 
