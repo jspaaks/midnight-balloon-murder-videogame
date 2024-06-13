@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
+#include "SDL_mixer.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_timer.h"
@@ -62,43 +63,48 @@ ctx_t * o_bullets_update (ctx_t * ctx) {
 
 static ctx_t * o_bullets_update_spawn (ctx_t * ctx) {
     static const float PI = 3.14159265358979323846f;
-    static Uint64 timeout = 150;
+    Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
+    bool has_bullets = ctx->nbullets.prespawn > 0;
+    bool key_pressed = ctx->keys[SDL_SCANCODE_SPACE];
+    bool cooled_off = SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout;
 
-    bool cond = ctx->nbullets.prespawn > 0 &&
-                SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout &&
-                ctx->keys[SDL_SCANCODE_SPACE];
+    if (key_pressed && cooled_off) {
+        if (has_bullets) {
+            bullet_t * b = malloc(1 * sizeof(bullet_t));
+            if (b == NULL) {
+                SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new bullet.\n");
+                exit(EXIT_FAILURE);
+            }
+            float a = PI * ctx->barrel.sim2.angle / 180;
+            float x = ctx->barrel.sim2.pivot.x + cos(a) * (ctx->barrel.sim2.length + 20) - (src_bullet.w - 1) / 2;
+            float y = ctx->barrel.sim2.pivot.y + sin(a) * (ctx->barrel.sim2.length + 20) - (src_bullet.h - 1) / 2;
 
-    if (cond) {
-        bullet_t * b = malloc(1 * sizeof(bullet_t));
-        if (b == NULL) {
-            SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new bullet.\n");
-            exit(EXIT_FAILURE);
+            float speed = 380;
+            *b = (bullet_t) {
+                .next = ctx->bullets,
+                .sim = {
+                    .x = x,
+                    .y = y,
+                    .w = 5,
+                    .h = 5,
+                },
+                .sim2 = {
+                    .u = cos(a) * speed,
+                    .v = sin(a) * speed,
+                },
+                .src = &src_bullet,
+                .state = ALIVE,
+            };
+            ctx->bullets = b;
+            ctx->nbullets.prespawn--;
+            ctx->nbullets.airborne++;
+            ctx->tspawn_latestbullet = SDL_GetTicks64();
+            Mix_PlayChannel(-1, ctx->chunks.shoot, 0);
+        } else {
+            Mix_PlayChannel(-1, ctx->chunks.empty, 0);
+            ctx->tspawn_latestbullet = SDL_GetTicks64();
         }
-        float a = PI * ctx->barrel.sim2.angle / 180;
-        float x = ctx->barrel.sim2.pivot.x + cos(a) * (ctx->barrel.sim2.length + 20) - (src_bullet.w - 1) / 2;
-        float y = ctx->barrel.sim2.pivot.y + sin(a) * (ctx->barrel.sim2.length + 20) - (src_bullet.h - 1) / 2;
-
-        float speed = 380;
-        *b = (bullet_t) {
-            .next = ctx->bullets,
-            .sim = {
-                .x = x,
-                .y = y,
-                .w = 5,
-                .h = 5,
-            },
-            .sim2 = {
-                .u = cos(a) * speed,
-                .v = sin(a) * speed,
-            },
-            .src = &src_bullet,
-            .state = ALIVE,
-        };
-        ctx->bullets = b;
-        ctx->nbullets.prespawn--;
-        ctx->nbullets.airborne++;
-        ctx->tspawn_latestbullet = SDL_GetTicks64();
     }
     return ctx;
 }

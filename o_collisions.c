@@ -140,6 +140,24 @@ static ctx_t * o_collisions_update_spawn (ctx_t * ctx) {
 
                 // spawn collision effect
                 // TODO
+                Mix_PlayChannel(-1, ctx->chunks.pop, 0);
+                switch (ba->value) {
+                    case 3: {
+                        Mix_PlayChannel(-1, ctx->chunks.hit.yellow, 0);
+                        break;
+                    }
+                    case 4: {
+                        Mix_PlayChannel(-1, ctx->chunks.hit.orange, 0);
+                        break;
+                    }
+                    case 5: {
+                        Mix_PlayChannel(-1, ctx->chunks.hit.red, 0);
+                        break;
+                    }
+                    default: {
+                        SDL_LogError(SDL_UNSUPPORTED, "Something went wrong with assigning the sound to the collision.\n");
+                    }
+                }
             }
             bu = bu->next;
         }

@@ -5,6 +5,7 @@
 #include "SDL_log.h"
 #include "SDL_timer.h"
 #include "SDL.h"
+#include "chunks.h"
 #include "colors.h"
 #include "fonts.h"
 #include "fsm.h"
@@ -35,6 +36,7 @@ static void deinit (ctx_t * ctx) {
     // --- abstract entities
     ctx = levels_deinit(ctx);
     ctx = fonts_deinit(ctx);
+    ctx = chunks_init(ctx);
     ctx = keystate_deinit(ctx);
     // --- sdl infrastructure
     ctx = renderer_deinit(ctx);
@@ -62,6 +64,7 @@ static bool init (ctx_t * ctx) {
     ctx = colors_init(ctx);
     ctx = fonts_init(ctx);
     ctx = keystate_init(ctx);
+    ctx = chunks_init(ctx);
     ctx = levels_init(ctx);
     // --- time related
     ctx->dt.frame = 0.0000000000001;

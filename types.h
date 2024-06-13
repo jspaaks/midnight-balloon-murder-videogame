@@ -2,10 +2,11 @@
 #define TYPES_H
 
 #include <stdbool.h>
-#include "SDL_video.h"
-#include "SDL_render.h"
+#include "SDL_mixer.h"
 #include "SDL_rect.h"
+#include "SDL_render.h"
 #include "SDL_ttf.h"
+#include "SDL_video.h"
 
 typedef enum {
     ALIVE = 0,
@@ -163,6 +164,16 @@ struct ctx_t {
     balloon_t * balloons;
     barrel_t barrel;
     bullet_t * bullets;
+    struct {
+        Mix_Chunk * empty;
+        struct {
+            Mix_Chunk * orange;
+            Mix_Chunk * red;
+            Mix_Chunk * yellow;
+        } hit;
+        Mix_Chunk * pop;
+        Mix_Chunk * shoot;
+    } chunks;
     collision_t * collisions;
     colors_t colors;
     struct {
