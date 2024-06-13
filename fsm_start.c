@@ -35,7 +35,7 @@ ctx_t * fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_RETURN) {
                     SDL_Log("playing\n");
-                    *gamestate = fsm_set_gamestate(GAMESTATE_PLAYING);
+                    *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;

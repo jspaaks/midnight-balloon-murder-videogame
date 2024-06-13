@@ -7,6 +7,6 @@
 #include "SDL_events.h"
 #include "types.h"
 
-gamestate_t * fsm_set_gamestate (gamestate_name_t);
+gamestate_t * fsm_gamestate_get (gamestate_name_t);
 
 #endif

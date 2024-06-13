@@ -154,11 +154,11 @@ ctx_t * fsm_level_finished_update (ctx_t * ctx, gamestate_t ** gamestate) {
                     ctx->ilevel += next_exists ? 1 : 0;
                     levels_set(ctx, ctx->ilevel);
                     SDL_Log("playing -- next level\n");
-                    *gamestate = fsm_set_gamestate(GAMESTATE_PLAYING);
+                    *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_r) {
                     levels_set(ctx, ctx->ilevel);
                     SDL_Log("playing -- same level\n");
-                    *gamestate = fsm_set_gamestate(GAMESTATE_PLAYING);
+                    *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;

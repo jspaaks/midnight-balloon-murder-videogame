@@ -27,6 +27,6 @@ static gamestate_t gamestates[] = {
     },
 };
 
-gamestate_t * fsm_set_gamestate (gamestate_name_t label) {
+gamestate_t * fsm_gamestate_get (gamestate_name_t label) {
     return &gamestates[label];
 }

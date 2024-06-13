@@ -44,7 +44,7 @@ ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     SDL_Log("pausing\n");
-                    *gamestate = fsm_set_gamestate(GAMESTATE_PAUSING);
+                    *gamestate = fsm_gamestate_get(GAMESTATE_PAUSING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;
@@ -77,7 +77,7 @@ ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
         ctx->nballoons.prespawn = 0;
         ctx->nballoons.airborne = 0;
         SDL_Log("finishing level\n");
-        *gamestate = fsm_set_gamestate(GAMESTATE_FINISHING_LEVEL);
+        *gamestate = fsm_gamestate_get(GAMESTATE_FINISHING_LEVEL);
     }
 
     return ctx;

@@ -74,7 +74,7 @@ int main (void) {
         exit(EXIT_FAILURE);
     }
     SDL_Log("starting\n");
-    gamestate_t * gamestate = fsm_set_gamestate(GAMESTATE_STARTING);
+    gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
     Uint64 tnow = SDL_GetTicks64();
     Uint64 tstart = tnow;
