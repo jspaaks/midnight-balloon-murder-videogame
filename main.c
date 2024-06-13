@@ -73,9 +73,9 @@ int main (void) {
     if (!init(&ctx)) {
         exit(EXIT_FAILURE);
     }
-
-    state_t * state = fsm_set_state (START);
-    state_t * frame = state;
+    SDL_Log("starting\n");
+    gamestate_t * gamestate = fsm_set_gamestate(GAMESTATE_STARTING);
+    gamestate_t * frame = gamestate;
     Uint64 tnow = SDL_GetTicks64();
     Uint64 tstart = tnow;
 
@@ -83,8 +83,8 @@ int main (void) {
 
     while (true) {
 
-        frame = state;  // so .update() and .draw() are of the same state
-        frame->update(&ctx, &state);
+        frame = gamestate;  // so .update() and .draw() are of the same state
+        frame->update(&ctx, &gamestate);
         frame->draw(&ctx);
 
         nframes++;

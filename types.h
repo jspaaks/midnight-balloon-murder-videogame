@@ -15,11 +15,11 @@ typedef enum {
 } delete_reason_t;
 
 typedef enum {
-    START = 0,
-    PLAYING,
-    PAUSED,
-    LEVEL_FINISHED,
-} state_name_t;
+    GAMESTATE_STARTING = 0,
+    GAMESTATE_PLAYING,
+    GAMESTATE_PAUSING,
+    GAMESTATE_FINISHING_LEVEL,
+} gamestate_name_t;
 
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
@@ -28,12 +28,12 @@ typedef struct collision_t collision_t;
 typedef struct colors_t colors_t;
 typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
+typedef struct gamestate_t gamestate_t;
 typedef struct ground_t ground_t;
 typedef struct legend_t legend_t;
 typedef struct level_t level_t;
 typedef struct moon_t moon_t;
 typedef struct scene_t scene_t;
-typedef struct state_t state_t;
 typedef struct turret_t turret_t;
 
 struct balloon_t {
@@ -106,6 +106,12 @@ struct flash_t {
     SDL_Rect src;
 };
 
+struct gamestate_t {
+    void (*draw)(ctx_t *);
+    ctx_t * (*update)(ctx_t *, struct gamestate_t **);
+    gamestate_name_t label;
+};
+
 struct ground_t {
     SDL_FRect sim;
 };
@@ -146,12 +152,6 @@ struct scene_t {
     float ratio;
     SDL_FRect sim;
     SDL_Rect tgt;
-};
-
-struct state_t {
-    void (*draw)(ctx_t *);
-    ctx_t * (*update)(ctx_t *, struct state_t **);
-    state_name_t label;
 };
 
 struct turret_t {

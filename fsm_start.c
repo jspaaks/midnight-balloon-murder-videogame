@@ -28,14 +28,14 @@ void fsm_start_draw (ctx_t * ctx) {
     SDL_RenderPresent(ctx->renderer);
 }
 
-ctx_t * fsm_start_update (ctx_t * ctx, state_t ** state) {
+ctx_t * fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_RETURN) {
                     SDL_Log("playing\n");
-                    *state = fsm_set_state(PLAYING);
+                    *gamestate = fsm_set_gamestate(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;

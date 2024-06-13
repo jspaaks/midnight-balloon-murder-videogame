@@ -44,14 +44,14 @@ void fsm_paused_draw (ctx_t * ctx) {
     SDL_RenderPresent(ctx->renderer);
 }
 
-ctx_t * fsm_paused_update (ctx_t * ctx, state_t ** state) {
+ctx_t * fsm_paused_update (ctx_t * ctx, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     SDL_Log("playing\n");
-                    *state = fsm_set_state(PLAYING);
+                    *gamestate = fsm_set_gamestate(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_q) {
                     SDL_Log("quitting\n");
                     exit(EXIT_SUCCESS);
@@ -59,7 +59,7 @@ ctx_t * fsm_paused_update (ctx_t * ctx, state_t ** state) {
                     if (ctx->nballoons.prespawn < ctx->level->nballoons.prespawn || ctx->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
                         SDL_Log("restarting level\n");
                         ctx = levels_set(ctx, ctx->ilevel);
-                        *state = fsm_set_state(PLAYING);
+                        *gamestate = fsm_set_gamestate(GAMESTATE_PLAYING);
                     }
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);

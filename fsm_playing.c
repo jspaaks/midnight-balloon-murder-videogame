@@ -37,14 +37,14 @@ void fsm_playing_draw (ctx_t * ctx) {
     SDL_RenderPresent(ctx->renderer);
 }
 
-ctx_t * fsm_playing_update (ctx_t * ctx, state_t ** state) {
+ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     SDL_Log("pausing\n");
-                    *state = fsm_set_state(PAUSED);
+                    *gamestate = fsm_set_gamestate(GAMESTATE_PAUSING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;
@@ -73,18 +73,11 @@ ctx_t * fsm_playing_update (ctx_t * ctx, state_t ** state) {
     bool no_more_balloons = ctx->nballoons.prespawn + ctx->nballoons.airborne == 0;
     bool no_more_bullets = ctx->nbullets.prespawn + ctx->nbullets.airborne == 0;
     if (no_more_balloons || no_more_bullets) {
-        if (no_more_balloons) {
-            SDL_Log("No more balloons. { hit: %d, miss: %d }\n", ctx->nballoons.hit, ctx->nballoons.miss);
-        }
-        if (no_more_bullets) {
-            ctx = o_legend_update(ctx);
-            SDL_Log("No more bullets. { hit: %d, miss: %d }\n", ctx->nballoons.hit, ctx->nballoons.miss);
-        }
         ctx->nballoons.miss += ctx->nballoons.prespawn + ctx->nballoons.airborne;
         ctx->nballoons.prespawn = 0;
         ctx->nballoons.airborne = 0;
-        SDL_Log("level finished\n");
-        *state = fsm_set_state(LEVEL_FINISHED);
+        SDL_Log("finishing level\n");
+        *gamestate = fsm_set_gamestate(GAMESTATE_FINISHING_LEVEL);
     }
 
     return ctx;

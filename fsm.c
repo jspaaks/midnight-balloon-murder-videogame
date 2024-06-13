@@ -4,29 +4,29 @@
 #include "fsm_paused.h"
 #include "fsm_level_finished.h"
 
-static state_t states[] = {
+static gamestate_t gamestates[] = {
     {
         .draw = fsm_start_draw,
-        .label = START,
+        .label = GAMESTATE_STARTING,
         .update = fsm_start_update,
     },
     {
         .draw = fsm_playing_draw,
-        .label = PLAYING,
+        .label = GAMESTATE_PLAYING,
         .update = fsm_playing_update,
     },
     {
         .draw = fsm_paused_draw,
-        .label = PAUSED,
+        .label = GAMESTATE_PAUSING,
         .update = fsm_paused_update,
     },
     {
         .draw = fsm_level_finished_draw,
-        .label = LEVEL_FINISHED,
+        .label = GAMESTATE_FINISHING_LEVEL,
         .update = fsm_level_finished_update,
     },
 };
 
-state_t * fsm_set_state (state_name_t label) {
-    return &states[label];
+gamestate_t * fsm_set_gamestate (gamestate_name_t label) {
+    return &gamestates[label];
 }
