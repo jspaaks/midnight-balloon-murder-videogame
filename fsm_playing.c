@@ -42,18 +42,27 @@ ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_KEYDOWN: {
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    SDL_Log("pausing\n");
-                    *gamestate = fsm_gamestate_get(GAMESTATE_PAUSING);
-                } else if (event.key.keysym.sym == SDLK_F11) {
-                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
-                    ctx->isfullscreen = !ctx->isfullscreen;
+                switch (event.key.keysym.sym) {
+                    case SDLK_ESCAPE: {
+                        SDL_Log("pausing\n");
+                        *gamestate = fsm_gamestate_get(GAMESTATE_PAUSING);
+                        break;
+                    }
+                    case SDLK_F11: {
+                        SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                        ctx->isfullscreen = !ctx->isfullscreen;
+                        break;
+                    }
                 }
                 break;
             }
             case SDL_WINDOWEVENT: {
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                     ctx->scene.resized = true;
+                switch (event.window.event) {
+                    case SDL_WINDOWEVENT_RESIZED:  // fallthrough
+                    case SDL_WINDOWEVENT_SIZE_CHANGED: {
+                         ctx->scene.resized = true;
+                        break;
+                    }
                 }
                 break;
             }
