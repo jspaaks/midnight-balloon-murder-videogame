@@ -15,7 +15,7 @@ typedef struct {
     SDL_Texture * payload;
 } SDLW_Texture;
 
-SDLW_Surface TTFW_RenderText_Shaded(TTF_Font *font, const char *text, SDL_Color fg, SDL_Color bg);
-SDLW_Texture SDLW_CreateTextureFromSurface(SDL_Renderer *renderer, SDLW_Surface surface);
+SDLW_Surface TTFW_RenderText_Shaded(TTF_Font *, const char *, SDL_Color, SDL_Color);
+SDLW_Texture SDLW_CreateTextureFromSurface(SDL_Renderer *, SDLW_Surface);
 
 #endif
