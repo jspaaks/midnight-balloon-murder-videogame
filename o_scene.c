@@ -4,7 +4,7 @@
 #include "o_scene.h"
 #include "types.h"
 
-ctx_t * o_scene_init(ctx_t * ctx) {
+void o_scene_init(ctx_t * ctx) {
     float h = 720.0;
     float w = 1280.0;
     ctx->scene = (scene_t) {
@@ -24,7 +24,6 @@ ctx_t * o_scene_init(ctx_t * ctx) {
         },
     };
     ctx->resized = true;
-    return ctx;
 }
 
 void o_scene_draw (ctx_t * ctx) {
@@ -35,7 +34,7 @@ void o_scene_draw (ctx_t * ctx) {
     SDL_RenderFillRect(ctx->renderer, &ctx->scene.tgt);
 }
 
-ctx_t * o_scene_update (ctx_t * ctx) {
+void o_scene_update (ctx_t * ctx) {
     if (ctx->scene.resized) {
         int w0;
         int h0;
@@ -65,7 +64,6 @@ ctx_t * o_scene_update (ctx_t * ctx) {
         ctx->scene.scale = ctx->scene.tgt.w / ctx->scene.sim.w;
         ctx->resized = false;
     }
-    return ctx;
 }
 
 SDL_Rect sim2tgt(scene_t scene, SDL_FRect sim) {

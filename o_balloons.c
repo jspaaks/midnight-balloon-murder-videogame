@@ -7,20 +7,19 @@
 #include "SDL_render.h"
 #include "SDL_error.h"
 #include "types.h"
-#include "constants.h"
 #include "levels.h"
 #include "o_balloons.h"
 #include "o_scene.h"
 
 static float o_balloons_unitrand(void);
-static ctx_t * o_balloons_update_pos (ctx_t *);
-static ctx_t * o_balloons_update_spawn (ctx_t *);
-static void o_balloons_update_spawn_orange (ctx_t * ctx, balloon_t *);
-static void o_balloons_update_spawn_red (ctx_t * ctx, balloon_t *);
-static void o_balloons_update_spawn_yellow (ctx_t * ctx, balloon_t *);
-static ctx_t * o_balloons_update_test_exited (ctx_t *);
+static void o_balloons_update_pos (ctx_t *);
+static void o_balloons_update_spawn (ctx_t *);
+static void o_balloons_update_spawn_orange (ctx_t *);
+static void o_balloons_update_spawn_red (ctx_t *);
+static void o_balloons_update_spawn_yellow (ctx_t *);
+static void o_balloons_update_test_exited (ctx_t *);
 
-ctx_t * o_balloons_deinit (ctx_t * ctx) {
+void o_balloons_deinit (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     while (b != NULL) {
         balloon_t * tmp = b;
@@ -28,7 +27,6 @@ ctx_t * o_balloons_deinit (ctx_t * ctx) {
         free(tmp);
     }
     ctx->balloons = NULL;
-    return ctx;
 }
 
 void o_balloons_draw (ctx_t * ctx) {
@@ -40,7 +38,7 @@ void o_balloons_draw (ctx_t * ctx) {
     }
 }
 
-ctx_t * o_balloons_init (ctx_t * ctx) {
+void o_balloons_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before balloons");
     ctx->balloons = NULL;
     ctx->nballoons.airborne = 0;
@@ -50,53 +48,49 @@ ctx_t * o_balloons_init (ctx_t * ctx) {
     ctx->nballoons.prespawn = ctx->level->nballoons.prespawn;
     ctx->nballoons.red = ctx->level->nballoons.red;
     ctx->nballoons.yellow = ctx->level->nballoons.yellow;
-    return ctx;
 }
 
 static float o_balloons_unitrand(void) {
     return (float)(rand()) / (float)(RAND_MAX);
 }
 
-ctx_t * o_balloons_update (ctx_t * ctx) {
-    ctx = o_balloons_update_test_exited(ctx);
-    ctx = o_balloons_update_remove(ctx);
-    ctx = o_balloons_update_pos(ctx);
-    ctx = o_balloons_update_spawn(ctx);
-    return ctx;
+void o_balloons_update (ctx_t * ctx) {
+    o_balloons_update_test_exited(ctx);
+    o_balloons_update_remove(ctx);
+    o_balloons_update_pos(ctx);
+    o_balloons_update_spawn(ctx);
 }
 
-static ctx_t * o_balloons_update_spawn (ctx_t * ctx) {
+static void o_balloons_update_spawn (ctx_t * ctx) {
     static const float spawn_rate = 0.35; // balloons per second
     float spawn_chance = ctx->nballoons.airborne == 0 ? 1 : spawn_rate * ctx->dt.frame;
     if (ctx->nballoons.prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
-        return ctx;
-    }
-    balloon_t * b = malloc(1 * sizeof(balloon_t));
-    if (b == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new balloon.\n");
-        exit(EXIT_FAILURE);
+        return;
     }
     unsigned int remaining = ctx->nballoons.yellow + ctx->nballoons.orange + ctx->nballoons.red;
     float y = (float)(ctx->nballoons.yellow) / remaining;
     float o = (float)(ctx->nballoons.orange) / remaining;
     float u = o_balloons_unitrand();
     if (u < y) {
-        o_balloons_update_spawn_yellow(ctx, b);
+        o_balloons_update_spawn_yellow(ctx);
         ctx->nballoons.yellow--;
     } else if (u < (y + o)) {
-        o_balloons_update_spawn_orange(ctx, b);
+        o_balloons_update_spawn_orange(ctx);
         ctx->nballoons.orange--;
     } else {
-        o_balloons_update_spawn_red(ctx, b);
+        o_balloons_update_spawn_red(ctx);
         ctx->nballoons.red--;
     }
-    ctx->balloons = b;
     ctx->nballoons.airborne++;
     ctx->nballoons.prespawn--;
-    return ctx;
 }
 
-static void o_balloons_update_spawn_orange (ctx_t * ctx, balloon_t * b) {
+static void o_balloons_update_spawn_orange (ctx_t * ctx) {
+    balloon_t * b = malloc(1 * sizeof(balloon_t));
+    if (b == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new orange balloon.\n");
+        exit(EXIT_FAILURE);
+    }
     *b = (balloon_t){
         .next = ctx->balloons,
         .sim = (SDL_FRect){
@@ -118,9 +112,15 @@ static void o_balloons_update_spawn_orange (ctx_t * ctx, balloon_t * b) {
         .state = ALIVE,
         .value = 4,
     };
+    ctx->balloons = b;
 }
 
-static void o_balloons_update_spawn_red (ctx_t * ctx, balloon_t * b) {
+static void o_balloons_update_spawn_red (ctx_t * ctx) {
+    balloon_t * b = malloc(1 * sizeof(balloon_t));
+    if (b == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new red balloon.\n");
+        exit(EXIT_FAILURE);
+    }
     *b = (balloon_t){
         .next = ctx->balloons,
         .sim = (SDL_FRect){
@@ -142,9 +142,15 @@ static void o_balloons_update_spawn_red (ctx_t * ctx, balloon_t * b) {
         .state = ALIVE,
         .value = 3,
     };
+    ctx->balloons = b;
 }
 
-static void o_balloons_update_spawn_yellow (ctx_t * ctx, balloon_t * b) {
+static void o_balloons_update_spawn_yellow (ctx_t * ctx) {
+    balloon_t * b = malloc(1 * sizeof(balloon_t));
+    if (b == NULL) {
+        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new yellow balloon.\n");
+        exit(EXIT_FAILURE);
+    }
     *b = (balloon_t){
         .next = ctx->balloons,
         .sim = (SDL_FRect){
@@ -166,19 +172,19 @@ static void o_balloons_update_spawn_yellow (ctx_t * ctx, balloon_t * b) {
         .state = ALIVE,
         .value = 5,
     };
+    ctx->balloons = b;
 }
 
-static ctx_t * o_balloons_update_pos (ctx_t * ctx) {
+static void o_balloons_update_pos (ctx_t * ctx) {
     balloon_t * b = ctx->balloons;
     while (b != NULL) {
         b->sim.x += b->sim2.u * ctx->dt.frame;
         b->sim.y += b->sim2.v * ctx->dt.frame;
         b = b->next;
     }
-    return ctx;
 }
 
-ctx_t * o_balloons_update_remove (ctx_t * ctx) {
+void o_balloons_update_remove (ctx_t * ctx) {
     balloon_t * this = ctx->balloons;
     balloon_t * prev = NULL;
     bool isfirst = false;
@@ -237,10 +243,9 @@ ctx_t * o_balloons_update_remove (ctx_t * ctx) {
             }
         }
     }
-    return ctx;
 }
 
-static ctx_t * o_balloons_update_test_exited (ctx_t * ctx) {
+static void o_balloons_update_test_exited (ctx_t * ctx) {
     balloon_t * this = ctx->balloons;
     bool exited;
     while (this != NULL) {
@@ -253,5 +258,4 @@ static ctx_t * o_balloons_update_test_exited (ctx_t * ctx) {
         }
         this = this->next;
     }
-    return ctx;
 }

@@ -2,7 +2,7 @@
 #include "SDL_mixer.h"
 #include "chunks.h"
 
-ctx_t * chunks_deinit(ctx_t * ctx) {
+void chunks_deinit(ctx_t * ctx) {
 
     // clean up chunks
     Mix_FreeChunk(ctx->chunks.shoot);
@@ -25,11 +25,9 @@ ctx_t * chunks_deinit(ctx_t * ctx) {
 
     // clean up mixer
     Mix_Quit();
-
-    return ctx;
 }
 
-ctx_t * chunks_init(ctx_t * ctx) {
+void chunks_init(ctx_t * ctx) {
 
     // --- initialize the audio module
 
@@ -103,6 +101,4 @@ ctx_t * chunks_init(ctx_t * ctx) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
-
-    return ctx;
 }

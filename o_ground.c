@@ -14,7 +14,7 @@ void o_ground_draw (ctx_t * ctx) {
     SDL_RenderFillRect(ctx->renderer, &tgt);
 }
 
-ctx_t * o_ground_init (ctx_t * ctx) {
+void o_ground_init (ctx_t * ctx) {
     assert(ctx->scene.tgt.w != 0 && "scene needs to be initialized before ground");
     float h = 100;
     ctx->ground.sim = (SDL_FRect) {
@@ -23,9 +23,4 @@ ctx_t * o_ground_init (ctx_t * ctx) {
         .x = 0,
         .y = ctx->scene.sim.h - h,
     };
-    return ctx;
-}
-
-ctx_t * o_ground_update (ctx_t * ctx) {
-    return ctx;
 }

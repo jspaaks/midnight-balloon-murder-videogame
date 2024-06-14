@@ -3,6 +3,6 @@
 #include "types.h"
 
 void fsm_level_finished_draw (ctx_t *);
-ctx_t * fsm_level_finished_update (ctx_t *, gamestate_t **);
+void fsm_level_finished_update (ctx_t *, gamestate_t **);
 
 #endif

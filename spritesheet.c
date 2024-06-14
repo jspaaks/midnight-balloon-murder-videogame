@@ -4,13 +4,12 @@
 #include "spritesheet.h"
 #include "types.h"
 
-ctx_t * spritesheet_deinit (ctx_t * ctx) {
+void spritesheet_deinit (ctx_t * ctx) {
     SDL_DestroyTexture(ctx->spritesheet);
     ctx->spritesheet = NULL;
-    return ctx;
 }
 
-ctx_t * spritesheet_init (ctx_t * ctx) {
+void spritesheet_init (ctx_t * ctx) {
     SDL_Surface * image = SDL_LoadBMP("img/sprites.bmp");
     if (image == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong creating spritesheet surface: %s\n", SDL_GetError());
@@ -21,5 +20,4 @@ ctx_t * spritesheet_init (ctx_t * ctx) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong creating spritesheet texture: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
-    return ctx;
 }

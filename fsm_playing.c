@@ -37,7 +37,7 @@ void fsm_playing_draw (ctx_t * ctx) {
     SDL_RenderPresent(ctx->renderer);
 }
 
-ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -68,16 +68,12 @@ ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
             }
         }
     }
-    ctx = o_scene_update(ctx);
-    ctx = o_ground_update(ctx);
-    ctx = o_moon_update(ctx);
-    ctx = o_turret_update(ctx);
-    ctx = o_barrel_update(ctx);
-    ctx = o_flash_update(ctx);
-    ctx = o_balloons_update(ctx);
-    ctx = o_bullets_update(ctx);
-    ctx = o_collisions_update(ctx);
-    ctx = o_legend_update(ctx);
+    o_scene_update(ctx);
+    o_barrel_update(ctx);
+    o_flash_update(ctx);
+    o_balloons_update(ctx);
+    o_bullets_update(ctx);
+    o_collisions_update(ctx);
 
     bool no_more_balloons = ctx->nballoons.prespawn + ctx->nballoons.airborne == 0;
     bool no_more_bullets = ctx->nbullets.prespawn + ctx->nbullets.airborne == 0;
@@ -88,6 +84,4 @@ ctx_t * fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
         SDL_Log("finishing level\n");
         *gamestate = fsm_gamestate_get(GAMESTATE_FINISHING_LEVEL);
     }
-
-    return ctx;
 }

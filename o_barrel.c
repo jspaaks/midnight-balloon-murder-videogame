@@ -31,7 +31,7 @@ void o_barrel_draw (ctx_t * ctx) {
                                                       SDL_FLIP_NONE);
 }
 
-ctx_t * o_barrel_init (ctx_t * ctx) {
+void o_barrel_init (ctx_t * ctx) {
     assert(ctx->turret.sim.x != 0 && "turret needs to be initialized before barrel");
     SDL_Rect src = {
         .h = 11,
@@ -67,7 +67,6 @@ ctx_t * o_barrel_init (ctx_t * ctx) {
         },
         .src = src,
     };
-    return ctx;
 }
 
 static float o_barrel_max(float a, float b) {
@@ -78,7 +77,7 @@ static float o_barrel_min(float a, float b) {
     return a < b ? a : b;
 }
 
-ctx_t * o_barrel_update (ctx_t * ctx) {
+void o_barrel_update (ctx_t * ctx) {
     int flags = ctx->keys[SDL_SCANCODE_W] |
                 ctx->keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
@@ -91,5 +90,4 @@ ctx_t * o_barrel_update (ctx_t * ctx) {
             break;
         }
     }
-    return ctx;
 }

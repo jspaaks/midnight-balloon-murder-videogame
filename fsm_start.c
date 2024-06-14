@@ -28,7 +28,7 @@ void fsm_start_draw (ctx_t * ctx) {
     SDL_RenderPresent(ctx->renderer);
 }
 
-ctx_t * fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -50,6 +50,5 @@ ctx_t * fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
             }
         }
     }
-    ctx = o_scene_update(ctx);
-    return ctx;
+    o_scene_update(ctx);
 }

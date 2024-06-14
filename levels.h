@@ -2,8 +2,8 @@
 #define LEVELS_H
 #include "types.h"
 
-ctx_t * levels_deinit(ctx_t *);
-ctx_t * levels_init(ctx_t *);
-ctx_t * levels_set (ctx_t *, unsigned int);
+void levels_deinit(ctx_t *);
+void levels_init(ctx_t *);
+void levels_set (ctx_t *, unsigned int);
 
 #endif

@@ -10,7 +10,7 @@ void o_turret_draw (ctx_t * ctx) {
     SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->turret.src, &tgt);
 }
 
-ctx_t * o_turret_init (ctx_t * ctx) {
+void o_turret_init (ctx_t * ctx) {
     assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before turret");
     float h = 47;
     SDL_FRect sim = {
@@ -28,9 +28,4 @@ ctx_t * o_turret_init (ctx_t * ctx) {
             .y = 1,
         },
     };
-    return ctx;
-}
-
-ctx_t * o_turret_update (ctx_t * ctx) {
-    return ctx;
 }

@@ -109,7 +109,7 @@ struct flash_t {
 
 struct gamestate_t {
     void (*draw)(ctx_t *);
-    ctx_t * (*update)(ctx_t *, struct gamestate_t **);
+    void (*update)(ctx_t *, struct gamestate_t **);
     gamestate_name_t label;
 };
 

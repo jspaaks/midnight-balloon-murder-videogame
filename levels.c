@@ -93,37 +93,34 @@ static level_t levels[] = {
     },
 };
 
-ctx_t * levels_deinit (ctx_t * ctx) {
+void levels_deinit (ctx_t * ctx) {
     ctx->levels = NULL;
-    return ctx;
 }
 
-ctx_t * levels_init (ctx_t * ctx) {
+void levels_init (ctx_t * ctx) {
     unsigned int unl = 0;
     ctx->ilevel_unlocked = unl;
-    ctx = levels_set(ctx, unl);
-    return ctx;
+    levels_set(ctx, unl);
 }
 
-ctx_t * levels_set (ctx_t * ctx, unsigned int ilevel) {
+void levels_set (ctx_t * ctx, unsigned int ilevel) {
     // --- deinit entities from previous levels
-    ctx = o_balloons_deinit(ctx);
-    ctx = o_bullets_deinit(ctx);
-    ctx = o_collisions_deinit(ctx);
+    o_balloons_deinit(ctx);
+    o_bullets_deinit(ctx);
+    o_collisions_deinit(ctx);
     // --- new level
     ctx->ilevel = ilevel;
     ctx->level = &levels[ilevel];
     ctx->levels = &levels[0];
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
     // --- concrete entities
-    ctx = o_ground_init(ctx);
-    ctx = o_moon_init(ctx);
-    ctx = o_turret_init(ctx);
-    ctx = o_barrel_init(ctx);
-    ctx = o_balloons_init(ctx);
-    ctx = o_bullets_init(ctx);
-    ctx = o_collisions_init(ctx);
-    ctx = o_flash_init(ctx);
-    ctx = o_legend_init(ctx);
-    return ctx;
+    o_ground_init(ctx);
+    o_moon_init(ctx);
+    o_turret_init(ctx);
+    o_barrel_init(ctx);
+    o_balloons_init(ctx);
+    o_bullets_init(ctx);
+    o_collisions_init(ctx);
+    o_flash_init(ctx);
+    o_legend_init(ctx);
 }

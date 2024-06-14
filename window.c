@@ -6,13 +6,12 @@
 #include "types.h"
 #include "window.h"
 
-ctx_t * window_deinit(ctx_t * ctx) {
+void window_deinit(ctx_t * ctx) {
     SDL_DestroyWindow(ctx->window);
     ctx->window = NULL;
-    return ctx;
 }
 
-ctx_t * window_init(ctx_t * ctx) {
+void window_init(ctx_t * ctx) {
     assert(ctx->scene.tgt.w != 0 && "scene needs to be initialized before window");
     int flags = SDL_WINDOW_RESIZABLE;
     ctx->window = SDL_CreateWindow("Midnight Balloon Murder", SDL_WINDOWPOS_CENTERED,
@@ -23,5 +22,4 @@ ctx_t * window_init(ctx_t * ctx) {
     }
     SDL_ShowCursor(SDL_DISABLE);
     ctx->isfullscreen = false;
-    return ctx;
 }

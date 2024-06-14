@@ -3,7 +3,7 @@
 #include "types.h"
 
 void o_flash_draw (ctx_t *);
-ctx_t * o_flash_init (ctx_t *);
-ctx_t * o_flash_update (ctx_t *);
+void o_flash_init (ctx_t *);
+void o_flash_update (ctx_t *);
 
 #endif

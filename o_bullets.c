@@ -12,12 +12,12 @@
 #include "o_bullets.h"
 #include "o_scene.h"
 
-static ctx_t * o_bullets_update_pos (ctx_t *);
-static ctx_t * o_bullets_update_remove (ctx_t *);
-static ctx_t * o_bullets_update_spawn (ctx_t *);
-static ctx_t * o_bullets_update_test_exited (ctx_t *);
+static void o_bullets_update_pos (ctx_t *);
+static void o_bullets_update_remove (ctx_t *);
+static void o_bullets_update_spawn (ctx_t *);
+static void o_bullets_update_test_exited (ctx_t *);
 
-ctx_t * o_bullets_deinit (ctx_t * ctx) {
+void o_bullets_deinit (ctx_t * ctx) {
     bullet_t * b = ctx->bullets;
     while (b != NULL) {
         bullet_t * tmp = b;
@@ -25,7 +25,6 @@ ctx_t * o_bullets_deinit (ctx_t * ctx) {
         free(tmp);
     }
     ctx->bullets = NULL;
-    return ctx;
 }
 
 void o_bullets_draw (ctx_t * ctx) {
@@ -37,31 +36,29 @@ void o_bullets_draw (ctx_t * ctx) {
     }
 }
 
-ctx_t * o_bullets_init (ctx_t * ctx) {
+void o_bullets_init (ctx_t * ctx) {
     assert(ctx->level != NULL && "levels needs to be initialized before bullets");
     assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before bullets");
     ctx->bullets = NULL;
     ctx->nbullets.prespawn = ctx->level->nbullets.prespawn;
     ctx->nbullets.airborne = 0;
-    return ctx;
 }
 
-ctx_t * o_bullets_update (ctx_t * ctx) {
+void o_bullets_update (ctx_t * ctx) {
     // mark bullets that are out of frame
-    ctx = o_bullets_update_test_exited(ctx);
+    o_bullets_update_test_exited(ctx);
 
     // if bullet is marked for deletion, delete it from the list
-    ctx = o_bullets_update_remove(ctx);
+    o_bullets_update_remove(ctx);
 
     // update position
-    ctx = o_bullets_update_pos(ctx);
+    o_bullets_update_pos(ctx);
 
     // if SPACE down, add a bullet to the list
-    ctx = o_bullets_update_spawn(ctx);
-    return ctx;
+    o_bullets_update_spawn(ctx);
 }
 
-static ctx_t * o_bullets_update_spawn (ctx_t * ctx) {
+static void o_bullets_update_spawn (ctx_t * ctx) {
     static const float PI = 3.14159265358979323846f;
     Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
@@ -106,10 +103,9 @@ static ctx_t * o_bullets_update_spawn (ctx_t * ctx) {
             ctx->tspawn_latestbullet = SDL_GetTicks64();
         }
     }
-    return ctx;
 }
 
-static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
+static void o_bullets_update_pos (ctx_t * ctx) {
     const float gravity = 70; // pixels per second per second
     bullet_t * b = ctx->bullets;
     while (b != NULL) {
@@ -118,10 +114,9 @@ static ctx_t * o_bullets_update_pos (ctx_t * ctx) {
         b->sim.y += b->sim2.v * ctx->dt.frame;
         b = b->next;
     }
-    return ctx;
 }
 
-ctx_t * o_bullets_update_remove (ctx_t * ctx) {
+void o_bullets_update_remove (ctx_t * ctx) {
     bullet_t * this = ctx->bullets;
     bullet_t * prev = NULL;
     bool isfirst = false;
@@ -170,10 +165,9 @@ ctx_t * o_bullets_update_remove (ctx_t * ctx) {
             }
         }
     }
-    return ctx;
 }
 
-static ctx_t * o_bullets_update_test_exited (ctx_t * ctx) {
+static void o_bullets_update_test_exited (ctx_t * ctx) {
     bullet_t * this = ctx->bullets;
     bool exited;
     while (this != NULL) {
@@ -186,5 +180,4 @@ static ctx_t * o_bullets_update_test_exited (ctx_t * ctx) {
         }
         this = this->next;
     }
-    return ctx;
 }

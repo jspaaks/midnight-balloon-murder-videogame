@@ -10,10 +10,10 @@
 #include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
-static ctx_t * o_collisions_update_pos (ctx_t *);
-static ctx_t * o_collisions_update_remove(ctx_t *);
-static ctx_t * o_collisions_update_spawn (ctx_t *);
-static ctx_t * o_collisions_update_test_exited (ctx_t *);
+static void o_collisions_update_pos (ctx_t *);
+static void o_collisions_update_remove(ctx_t *);
+static void o_collisions_update_spawn (ctx_t *);
+static void o_collisions_update_test_exited (ctx_t *);
 
 static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
@@ -34,7 +34,7 @@ static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     return !separated;
 }
 
-ctx_t * o_collisions_deinit (ctx_t * ctx) {
+void o_collisions_deinit (ctx_t * ctx) {
     collision_t * c = ctx->collisions;
     while (c != NULL) {
         collision_t * tmp = c;
@@ -42,7 +42,6 @@ ctx_t * o_collisions_deinit (ctx_t * ctx) {
         free(tmp);
     }
     ctx->collisions = NULL;
-    return ctx;
 }
 
 void o_collisions_draw (ctx_t * ctx) {
@@ -53,20 +52,18 @@ void o_collisions_draw (ctx_t * ctx) {
     }
 }
 
-ctx_t * o_collisions_init (ctx_t * ctx) {
+void o_collisions_init (ctx_t * ctx) {
     ctx->collisions = NULL;
-    return ctx;
 }
 
-ctx_t * o_collisions_update (ctx_t * ctx) {
-    ctx = o_collisions_update_test_exited(ctx);
-    ctx = o_collisions_update_remove(ctx);
-    ctx = o_collisions_update_pos(ctx);
-    ctx = o_collisions_update_spawn(ctx);
-    return ctx;
+void o_collisions_update (ctx_t * ctx) {
+    o_collisions_update_test_exited(ctx);
+    o_collisions_update_remove(ctx);
+    o_collisions_update_pos(ctx);
+    o_collisions_update_spawn(ctx);
 }
 
-static ctx_t * o_collisions_update_pos (ctx_t * ctx) {
+static void o_collisions_update_pos (ctx_t * ctx) {
     const float gravity = 70; // pixels per second per second
     collision_t * c = ctx->collisions;
     while (c != NULL) {
@@ -75,10 +72,9 @@ static ctx_t * o_collisions_update_pos (ctx_t * ctx) {
         c->sim.y += c->sim2.v * ctx->dt.frame;
         c = c->next;
     }
-    return ctx;
 }
 
-ctx_t * o_collisions_update_remove (ctx_t * ctx) {
+static void o_collisions_update_remove (ctx_t * ctx) {
     collision_t * this = ctx->collisions;
     collision_t * prev = NULL;
     bool isfirst = false;
@@ -121,10 +117,9 @@ ctx_t * o_collisions_update_remove (ctx_t * ctx) {
             }
         }
     }
-    return ctx;
 }
 
-static ctx_t * o_collisions_update_spawn (ctx_t * ctx) {
+static void o_collisions_update_spawn (ctx_t * ctx) {
     balloon_t * ba = ctx->balloons;
     while (ba != NULL) {
         bullet_t * bu = ctx->bullets;
@@ -163,10 +158,9 @@ static ctx_t * o_collisions_update_spawn (ctx_t * ctx) {
         }
         ba = ba->next;
     }
-    return ctx;
 }
 
-static ctx_t * o_collisions_update_test_exited (ctx_t * ctx) {
+static void o_collisions_update_test_exited (ctx_t * ctx) {
     collision_t * this = ctx->collisions;
     bool exited;
     while (this != NULL) {
@@ -179,5 +173,4 @@ static ctx_t * o_collisions_update_test_exited (ctx_t * ctx) {
         }
         this = this->next;
     }
-    return ctx;
 }

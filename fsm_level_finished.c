@@ -140,7 +140,7 @@ static void fsm_level_finished_draw_keymap_repeat_button(ctx_t * ctx) {
             SDL_FreeSurface(surf.payload);
 }
 
-ctx_t * fsm_level_finished_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_level_finished_update (ctx_t * ctx, gamestate_t ** gamestate) {
     if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }
@@ -173,6 +173,5 @@ ctx_t * fsm_level_finished_update (ctx_t * ctx, gamestate_t ** gamestate) {
             }
         }
     }
-    ctx = o_scene_update(ctx);
-    return ctx;
+    o_scene_update(ctx);
 }

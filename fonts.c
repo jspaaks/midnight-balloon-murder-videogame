@@ -4,7 +4,21 @@
 #include "types.h"
 #include "fonts.h"
 
-ctx_t * fonts_init(ctx_t * ctx) {
+void fonts_deinit(ctx_t * ctx) {
+    TTF_CloseFont(ctx->fonts.regular);
+    TTF_CloseFont(ctx->fonts.large);
+    TTF_CloseFont(ctx->fonts.xlarge);
+    TTF_CloseFont(ctx->fonts.xxlarge);
+    TTF_CloseFont(ctx->fonts.xxxlarge);
+    ctx->fonts.regular = NULL;
+    ctx->fonts.large = NULL;
+    ctx->fonts.xlarge = NULL;
+    ctx->fonts.xxlarge = NULL;
+    ctx->fonts.xxxlarge = NULL;
+    TTF_Quit();
+}
+
+void fonts_init(ctx_t * ctx) {
     if (TTF_Init() != 0) {
         SDL_LogError(SDL_ENOMEM, "Couldn't initialize SDL_ttf: %s", TTF_GetError());
         exit(EXIT_FAILURE);
@@ -41,20 +55,4 @@ ctx_t * fonts_init(ctx_t * ctx) {
     if (ctx->fonts.xxlarge == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile, TTF_GetError());
     }
-    return ctx;
-}
-
-ctx_t * fonts_deinit(ctx_t * ctx) {
-    TTF_CloseFont(ctx->fonts.regular);
-    TTF_CloseFont(ctx->fonts.large);
-    TTF_CloseFont(ctx->fonts.xlarge);
-    TTF_CloseFont(ctx->fonts.xxlarge);
-    TTF_CloseFont(ctx->fonts.xxxlarge);
-    ctx->fonts.regular = NULL;
-    ctx->fonts.large = NULL;
-    ctx->fonts.xlarge = NULL;
-    ctx->fonts.xxlarge = NULL;
-    ctx->fonts.xxxlarge = NULL;
-    TTF_Quit();
-    return ctx;
 }

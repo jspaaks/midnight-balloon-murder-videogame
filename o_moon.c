@@ -8,7 +8,7 @@ void o_moon_draw (ctx_t * ctx) {
     SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->moon.src, &tgt);
 }
 
-ctx_t * o_moon_init (ctx_t * ctx) {
+void o_moon_init (ctx_t * ctx) {
     ctx->moon = (moon_t){
         .src = (SDL_Rect){
             .x = 75,
@@ -23,9 +23,4 @@ ctx_t * o_moon_init (ctx_t * ctx) {
             .h = 90,
         },
     };
-    return ctx;
-}
-
-ctx_t * o_moon_update (ctx_t * ctx) {
-    return ctx;
 }

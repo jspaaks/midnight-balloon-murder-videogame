@@ -230,7 +230,7 @@ void o_legend_draw (ctx_t * ctx) {
     o_legend_draw_text_level(ctx);
 }
 
-ctx_t * o_legend_init (ctx_t * ctx) {
+void o_legend_init (ctx_t * ctx) {
     const unsigned int n = 10;
     ctx->legend.nbars = n;
     SDL_Rect first = {
@@ -253,9 +253,4 @@ ctx_t * o_legend_init (ctx_t * ctx) {
         .w = (ctx->legend.bars[n-1].sim.x + ctx->legend.bars[n-1].sim.w) - ctx->legend.bars[0].sim.x,
         .h = 40,
     };
-    return ctx;
-}
-
-ctx_t * o_legend_update (ctx_t * ctx) {
-    return ctx;
 }

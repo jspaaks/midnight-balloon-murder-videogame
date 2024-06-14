@@ -22,7 +22,7 @@ void o_flash_draw (ctx_t * ctx) {
     }
 }
 
-ctx_t * o_flash_init (ctx_t * ctx) {
+void o_flash_init (ctx_t * ctx) {
     assert(ctx->barrel.sim.x != 0 && "barrel needs to be initialized before flash");
     float h = 21;
     float w = 30;
@@ -50,11 +50,9 @@ ctx_t * o_flash_init (ctx_t * ctx) {
         },
         .src = src,
     };
-    return ctx;
 }
 
-ctx_t * o_flash_update (ctx_t * ctx) {
+void o_flash_update (ctx_t * ctx) {
     static Uint64 timeout = 25;
     ctx->flash.show = SDL_GetTicks64() < ctx->tspawn_latestbullet  + timeout;
-    return ctx;
 }

@@ -3,6 +3,6 @@
 #include "types.h"
 
 void fsm_start_draw (ctx_t *);
-ctx_t * fsm_start_update (ctx_t *, gamestate_t **);
+void fsm_start_update (ctx_t *, gamestate_t **);
 
 #endif

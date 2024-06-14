@@ -2,6 +2,6 @@
 #define COLORS_H
 #include "types.h"
 
-ctx_t * colors_init (ctx_t *);
+void colors_init (ctx_t *);
 
 #endif
