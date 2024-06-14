@@ -27,11 +27,11 @@ void o_bullets_deinit (ctx_t * ctx) {
     ctx->bullets = NULL;
 }
 
-void o_bullets_draw (ctx_t * ctx) {
+void o_bullets_draw (ctx_t * ctx, SDL_Renderer * renderer) {
     bullet_t * bu = ctx->bullets;
     while (bu != NULL) {
         SDL_Rect tgt = sim2tgt(ctx->scene, bu->sim);
-        SDL_RenderCopy(ctx->renderer, ctx->spritesheet, bu->src, &tgt);
+        SDL_RenderCopy(renderer, ctx->spritesheet, bu->src, &tgt);
         bu = bu->next;
     }
 }

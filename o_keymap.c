@@ -10,10 +10,10 @@
 #include "o_keymap.h"
 #include "o_scene.h"
 
-void o_keymap_draw_move_barrel (ctx_t * ctx) {
+void o_keymap_draw_move_barrel (ctx_t * ctx, SDL_Renderer * renderer) {
     char action[21] = "W / S TO MOVE BARREL";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, action, ctx->colors.middlegray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
@@ -23,15 +23,15 @@ void o_keymap_draw_move_barrel (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_pause (ctx_t * ctx) {
+void o_keymap_draw_pause (ctx_t * ctx, SDL_Renderer * renderer) {
     char keymap[12] = "ESC TO PAUSE";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
@@ -41,12 +41,12 @@ void o_keymap_draw_pause (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_proceedhint (ctx_t * ctx) {
+void o_keymap_draw_proceedhint (ctx_t * ctx, SDL_Renderer * renderer) {
     SDL_Color color = ctx->colors.middlegray;
     char str[100];
     if (ctx->ilevel == ctx->nlevels - 1) {
@@ -61,7 +61,7 @@ void o_keymap_draw_proceedhint (ctx_t * ctx) {
         sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx->level->nballoons.proceed);
     }
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, str, color, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
@@ -71,15 +71,15 @@ void o_keymap_draw_proceedhint (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_quit (ctx_t * ctx) {
+void o_keymap_draw_quit (ctx_t * ctx, SDL_Renderer * renderer) {
     char keymap[10] = "Q TO QUIT";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right bottom keymap on paused screen: %s.\n", TTF_GetError());
     }
@@ -89,19 +89,19 @@ void o_keymap_draw_quit (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_restart (ctx_t * ctx) {
+void o_keymap_draw_restart (ctx_t * ctx, SDL_Renderer * renderer) {
     if (ctx->nballoons.prespawn == ctx->level->nballoons.prespawn && ctx->nbullets.prespawn == ctx->level->nbullets.prespawn) {
         // we're effectively at the start of the level already
         return;
     }
     char keymap[19] = "R TO RESTART LEVEL";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right top keymap on paused screen: %s.\n", TTF_GetError());
     }
@@ -111,15 +111,15 @@ void o_keymap_draw_restart (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_shoot (ctx_t * ctx) {
+void o_keymap_draw_shoot (ctx_t * ctx, SDL_Renderer * renderer) {
     char action[15] = "SPACE TO SHOOT";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, action, ctx->colors.middlegray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
@@ -129,15 +129,15 @@ void o_keymap_draw_shoot (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_start (ctx_t * ctx) {
+void o_keymap_draw_start (ctx_t * ctx, SDL_Renderer * renderer) {
     char keymap[20] = "PRESS ENTER TO PLAY";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.lightgray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n", TTF_GetError());
     }
@@ -147,15 +147,15 @@ void o_keymap_draw_start (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_unpause (ctx_t * ctx) {
+void o_keymap_draw_unpause (ctx_t * ctx, SDL_Renderer * renderer) {
     char keymap[15] = "ESC TO UNPAUSE";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.regular, keymap, ctx->colors.middlegray, ctx->colors.ground);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n", TTF_GetError());
     }
@@ -165,7 +165,7 @@ void o_keymap_draw_unpause (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }

@@ -44,9 +44,9 @@ void o_collisions_deinit (ctx_t * ctx) {
     ctx->collisions = NULL;
 }
 
-void o_collisions_draw (ctx_t * ctx) {
+void o_collisions_draw (ctx_t * ctx, SDL_Renderer * renderer) {
     collision_t * c = ctx->collisions;
-    SDL_SetRenderDrawColor(ctx->renderer, 166, 166, 166, 0);
+    SDL_SetRenderDrawColor(renderer, 166, 166, 166, 0);
     while (c != NULL) {
         c = c->next;
     }

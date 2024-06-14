@@ -9,7 +9,7 @@
 #include "o_titles.h"
 #include "o_scene.h"
 
-void o_titles_draw_level_finished (ctx_t * ctx) {
+void o_titles_draw_level_finished (ctx_t * ctx, SDL_Renderer * renderer) {
     char title[15];
     if (ctx->nballoons.miss == 0) {
         strncpy(title, "PERFECT SCORE!", 15);
@@ -17,7 +17,7 @@ void o_titles_draw_level_finished (ctx_t * ctx) {
         strncpy(title, "LEVEL FINISHED", 15);
     }
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.xlarge, title, ctx->colors.lightgray, ctx->colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n", TTF_GetError());
     }
@@ -27,12 +27,12 @@ void o_titles_draw_level_finished (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }
 
-void o_titles_draw_opening_title (ctx_t * ctx) {
+void o_titles_draw_opening_title (ctx_t * ctx, SDL_Renderer * renderer) {
     static const struct {
         char left[2];
         char middle[22];
@@ -66,9 +66,9 @@ void o_titles_draw_opening_title (ctx_t * ctx) {
     surfs.middle = TTFW_RenderText_Shaded(ctx->fonts.xxlarge, titleparts.middle, ctx->colors.lightgray, ctx->colors.bg);
     surfs.right = TTFW_RenderText_Shaded(ctx->fonts.xxxlarge, titleparts.right, ctx->colors.lightgray, ctx->colors.bg);
 
-    txres.left = SDLW_CreateTextureFromSurface(ctx->renderer, surfs.left);
-    txres.middle = SDLW_CreateTextureFromSurface(ctx->renderer, surfs.middle);
-    txres.right  = SDLW_CreateTextureFromSurface(ctx->renderer, surfs.right);
+    txres.left = SDLW_CreateTextureFromSurface(renderer, surfs.left);
+    txres.middle = SDLW_CreateTextureFromSurface(renderer, surfs.middle);
+    txres.right  = SDLW_CreateTextureFromSurface(renderer, surfs.right);
 
     if (txres.left.invalid || txres.middle.invalid || txres.right.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title text.\n");
@@ -99,14 +99,14 @@ void o_titles_draw_opening_title (ctx_t * ctx) {
         .w = surfs.middle.payload->w,
         .h = 3,
     });
-    SDL_RenderCopy(ctx->renderer, txres.left.payload, NULL, &tgts.left);
-    SDL_RenderCopy(ctx->renderer, txres.middle.payload, NULL, &tgts.middle);
-    SDL_RenderCopy(ctx->renderer, txres.right.payload, NULL, &tgts.right);
-    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.lightgray.r,
-                                          ctx->colors.lightgray.g,
-                                          ctx->colors.lightgray.b,
-                                          ctx->colors.lightgray.a);
-    SDL_RenderFillRect(ctx->renderer, &tgts.underline);
+    SDL_RenderCopy(renderer, txres.left.payload, NULL, &tgts.left);
+    SDL_RenderCopy(renderer, txres.middle.payload, NULL, &tgts.middle);
+    SDL_RenderCopy(renderer, txres.right.payload, NULL, &tgts.right);
+    SDL_SetRenderDrawColor(renderer, ctx->colors.lightgray.r,
+                                     ctx->colors.lightgray.g,
+                                     ctx->colors.lightgray.b,
+                                     ctx->colors.lightgray.a);
+    SDL_RenderFillRect(renderer, &tgts.underline);
 
     SDL_DestroyTexture(txres.left.payload);
     SDL_DestroyTexture(txres.middle.payload);
@@ -117,10 +117,10 @@ void o_titles_draw_opening_title (ctx_t * ctx) {
     SDL_FreeSurface(surfs.right.payload);
 }
 
-void o_titles_draw_paused (ctx_t * ctx) {
+void o_titles_draw_paused (ctx_t * ctx, SDL_Renderer * renderer) {
     char title[7] = "PAUSED";
     SDLW_Surface surf = TTFW_RenderText_Shaded(ctx->fonts.xlarge, title, ctx->colors.lightgray, ctx->colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(ctx->renderer, surf);
+    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n", TTF_GetError());
     }
@@ -130,7 +130,7 @@ void o_titles_draw_paused (ctx_t * ctx) {
         .w = surf.payload->w,
         .h = surf.payload->h,
     });
-    SDL_RenderCopy(ctx->renderer, txre.payload, NULL, &tgt);
+    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
     SDL_DestroyTexture(txre.payload);
     SDL_FreeSurface(surf.payload);
 }

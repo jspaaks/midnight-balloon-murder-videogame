@@ -26,19 +26,19 @@ void o_scene_init(ctx_t * ctx) {
     ctx->resized = true;
 }
 
-void o_scene_draw (ctx_t * ctx) {
-    SDL_SetRenderDrawColor(ctx->renderer, ctx->colors.bg.r,
-                                          ctx->colors.bg.g,
-                                          ctx->colors.bg.b,
-                                          ctx->colors.bg.a);
-    SDL_RenderFillRect(ctx->renderer, &ctx->scene.tgt);
+void o_scene_draw (ctx_t * ctx, SDL_Renderer * renderer) {
+    SDL_SetRenderDrawColor(renderer, ctx->colors.bg.r,
+                                     ctx->colors.bg.g,
+                                     ctx->colors.bg.b,
+                                     ctx->colors.bg.a);
+    SDL_RenderFillRect(renderer, &ctx->scene.tgt);
 }
 
-void o_scene_update (ctx_t * ctx) {
+void o_scene_update (ctx_t * ctx, SDL_Renderer * renderer) {
     if (ctx->scene.resized) {
         int w0;
         int h0;
-        SDL_GetRendererOutputSize(ctx->renderer, &w0, &h0);
+        SDL_GetRendererOutputSize(renderer, &w0, &h0);
         float w = w0 < ctx->scene.sim.w ? ctx->scene.sim.w : (float) (w0);
         float h = h0 < ctx->scene.sim.h ? ctx->scene.sim.h : (float) (h0);
         float ratio = w / h;

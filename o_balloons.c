@@ -29,11 +29,11 @@ void o_balloons_deinit (ctx_t * ctx) {
     ctx->balloons = NULL;
 }
 
-void o_balloons_draw (ctx_t * ctx) {
+void o_balloons_draw (ctx_t * ctx, SDL_Renderer * renderer) {
     balloon_t * b = ctx->balloons;
     while (b != NULL) {
         SDL_Rect tgt = sim2tgt(ctx->scene, b->sim);
-        SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &b->src, &tgt);
+        SDL_RenderCopy(renderer, ctx->spritesheet, &b->src, &tgt);
         b = b->next;
     }
 }

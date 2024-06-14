@@ -22,29 +22,29 @@
 #include "o_turret.h"
 #include "o_titles.h"
 
-void fsm_paused_draw (ctx_t * ctx) {
-    o_background_draw(ctx);
-    o_scene_draw(ctx);
-    o_moon_draw(ctx);
-    o_barrel_draw(ctx);
-    o_turret_draw(ctx);
-    o_flash_draw(ctx);
-    o_legend_draw(ctx);
-    o_balloons_draw(ctx);
-    o_bullets_draw(ctx);
-    o_collisions_draw(ctx);
-    o_ground_draw(ctx);
-    o_keymap_draw_move_barrel(ctx);
-    o_keymap_draw_shoot(ctx);
-    o_keymap_draw_proceedhint (ctx);
-    o_keymap_draw_unpause(ctx);
-    o_keymap_draw_restart(ctx);
-    o_keymap_draw_quit(ctx);
-    o_titles_draw_paused(ctx);
-    SDL_RenderPresent(ctx->renderer);
+void fsm_paused_draw (ctx_t * ctx, SDL_Renderer * renderer) {
+    o_background_draw(renderer);
+    o_scene_draw(ctx, renderer);
+    o_moon_draw(ctx, renderer);
+    o_barrel_draw(ctx, renderer);
+    o_turret_draw(ctx, renderer);
+    o_flash_draw(ctx, renderer);
+    o_legend_draw(ctx, renderer);
+    o_balloons_draw(ctx, renderer);
+    o_bullets_draw(ctx, renderer);
+    o_collisions_draw(ctx, renderer);
+    o_ground_draw(ctx, renderer);
+    o_keymap_draw_move_barrel(ctx, renderer);
+    o_keymap_draw_shoot(ctx, renderer);
+    o_keymap_draw_proceedhint (ctx, renderer);
+    o_keymap_draw_unpause(ctx, renderer);
+    o_keymap_draw_restart(ctx, renderer);
+    o_keymap_draw_quit(ctx, renderer);
+    o_titles_draw_paused(ctx, renderer);
+    SDL_RenderPresent(renderer);
 }
 
-void fsm_paused_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_paused_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -75,5 +75,5 @@ void fsm_paused_update (ctx_t * ctx, gamestate_t ** gamestate) {
             }
         }
     }
-    o_scene_update(ctx);
+    o_scene_update(ctx, renderer);
 }

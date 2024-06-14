@@ -2,6 +2,6 @@
 #define O_BACKGROUND_H
 #include "types.h"
 
-void o_background_draw (ctx_t *);
+void o_background_draw (SDL_Renderer *);
 
 #endif

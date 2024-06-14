@@ -7,18 +7,18 @@
 #include "o_flash.h"
 #include "o_scene.h"
 
-void o_flash_draw (ctx_t * ctx) {
+void o_flash_draw (ctx_t * ctx, SDL_Renderer * renderer) {
     if (ctx->flash.show) {
         SDL_Rect tgt = sim2tgt(ctx->scene, ctx->flash.sim);
         SDL_Point pivot_offset = (SDL_Point) {
             .x = (int) (ctx->flash.sim2.pivot_offset.x * ctx->scene.scale),
             .y = (int) (ctx->flash.sim2.pivot_offset.y * ctx->scene.scale),
         };
-        SDL_RenderCopyEx(ctx->renderer, ctx->spritesheet, &ctx->flash.src,
-                                                          &tgt,
-                                                          ctx->barrel.sim2.angle,
-                                                          &pivot_offset,
-                                                          SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, ctx->spritesheet, &ctx->flash.src,
+                                                     &tgt,
+                                                     ctx->barrel.sim2.angle,
+                                                     &pivot_offset,
+                                                     SDL_FLIP_NONE);
     }
 }
 

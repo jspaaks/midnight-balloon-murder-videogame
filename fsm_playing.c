@@ -20,24 +20,24 @@
 #include "o_scene.h"
 #include "o_turret.h"
 
-void fsm_playing_draw (ctx_t * ctx) {
-    o_background_draw(ctx);
-    o_scene_draw(ctx);
-    o_moon_draw(ctx);
-    o_barrel_draw(ctx);
-    o_turret_draw(ctx);
-    o_flash_draw(ctx);
-    o_legend_draw(ctx);
-    o_balloons_draw(ctx);
-    o_bullets_draw(ctx);
-    o_collisions_draw(ctx);
-    o_ground_draw(ctx);
-    o_keymap_draw_pause(ctx);
-    o_keymap_draw_proceedhint(ctx);
-    SDL_RenderPresent(ctx->renderer);
+void fsm_playing_draw (ctx_t * ctx, SDL_Renderer * renderer) {
+    o_background_draw(renderer);
+    o_scene_draw(ctx, renderer);
+    o_moon_draw(ctx, renderer);
+    o_barrel_draw(ctx, renderer);
+    o_turret_draw(ctx, renderer);
+    o_flash_draw(ctx, renderer);
+    o_legend_draw(ctx, renderer);
+    o_balloons_draw(ctx, renderer);
+    o_bullets_draw(ctx, renderer);
+    o_collisions_draw(ctx, renderer);
+    o_ground_draw(ctx, renderer);
+    o_keymap_draw_pause(ctx, renderer);
+    o_keymap_draw_proceedhint(ctx, renderer);
+    SDL_RenderPresent(renderer);
 }
 
-void fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_playing_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -68,7 +68,7 @@ void fsm_playing_update (ctx_t * ctx, gamestate_t ** gamestate) {
             }
         }
     }
-    o_scene_update(ctx);
+    o_scene_update(ctx, renderer);
     o_barrel_update(ctx);
     o_flash_update(ctx);
     o_balloons_update(ctx);

@@ -3,6 +3,7 @@
 #include "fsm_playing.h"
 #include "fsm_paused.h"
 #include "fsm_level_finished.h"
+#include "types.h"
 
 static gamestate_t gamestates[] = {
     {

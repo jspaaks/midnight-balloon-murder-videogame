@@ -108,7 +108,7 @@ struct flash_t {
 };
 
 struct gamestate_t {
-    void (*draw)(ctx_t *);
+    void (*draw)(ctx_t *, SDL_Renderer *);
     void (*update)(ctx_t *, struct gamestate_t **);
     gamestate_name_t label;
 };
@@ -210,7 +210,6 @@ struct ctx_t {
         unsigned int prespawn;
     } nbullets;
     unsigned int nlevels;
-    SDL_Renderer * renderer;
     bool resized;
     scene_t scene;
     SDL_Texture * spritesheet;

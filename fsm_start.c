@@ -18,17 +18,17 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void fsm_start_draw (ctx_t * ctx) {
-    o_background_draw(ctx);
-    o_scene_draw(ctx);
-    o_moon_draw(ctx);
-    o_ground_draw(ctx);
-    o_keymap_draw_start(ctx);
-    o_titles_draw_opening_title(ctx);
-    SDL_RenderPresent(ctx->renderer);
+void fsm_start_draw (ctx_t * ctx, SDL_Renderer * renderer) {
+    o_background_draw(renderer);
+    o_scene_draw(ctx, renderer);
+    o_moon_draw(ctx, renderer);
+    o_ground_draw(ctx, renderer);
+    o_keymap_draw_start(ctx, renderer);
+    o_titles_draw_opening_title(ctx, renderer);
+    SDL_RenderPresent(renderer);
 }
 
-void fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_start_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -50,5 +50,5 @@ void fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
             }
         }
     }
-    o_scene_update(ctx);
+    o_scene_update(ctx, renderer);
 }

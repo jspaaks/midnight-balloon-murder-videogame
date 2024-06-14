@@ -25,10 +25,10 @@
 #include "o_legend.h"
 
 
-static void deinit (ctx_t *);
-static void init (ctx_t *);
+static void deinit (ctx_t *, SDL_Renderer **);
+static void init (ctx_t *, SDL_Renderer **);
 
-static void deinit (ctx_t * ctx) {
+static void deinit (ctx_t * ctx, SDL_Renderer ** renderer) {
     // --- concrete entities
     o_balloons_deinit(ctx);
     o_bullets_deinit(ctx);
@@ -39,14 +39,14 @@ static void deinit (ctx_t * ctx) {
     chunks_deinit(ctx);
     keystate_deinit(ctx);
     // --- sdl infrastructure
-    renderer_deinit(ctx);
+    renderer_deinit(renderer);
     window_deinit(ctx);
     spritesheet_deinit(ctx);
     // --- deinitialize sdl library
     SDL_Quit();
 }
 
-static void init (ctx_t * ctx) {
+static void init (ctx_t * ctx, SDL_Renderer ** renderer) {
     // initialize the random number generator
     srand(time(NULL));
     // --- initialize sdl library
@@ -58,8 +58,8 @@ static void init (ctx_t * ctx) {
     // --- sdl infrastructure
     o_scene_init(ctx);
     window_init(ctx);
-    renderer_init(ctx);
-    spritesheet_init(ctx);
+    renderer_init(ctx, renderer);
+    spritesheet_init(ctx, *renderer);
     // --- abstract entities
     colors_init(ctx);
     fonts_init(ctx);
@@ -73,7 +73,8 @@ static void init (ctx_t * ctx) {
 int main (void) {
     SDL_Log("starting\n");
     ctx_t ctx;
-    init(&ctx);
+    SDL_Renderer * renderer = NULL;
+    init(&ctx, &renderer);
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
     Uint64 tnow = SDL_GetTicks64();
@@ -84,7 +85,7 @@ int main (void) {
     while (true) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
-        frame->draw(&ctx);
+        frame->draw(&ctx, renderer);
         frame->update(&ctx, &gamestate);
 
         nframes++;
@@ -97,6 +98,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    deinit(&ctx);
+    deinit(&ctx, &renderer);
     return EXIT_SUCCESS;
 }
