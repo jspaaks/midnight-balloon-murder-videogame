@@ -80,7 +80,6 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 ## TODO
 
-1. add audio effects with SDL_mixer
 1. hitpoints texts
 1. hitpoints shrapnel
 1. review directory structure (src / bin / test etc)
