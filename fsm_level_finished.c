@@ -3,6 +3,7 @@
 #include "SDL_keycode.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
+#include "SDL_video.h"
 #include "fsm.h"
 #include "fsm_playing.h"
 #include "fsm_level_finished.h"
@@ -141,7 +142,7 @@ static void fsm_level_finished_draw_keymap_repeat_button(ctx_t * ctx, SDL_Render
             SDL_FreeSurface(surf.payload);
 }
 
-void fsm_level_finished_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_t ** gamestate) {
+void fsm_level_finished_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * renderer, gamestate_t ** gamestate) {
     if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }
@@ -161,7 +162,7 @@ void fsm_level_finished_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_
                     SDL_Log("playing -- same level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
-                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    SDL_SetWindowFullscreen(window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;

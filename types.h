@@ -109,7 +109,7 @@ struct flash_t {
 
 struct gamestate_t {
     void (*draw)(ctx_t *, SDL_Renderer *);
-    void (*update)(ctx_t *, struct gamestate_t **);
+    void (*update)(ctx_t *, SDL_Window *, SDL_Renderer *, struct gamestate_t **);
     gamestate_name_t label;
 };
 
@@ -215,7 +215,6 @@ struct ctx_t {
     SDL_Texture * spritesheet;
     Uint64 tspawn_latestbullet;
     turret_t turret;
-    SDL_Window * window;
 };
 
 #endif

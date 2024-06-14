@@ -28,7 +28,7 @@ void fsm_start_draw (ctx_t * ctx, SDL_Renderer * renderer) {
     SDL_RenderPresent(renderer);
 }
 
-void fsm_start_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_t ** gamestate) {
+void fsm_start_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * renderer, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -37,7 +37,7 @@ void fsm_start_update (ctx_t * ctx, SDL_Renderer * renderer, gamestate_t ** game
                     SDL_Log("playing\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
-                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    SDL_SetWindowFullscreen(window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;

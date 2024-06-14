@@ -25,10 +25,10 @@
 #include "o_legend.h"
 
 
-static void deinit (ctx_t *, SDL_Renderer **);
-static void init (ctx_t *, SDL_Renderer **);
+static void deinit (ctx_t *, SDL_Window **, SDL_Renderer **);
+static void init (ctx_t *, SDL_Window **, SDL_Renderer **);
 
-static void deinit (ctx_t * ctx, SDL_Renderer ** renderer) {
+static void deinit (ctx_t * ctx, SDL_Window ** window, SDL_Renderer ** renderer) {
     // --- concrete entities
     o_balloons_deinit(ctx);
     o_bullets_deinit(ctx);
@@ -40,13 +40,13 @@ static void deinit (ctx_t * ctx, SDL_Renderer ** renderer) {
     keystate_deinit(ctx);
     // --- sdl infrastructure
     renderer_deinit(renderer);
-    window_deinit(ctx);
+    window_deinit(window);
     spritesheet_deinit(ctx);
     // --- deinitialize sdl library
     SDL_Quit();
 }
 
-static void init (ctx_t * ctx, SDL_Renderer ** renderer) {
+static void init (ctx_t * ctx, SDL_Window ** window, SDL_Renderer ** renderer) {
     // initialize the random number generator
     srand(time(NULL));
     // --- initialize sdl library
@@ -57,8 +57,8 @@ static void init (ctx_t * ctx, SDL_Renderer ** renderer) {
     }
     // --- sdl infrastructure
     o_scene_init(ctx);
-    window_init(ctx);
-    renderer_init(ctx, renderer);
+    window_init(ctx, window);
+    renderer_init(*window, renderer);
     spritesheet_init(ctx, *renderer);
     // --- abstract entities
     colors_init(ctx);
@@ -73,8 +73,9 @@ static void init (ctx_t * ctx, SDL_Renderer ** renderer) {
 int main (void) {
     SDL_Log("starting\n");
     ctx_t ctx;
+    SDL_Window * window;
     SDL_Renderer * renderer = NULL;
-    init(&ctx, &renderer);
+    init(&ctx, &window, &renderer);
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
     Uint64 tnow = SDL_GetTicks64();
@@ -86,7 +87,7 @@ int main (void) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
         frame->draw(&ctx, renderer);
-        frame->update(&ctx, &gamestate);
+        frame->update(&ctx, window, renderer, &gamestate);
 
         nframes++;
 
@@ -98,6 +99,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    deinit(&ctx, &renderer);
+    deinit(&ctx, &window, &renderer);
     return EXIT_SUCCESS;
 }
