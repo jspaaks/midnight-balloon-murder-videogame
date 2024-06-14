@@ -25,15 +25,19 @@ typedef enum {
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
 typedef struct bullet_t bullet_t;
+typedef struct chunks_t chunks_t;
 typedef struct collision_t collision_t;
 typedef struct colors_t colors_t;
 typedef struct ctx_t ctx_t;
 typedef struct flash_t flash_t;
+typedef struct fonts_t fonts_t;
 typedef struct gamestate_t gamestate_t;
 typedef struct ground_t ground_t;
 typedef struct legend_t legend_t;
 typedef struct level_t level_t;
 typedef struct moon_t moon_t;
+typedef struct nballoons_t nballoons_t;
+typedef struct nbullets_t nbullets_t;
 typedef struct scene_t scene_t;
 typedef struct turret_t turret_t;
 
@@ -72,6 +76,17 @@ struct bullet_t {
     delete_reason_t state;
 };
 
+struct chunks_t {
+    Mix_Chunk * empty;
+    struct {
+        Mix_Chunk * orange;
+        Mix_Chunk * red;
+        Mix_Chunk * yellow;
+    } hit;
+    Mix_Chunk * pop;
+    Mix_Chunk * shoot;
+};
+
 struct collision_t {
     struct collision_t * next;
     SDL_FRect sim;
@@ -105,6 +120,14 @@ struct flash_t {
         SDL_FPoint pivot_offset;
     } sim2;
     SDL_Rect src;
+};
+
+struct fonts_t {
+    TTF_Font * regular;
+    TTF_Font * large;
+    TTF_Font * xlarge;
+    TTF_Font * xxlarge;
+    TTF_Font * xxxlarge;
 };
 
 struct gamestate_t {
@@ -147,6 +170,21 @@ struct moon_t {
     SDL_Rect src;
 };
 
+struct nballoons_t {
+    unsigned int airborne;
+    unsigned int hit;
+    unsigned int miss;
+    unsigned int orange;
+    unsigned int prespawn;
+    unsigned int red;
+    unsigned int yellow;
+};
+
+struct nbullets_t {
+    unsigned int airborne;
+    unsigned int prespawn;
+};
+
 struct scene_t {
     bool resized;
     float scale;
@@ -164,29 +202,14 @@ struct ctx_t {
     balloon_t * balloons;
     barrel_t barrel;
     bullet_t * bullets;
-    struct {
-        Mix_Chunk * empty;
-        struct {
-            Mix_Chunk * orange;
-            Mix_Chunk * red;
-            Mix_Chunk * yellow;
-        } hit;
-        Mix_Chunk * pop;
-        Mix_Chunk * shoot;
-    } chunks;
+    chunks_t chunks;
     collision_t * collisions;
     colors_t colors;
     struct {
         float frame;    // s
     } dt;
     flash_t flash;
-    struct {
-        TTF_Font * regular;
-        TTF_Font * large;
-        TTF_Font * xlarge;
-        TTF_Font * xxlarge;
-        TTF_Font * xxxlarge;
-    } fonts;
+    fonts_t fonts;
     ground_t ground;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
@@ -196,19 +219,8 @@ struct ctx_t {
     level_t * level;
     level_t * levels;
     moon_t moon;
-    struct {
-        unsigned int airborne;
-        unsigned int hit;
-        unsigned int miss;
-        unsigned int orange;
-        unsigned int prespawn;
-        unsigned int red;
-        unsigned int yellow;
-    } nballoons;
-    struct {
-        unsigned int airborne;
-        unsigned int prespawn;
-    } nbullets;
+    nballoons_t nballoons;
+    nbullets_t nbullets;
     unsigned int nlevels;
     bool resized;
     scene_t scene;

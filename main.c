@@ -73,8 +73,9 @@ static void init (ctx_t * ctx, SDL_Window ** window, SDL_Renderer ** renderer) {
 int main (void) {
     SDL_Log("starting\n");
     ctx_t ctx;
-    SDL_Window * window;
+    SDL_Window * window = NULL;
     SDL_Renderer * renderer = NULL;
+
     init(&ctx, &window, &renderer);
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
