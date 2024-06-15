@@ -18,7 +18,7 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void fsm_start_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+void fsm_start_draw (ctx_t, drawing_t drawing, drawables_t drawables) {
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
@@ -49,7 +49,7 @@ void fsm_start_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_start_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
