@@ -5,6 +5,6 @@
 #include "types.h"
 
 void fsm_start_draw (ctx_t, drawing_t, drawables_t, counters_t);
-void fsm_start_update (timing_t, counters_t *, ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
+void fsm_start_update (SDL_Window *, timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
 
 #endif

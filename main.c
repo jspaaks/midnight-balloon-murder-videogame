@@ -118,7 +118,7 @@ int main (void) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
         frame->draw(ctx, drawing, drawables, counters);
-        frame->update(timing, &counters, &ctx, window, &drawing, &drawables, &gamestate);
+        frame->update(window, timing, &counters, &ctx, &drawing, &drawables, &gamestate);
 
         nframes++;
 

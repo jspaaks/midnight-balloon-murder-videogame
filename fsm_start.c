@@ -49,7 +49,7 @@ void fsm_start_draw (ctx_t, drawing_t drawing, drawables_t drawables, counters_t
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (timing_t, counters_t *, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate) {
+void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
