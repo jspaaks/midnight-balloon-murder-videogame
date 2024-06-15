@@ -15,7 +15,7 @@
 static void o_bullets_update_pos (ctx_t *, bullet_t **);
 static void o_bullets_update_remove (ctx_t *, bullet_t **);
 static void o_bullets_update_spawn (ctx_t *, barrel_t, bullet_t **);
-static void o_bullets_update_test_exited (scene_t, ground_t, ctx_t *,  bullet_t **);
+static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t **);
 
 void o_bullets_deinit (bullet_t ** bullets) {
     bullet_t * b = *bullets;
@@ -46,7 +46,7 @@ void o_bullets_init (level_t * level, ground_t ground, bullet_t ** bullets, nbul
 
 void o_bullets_update (scene_t scene, ground_t ground, ctx_t * ctx, barrel_t barrel, bullet_t ** bullets) {
     // mark bullets that are out of frame
-    o_bullets_update_test_exited(scene, ground, ctx, bullets);
+    o_bullets_update_test_exited(scene, ground, bullets);
 
     // if bullet is marked for deletion, delete it from the list
     o_bullets_update_remove(ctx, bullets);
@@ -167,7 +167,7 @@ void o_bullets_update_remove (ctx_t * ctx, bullet_t ** bullets) {
     }
 }
 
-static void o_bullets_update_test_exited (scene_t scene, ground_t ground, ctx_t * ctx,  bullet_t ** bullets) {
+static void o_bullets_update_test_exited (scene_t scene, ground_t ground,  bullet_t ** bullets) {
     bullet_t * this = *bullets;
     bool exited;
     while (this != NULL) {
