@@ -3,6 +3,6 @@
 #include "types.h"
 
 void window_deinit(SDL_Window **);
-void window_init(ctx_t *, SDL_Window **);
+void window_init(scene_t, SDL_Window **);
 
 #endif

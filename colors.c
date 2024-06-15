@@ -2,8 +2,8 @@
 #include "colors.h"
 #include "types.h"
 
-void colors_init (ctx_t * ctx) {
-    ctx->colors = (colors_t) {
+void colors_init (colors_t * colors) {
+    *colors = (colors_t) {
         .bg         = (SDL_Color) { .r =   0, .g =  22, .b =  43, .a =   0 },
         .green      = (SDL_Color) { .r =   0, .g = 161, .b =   0, .a =   0 },
         .ground     = (SDL_Color) { .r =  11, .g =   1, .b =  26, .a =   0 },

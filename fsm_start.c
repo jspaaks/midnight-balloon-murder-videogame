@@ -18,17 +18,38 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void fsm_start_draw (ctx_t * ctx, SDL_Renderer * renderer) {
-    o_background_draw(renderer);
-    o_scene_draw(ctx, renderer);
-    o_moon_draw(ctx, renderer);
-    o_ground_draw(ctx, renderer);
-    o_keymap_draw_start(ctx, renderer);
-    o_titles_draw_opening_title(ctx, renderer);
-    SDL_RenderPresent(renderer);
+void fsm_start_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+    o_background_draw(drawing.renderer);
+
+    o_scene_draw(drawing.renderer,
+                 drawing.scene,
+                 drawing.colors);
+
+    o_moon_draw(drawing.renderer,
+                drawing.scene,
+                drawing.spritesheet,
+                drawables.moon);
+
+    o_ground_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.colors,
+                  drawables.ground);
+
+    o_keymap_draw_start(drawing.renderer,
+                        drawing.scene,
+                        drawing.fonts,
+                        drawing.colors,
+                        drawables.ground);
+
+    o_titles_draw_opening_title(drawing.renderer,
+                                drawing.scene,
+                                drawing.fonts,
+                                drawing.colors);
+
+    SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * renderer, gamestate_t ** gamestate) {
+void fsm_start_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -44,11 +65,13 @@ void fsm_start_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * renderer
             }
             case SDL_WINDOWEVENT: {
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    ctx->scene.resized = true;
+                    ctx->resized = true;
                 }
                 break;
             }
         }
     }
-    o_scene_update(ctx, renderer);
+    o_scene_update(ctx,
+                   drawing->renderer,
+                   &drawing->scene);
 }

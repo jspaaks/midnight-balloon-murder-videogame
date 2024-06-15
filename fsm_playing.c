@@ -20,24 +20,81 @@
 #include "o_scene.h"
 #include "o_turret.h"
 
-void fsm_playing_draw (ctx_t * ctx, SDL_Renderer * renderer) {
-    o_background_draw(renderer);
-    o_scene_draw(ctx, renderer);
-    o_moon_draw(ctx, renderer);
-    o_barrel_draw(ctx, renderer);
-    o_turret_draw(ctx, renderer);
-    o_flash_draw(ctx, renderer);
-    o_legend_draw(ctx, renderer);
-    o_balloons_draw(ctx, renderer);
-    o_bullets_draw(ctx, renderer);
-    o_collisions_draw(ctx, renderer);
-    o_ground_draw(ctx, renderer);
-    o_keymap_draw_pause(ctx, renderer);
-    o_keymap_draw_proceedhint(ctx, renderer);
-    SDL_RenderPresent(renderer);
+void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+
+    o_background_draw(drawing.renderer);
+
+    o_scene_draw(drawing.renderer,
+                 drawing.scene,
+                 drawing.colors);
+
+    o_moon_draw(drawing.renderer,
+                drawing.scene,
+                drawing.spritesheet,
+                drawables.moon);
+
+    o_barrel_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.spritesheet,
+                  drawables.barrel);
+
+    o_turret_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.spritesheet,
+                  drawables.turret);
+
+    o_flash_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.spritesheet,
+                  drawables.barrel,
+                  drawables.flash);
+
+    o_legend_draw(ctx,
+                  drawing.renderer,
+                  drawing.scene,
+                  drawing.fonts,
+                  drawing.colors,
+                  drawables.legend,
+                  ctx.nballoons,
+                  ctx.nbullets);
+
+    o_balloons_draw(drawing.renderer,
+                    drawing.scene,
+                    drawing.spritesheet,
+                    drawables.balloons);
+
+    o_bullets_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.spritesheet,
+                  drawables.bullets);
+
+    o_collisions_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.spritesheet,
+                  drawables.collisions);
+
+    o_ground_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.colors,
+                  drawables.ground);
+
+    o_keymap_draw_pause(drawing.renderer,
+                        drawing.scene,
+                        drawing.fonts,
+                        drawing.colors,
+                        drawables.ground);
+
+    o_keymap_draw_proceedhint(ctx,
+                              drawing.renderer,
+                              drawing.scene,
+                              drawing.fonts,
+                              drawing.colors,
+                              drawables.ground);
+
+    SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_playing_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * renderer, gamestate_t ** gamestate) {
+void fsm_playing_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -60,7 +117,7 @@ void fsm_playing_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * render
                 switch (event.window.event) {
                     case SDL_WINDOWEVENT_RESIZED:  // fallthrough
                     case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                         ctx->scene.resized = true;
+                         drawing->scene.resized = true;
                         break;
                     }
                 }
@@ -68,12 +125,33 @@ void fsm_playing_update (ctx_t * ctx, SDL_Window * window, SDL_Renderer * render
             }
         }
     }
-    o_scene_update(ctx, renderer);
-    o_barrel_update(ctx);
-    o_flash_update(ctx);
-    o_balloons_update(ctx);
-    o_bullets_update(ctx);
-    o_collisions_update(ctx);
+    o_scene_update(ctx,
+                   drawing->renderer,
+                   &drawing->scene);
+
+    o_barrel_update(ctx,
+                    &drawables->barrel);
+
+    o_flash_update(ctx, &drawables->flash);
+
+    o_balloons_update(*ctx,
+                      drawing->scene,
+                      drawables->ground,
+                      &drawables->balloons,
+                      &ctx->nballoons);
+
+    o_bullets_update(drawing->scene,
+                     drawables->ground,
+                     ctx,
+                     drawables->barrel,
+                     &drawables->bullets);
+
+    o_collisions_update(drawing->scene,
+                        drawables->ground,
+                        ctx,
+                        &drawables->balloons,
+                        &drawables->bullets,
+                        &drawables->collisions);
 
     bool no_more_balloons = ctx->nballoons.prespawn + ctx->nballoons.airborne == 0;
     bool no_more_bullets = ctx->nbullets.prespawn + ctx->nbullets.airborne == 0;

@@ -2,9 +2,9 @@
 #define O_BULLETS_H
 #include "types.h"
 
-void o_bullets_deinit (ctx_t *);
-void o_bullets_draw (ctx_t *, SDL_Renderer *);
-void o_bullets_init (ctx_t *);
-void o_bullets_update (ctx_t *);
+void o_bullets_deinit (bullet_t **);
+void o_bullets_draw (SDL_Renderer *, scene_t, SDL_Texture *, bullet_t *);
+void o_bullets_init (level_t *, ground_t, bullet_t **, nbullets_t *);
+void o_bullets_update (scene_t, ground_t, ctx_t *, barrel_t, bullet_t **);
 
 #endif

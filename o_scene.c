@@ -4,10 +4,10 @@
 #include "o_scene.h"
 #include "types.h"
 
-void o_scene_init(ctx_t * ctx) {
+void o_scene_init(scene_t * scene) {
     float h = 720.0;
     float w = 1280.0;
-    ctx->scene = (scene_t) {
+    *scene = (scene_t) {
         .sim = {
             .h = h,
             .w = w,
@@ -23,45 +23,44 @@ void o_scene_init(ctx_t * ctx) {
             .y = 0.0,
         },
     };
-    ctx->resized = true;
 }
 
-void o_scene_draw (ctx_t * ctx, SDL_Renderer * renderer) {
-    SDL_SetRenderDrawColor(renderer, ctx->colors.bg.r,
-                                     ctx->colors.bg.g,
-                                     ctx->colors.bg.b,
-                                     ctx->colors.bg.a);
-    SDL_RenderFillRect(renderer, &ctx->scene.tgt);
+void o_scene_draw (SDL_Renderer * renderer, scene_t scene, colors_t colors) {
+    SDL_SetRenderDrawColor(renderer, colors.bg.r,
+                                     colors.bg.g,
+                                     colors.bg.b,
+                                     colors.bg.a);
+    SDL_RenderFillRect(renderer, &scene.tgt);
 }
 
-void o_scene_update (ctx_t * ctx, SDL_Renderer * renderer) {
-    if (ctx->scene.resized) {
+void o_scene_update (ctx_t * ctx, SDL_Renderer * renderer, scene_t * scene) {
+    if (ctx->resized) {
         int w0;
         int h0;
         SDL_GetRendererOutputSize(renderer, &w0, &h0);
-        float w = w0 < ctx->scene.sim.w ? ctx->scene.sim.w : (float) (w0);
-        float h = h0 < ctx->scene.sim.h ? ctx->scene.sim.h : (float) (h0);
+        float w = w0 < scene->sim.w ? scene->sim.w : (float) (w0);
+        float h = h0 < scene->sim.h ? scene->sim.h : (float) (h0);
         float ratio = w / h;
-        if (ratio > ctx->scene.ratio) {
+        if (ratio > scene->ratio) {
             // -- too wide
-            ctx->scene.tgt.h = h;
-            ctx->scene.tgt.w = (int)(ctx->scene.ratio * h);
-            ctx->scene.tgt.x = (int) ((w - ctx->scene.tgt.w) / 2);
-            ctx->scene.tgt.y = 0;
-        } else if (ratio < ctx->scene.ratio) {
+            scene->tgt.h = h;
+            scene->tgt.w = (int)(scene->ratio * h);
+            scene->tgt.x = (int) ((w - scene->tgt.w) / 2);
+            scene->tgt.y = 0;
+        } else if (ratio < scene->ratio) {
             // -- too tall
-            ctx->scene.tgt.w = w;
-            ctx->scene.tgt.h = (int)(w / ctx->scene.ratio);
-            ctx->scene.tgt.x = 0;
-            ctx->scene.tgt.y = (int) ((h - ctx->scene.tgt.h) / 2);
+            scene->tgt.w = w;
+            scene->tgt.h = (int)(w / scene->ratio);
+            scene->tgt.x = 0;
+            scene->tgt.y = (int) ((h - scene->tgt.h) / 2);
         } else {
             // -- correct aspect ratio
-            ctx->scene.tgt.w = (int) (w);
-            ctx->scene.tgt.h = (int) (h);
-            ctx->scene.tgt.x = 0;
-            ctx->scene.tgt.y = 0;
+            scene->tgt.w = (int) (w);
+            scene->tgt.h = (int) (h);
+            scene->tgt.x = 0;
+            scene->tgt.y = 0;
         }
-        ctx->scene.scale = ctx->scene.tgt.w / ctx->scene.sim.w;
+        scene->scale = scene->tgt.w / scene->sim.w;
         ctx->resized = false;
     }
 }
