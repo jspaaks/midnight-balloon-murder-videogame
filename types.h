@@ -25,15 +25,21 @@ typedef enum {
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
 typedef struct bullet_t bullet_t;
+typedef struct chunks_t chunks_t;
 typedef struct collision_t collision_t;
 typedef struct colors_t colors_t;
 typedef struct ctx_t ctx_t;
+typedef struct drawables_t drawables_t;
+typedef struct drawing_t drawing_t;
 typedef struct flash_t flash_t;
+typedef struct fonts_t fonts_t;
 typedef struct gamestate_t gamestate_t;
 typedef struct ground_t ground_t;
 typedef struct legend_t legend_t;
 typedef struct level_t level_t;
 typedef struct moon_t moon_t;
+typedef struct nballoons_t nballoons_t;
+typedef struct nbullets_t nbullets_t;
 typedef struct scene_t scene_t;
 typedef struct turret_t turret_t;
 
@@ -72,6 +78,17 @@ struct bullet_t {
     delete_reason_t state;
 };
 
+struct chunks_t {
+    Mix_Chunk * empty;
+    struct {
+        Mix_Chunk * orange;
+        Mix_Chunk * red;
+        Mix_Chunk * yellow;
+    } hit;
+    Mix_Chunk * pop;
+    Mix_Chunk * shoot;
+};
+
 struct collision_t {
     struct collision_t * next;
     SDL_FRect sim;
@@ -107,9 +124,17 @@ struct flash_t {
     SDL_Rect src;
 };
 
+struct fonts_t {
+    TTF_Font * regular;
+    TTF_Font * large;
+    TTF_Font * xlarge;
+    TTF_Font * xxlarge;
+    TTF_Font * xxxlarge;
+};
+
 struct gamestate_t {
-    void (*draw)(ctx_t *);
-    void (*update)(ctx_t *, struct gamestate_t **);
+    void (*draw)(ctx_t, drawing_t, drawables_t);
+    void (*update)(ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
     gamestate_name_t label;
 };
 
@@ -124,7 +149,7 @@ struct legend_t {
     } bars[10];
     struct {
         SDL_FRect sim;
-        SDL_Color * bg;
+        SDL_Color bg;
     } highlight;
 };
 
@@ -147,6 +172,21 @@ struct moon_t {
     SDL_Rect src;
 };
 
+struct nballoons_t {
+    unsigned int airborne;
+    unsigned int hit;
+    unsigned int miss;
+    unsigned int orange;
+    unsigned int prespawn;
+    unsigned int red;
+    unsigned int yellow;
+};
+
+struct nbullets_t {
+    unsigned int airborne;
+    unsigned int prespawn;
+};
+
 struct scene_t {
     bool resized;
     float scale;
@@ -160,63 +200,73 @@ struct turret_t {
     SDL_Rect src;
 };
 
-struct ctx_t {
+//struct ctx_t {
+//    balloon_t * balloons;
+//    barrel_t barrel;
+//    bullet_t * bullets;
+//    chunks_t chunks;
+//    collision_t * collisions;
+//    colors_t colors;
+//    struct {
+//        float frame;    // s
+//    } dt;
+//    flash_t flash;
+//    fonts_t fonts;
+//    ground_t ground;
+//    unsigned int ilevel;
+//    unsigned int ilevel_unlocked;
+//    bool isfullscreen;
+//    const Uint8 * keys;
+//    legend_t legend;
+//    level_t * level;
+//    level_t * levels;
+//    moon_t moon;
+//    nballoons_t nballoons;
+//    nbullets_t nbullets;
+//    unsigned int nlevels;
+//    bool resized;
+//    scene_t scene;
+//    SDL_Texture * spritesheet;
+//    Uint64 tspawn_latestbullet;
+//    turret_t turret;
+//};
+
+struct drawing_t {
+    colors_t colors;
+    fonts_t fonts;
+    SDL_Renderer * renderer;
+    scene_t scene;
+    SDL_Texture * spritesheet;
+};
+
+struct drawables_t {
     balloon_t * balloons;
     barrel_t barrel;
     bullet_t * bullets;
-    struct {
-        Mix_Chunk * empty;
-        struct {
-            Mix_Chunk * orange;
-            Mix_Chunk * red;
-            Mix_Chunk * yellow;
-        } hit;
-        Mix_Chunk * pop;
-        Mix_Chunk * shoot;
-    } chunks;
     collision_t * collisions;
-    colors_t colors;
+    flash_t flash;
+    ground_t ground;
+    legend_t legend;
+    moon_t moon;
+    turret_t turret;
+};
+
+struct ctx_t {
+    chunks_t chunks;
     struct {
         float frame;    // s
     } dt;
-    flash_t flash;
-    struct {
-        TTF_Font * regular;
-        TTF_Font * large;
-        TTF_Font * xlarge;
-        TTF_Font * xxlarge;
-        TTF_Font * xxxlarge;
-    } fonts;
-    ground_t ground;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
     bool isfullscreen;
     const Uint8 * keys;
-    legend_t legend;
     level_t * level;
     level_t * levels;
-    moon_t moon;
-    struct {
-        unsigned int airborne;
-        unsigned int hit;
-        unsigned int miss;
-        unsigned int orange;
-        unsigned int prespawn;
-        unsigned int red;
-        unsigned int yellow;
-    } nballoons;
-    struct {
-        unsigned int airborne;
-        unsigned int prespawn;
-    } nbullets;
+    nballoons_t nballoons;
+    nbullets_t nbullets;
     unsigned int nlevels;
-    SDL_Renderer * renderer;
     bool resized;
-    scene_t scene;
-    SDL_Texture * spritesheet;
     Uint64 tspawn_latestbullet;
-    turret_t turret;
-    SDL_Window * window;
 };
 
 #endif

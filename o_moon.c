@@ -3,13 +3,13 @@
 #include "o_moon.h"
 #include "o_scene.h"
 
-void o_moon_draw (ctx_t * ctx) {
-    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->moon.sim);
-    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->moon.src, &tgt);
+void o_moon_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, moon_t moon) {
+    SDL_Rect tgt = sim2tgt(scene, moon.sim);
+    SDL_RenderCopy(renderer, spritesheet, &moon.src, &tgt);
 }
 
-void o_moon_init (ctx_t * ctx) {
-    ctx->moon = (moon_t){
+void o_moon_init (scene_t scene, moon_t * moon) {
+    *moon = (moon_t){
         .src = (SDL_Rect){
             .x = 75,
             .y = 1,
@@ -17,8 +17,8 @@ void o_moon_init (ctx_t * ctx) {
             .h = 90,
         },
         .sim = {
-            .x = ctx->scene.sim.w - 130,
-            .y = ctx->scene.sim.y + 40,
+            .x = scene.sim.w - 130,
+            .y = scene.sim.y + 40,
             .w = 90,
             .h = 90,
         },

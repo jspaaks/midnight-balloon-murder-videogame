@@ -2,7 +2,7 @@
 #define FONTS_H
 #include "types.h"
 
-void fonts_deinit(ctx_t *);
-void fonts_init(ctx_t *);
+void fonts_deinit(fonts_t *);
+void fonts_init(fonts_t *);
 
 #endif

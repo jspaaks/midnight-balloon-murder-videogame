@@ -18,17 +18,38 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void fsm_start_draw (ctx_t * ctx) {
-    o_background_draw(ctx);
-    o_scene_draw(ctx);
-    o_moon_draw(ctx);
-    o_ground_draw(ctx);
-    o_keymap_draw_start(ctx);
-    o_titles_draw_opening_title(ctx);
-    SDL_RenderPresent(ctx->renderer);
+void fsm_start_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+    o_background_draw(drawing.renderer);
+
+    o_scene_draw(drawing.renderer,
+                 drawing.scene,
+                 drawing.colors);
+
+    o_moon_draw(drawing.renderer,
+                drawing.scene,
+                drawing.spritesheet,
+                drawables.moon);
+
+    o_ground_draw(drawing.renderer,
+                  drawing.scene,
+                  drawing.colors,
+                  drawables.ground);
+
+    o_keymap_draw_start(drawing.renderer,
+                        drawing.scene,
+                        drawing.fonts,
+                        drawing.colors,
+                        drawables.ground);
+
+    o_titles_draw_opening_title(drawing.renderer,
+                                drawing.scene,
+                                drawing.fonts,
+                                drawing.colors);
+
+    SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
+void fsm_start_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -37,18 +58,20 @@ void fsm_start_update (ctx_t * ctx, gamestate_t ** gamestate) {
                     SDL_Log("playing\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
-                    SDL_SetWindowFullscreen(ctx->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    SDL_SetWindowFullscreen(window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;
             }
             case SDL_WINDOWEVENT: {
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    ctx->scene.resized = true;
+                    ctx->resized = true;
                 }
                 break;
             }
         }
     }
-    o_scene_update(ctx);
+    o_scene_update(ctx,
+                   drawing->renderer,
+                   &drawing->scene);
 }

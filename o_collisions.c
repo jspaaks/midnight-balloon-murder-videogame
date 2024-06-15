@@ -10,10 +10,10 @@
 #include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
-static void o_collisions_update_pos (ctx_t *);
-static void o_collisions_update_remove(ctx_t *);
-static void o_collisions_update_spawn (ctx_t *);
-static void o_collisions_update_test_exited (ctx_t *);
+static void o_collisions_update_pos (ctx_t, collision_t **);
+static void o_collisions_update_remove(collision_t **);
+static void o_collisions_update_spawn (ctx_t *, balloon_t **, bullet_t **);
+static void o_collisions_update_test_exited (scene_t, ground_t, collision_t **);
 
 static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
@@ -34,48 +34,48 @@ static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     return !separated;
 }
 
-void o_collisions_deinit (ctx_t * ctx) {
-    collision_t * c = ctx->collisions;
+void o_collisions_deinit (collision_t ** collisions) {
+    collision_t * c = *collisions;
     while (c != NULL) {
         collision_t * tmp = c;
         c = c->next;
         free(tmp);
     }
-    ctx->collisions = NULL;
+    *collisions = NULL;
 }
 
-void o_collisions_draw (ctx_t * ctx) {
-    collision_t * c = ctx->collisions;
-    SDL_SetRenderDrawColor(ctx->renderer, 166, 166, 166, 0);
+void o_collisions_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, collision_t * collisions) {
+    collision_t * c = collisions;
+    SDL_SetRenderDrawColor(renderer, 166, 166, 166, 0);
     while (c != NULL) {
         c = c->next;
     }
 }
 
-void o_collisions_init (ctx_t * ctx) {
-    ctx->collisions = NULL;
+void o_collisions_init (collision_t ** collisions) {
+    *collisions = NULL;
 }
 
-void o_collisions_update (ctx_t * ctx) {
-    o_collisions_update_test_exited(ctx);
-    o_collisions_update_remove(ctx);
-    o_collisions_update_pos(ctx);
-    o_collisions_update_spawn(ctx);
+void o_collisions_update (scene_t scene, ground_t ground, ctx_t * ctx, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {
+    o_collisions_update_test_exited(scene, ground, collisions);
+    o_collisions_update_remove(collisions);
+    o_collisions_update_pos(*ctx, collisions);
+    o_collisions_update_spawn(ctx, balloons, bullets);
 }
 
-static void o_collisions_update_pos (ctx_t * ctx) {
+static void o_collisions_update_pos (ctx_t ctx, collision_t ** collisions) {
     const float gravity = 70; // pixels per second per second
-    collision_t * c = ctx->collisions;
+    collision_t * c = *collisions;
     while (c != NULL) {
-        c->sim2.v += gravity * ctx->dt.frame;
-        c->sim.x += c->sim2.u * ctx->dt.frame;
-        c->sim.y += c->sim2.v * ctx->dt.frame;
+        c->sim2.v += gravity * ctx.dt.frame;
+        c->sim.x += c->sim2.u * ctx.dt.frame;
+        c->sim.y += c->sim2.v * ctx.dt.frame;
         c = c->next;
     }
 }
 
-static void o_collisions_update_remove (ctx_t * ctx) {
-    collision_t * this = ctx->collisions;
+static void o_collisions_update_remove (collision_t ** collisions) {
+    collision_t * this = *collisions;
     collision_t * prev = NULL;
     bool isfirst = false;
     bool doremove = false;
@@ -106,7 +106,7 @@ static void o_collisions_update_remove (ctx_t * ctx) {
             case 3: {
                 // first, remove
                 collision_t * tmp = this;
-                ctx->collisions = this->next;
+                *collisions = this->next;
                 this = this->next;
                 free(tmp);
                 break;
@@ -119,10 +119,10 @@ static void o_collisions_update_remove (ctx_t * ctx) {
     }
 }
 
-static void o_collisions_update_spawn (ctx_t * ctx) {
-    balloon_t * ba = ctx->balloons;
+static void o_collisions_update_spawn (ctx_t * ctx, balloon_t ** balloons, bullet_t ** bullets) {
+    balloon_t * ba = *balloons;
     while (ba != NULL) {
-        bullet_t * bu = ctx->bullets;
+        bullet_t * bu = *bullets;
         while (bu != NULL) {
             if (o_collisions_colliding(ba, bu)) {
 
@@ -160,14 +160,14 @@ static void o_collisions_update_spawn (ctx_t * ctx) {
     }
 }
 
-static void o_collisions_update_test_exited (ctx_t * ctx) {
-    collision_t * this = ctx->collisions;
+static void o_collisions_update_test_exited (scene_t scene, ground_t ground, collision_t ** collisions) {
+    collision_t * this = *collisions;
     bool exited;
     while (this != NULL) {
         exited = this->sim.y < 0 - this->sim.h  ||
-                 this->sim.x > ctx->scene.sim.w ||
+                 this->sim.x > scene.sim.w ||
                  this->sim.x < 0 - this->sim.w  ||
-                 this->sim.y > ctx->scene.sim.h - ctx->ground.sim.h;
+                 this->sim.y > scene.sim.h - ground.sim.h;
         if (exited) {
             this->state = EXITED;
         }

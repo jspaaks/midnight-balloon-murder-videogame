@@ -98,29 +98,50 @@ void levels_deinit (ctx_t * ctx) {
 }
 
 void levels_init (ctx_t * ctx) {
-    unsigned int unl = 0;
-    ctx->ilevel_unlocked = unl;
-    levels_set(ctx, unl);
+    ctx->ilevel = 0;
+    ctx->ilevel_unlocked = 0;
+    ctx->level = &levels[0];
+    ctx->levels = &levels[0];
+    ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
 }
 
-void levels_set (ctx_t * ctx, unsigned int ilevel) {
+void levels_set (ctx_t * ctx, unsigned int ilevel, drawing_t * drawing, drawables_t * drawables) {
     // --- deinit entities from previous levels
-    o_balloons_deinit(ctx);
-    o_bullets_deinit(ctx);
-    o_collisions_deinit(ctx);
+    o_balloons_deinit(&drawables->balloons);
+    o_bullets_deinit(&drawables->bullets);
+    o_collisions_deinit(&drawables->collisions);
     // --- new level
     ctx->ilevel = ilevel;
     ctx->level = &levels[ilevel];
     ctx->levels = &levels[0];
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
     // --- concrete entities
-    o_ground_init(ctx);
-    o_moon_init(ctx);
-    o_turret_init(ctx);
-    o_barrel_init(ctx);
-    o_balloons_init(ctx);
-    o_bullets_init(ctx);
-    o_collisions_init(ctx);
-    o_flash_init(ctx);
-    o_legend_init(ctx);
+    o_ground_init(drawing->scene,
+                  &drawables->ground);
+
+    o_moon_init(drawing->scene,
+                &drawables->moon);
+
+    o_turret_init(drawing->scene,
+                  drawables->ground,
+                  &drawables->turret);
+
+    o_barrel_init(drawables->turret,
+                  &drawables->barrel);
+
+    o_balloons_init(ctx->level,
+                    &drawables->balloons,
+                    &ctx->nballoons);
+
+    o_bullets_init(ctx->level,
+                   drawables->ground,
+                   &drawables->bullets,
+                   &ctx->nbullets);
+
+    o_collisions_init(&drawables->collisions);
+
+    o_flash_init(drawables->barrel,
+                 &drawables->flash);
+
+    o_legend_init(&drawables->legend);
 }

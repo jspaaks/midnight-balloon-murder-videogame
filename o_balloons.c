@@ -12,92 +12,93 @@
 #include "o_scene.h"
 
 static float o_balloons_unitrand(void);
-static void o_balloons_update_pos (ctx_t *);
-static void o_balloons_update_spawn (ctx_t *);
-static void o_balloons_update_spawn_orange (ctx_t *);
-static void o_balloons_update_spawn_red (ctx_t *);
-static void o_balloons_update_spawn_yellow (ctx_t *);
-static void o_balloons_update_test_exited (ctx_t *);
+static void o_balloons_update_pos (ctx_t, balloon_t *);
+static void o_balloons_update_remove (balloon_t **, nballoons_t *);
+static void o_balloons_update_spawn (ctx_t, scene_t, ground_t, balloon_t **, nballoons_t *);
+static void o_balloons_update_spawn_orange (scene_t, ground_t, balloon_t **);
+static void o_balloons_update_spawn_red (scene_t, ground_t, balloon_t **);
+static void o_balloons_update_spawn_yellow (scene_t, ground_t, balloon_t **);
+static void o_balloons_update_test_exited (scene_t, ground_t, balloon_t *);
 
-void o_balloons_deinit (ctx_t * ctx) {
-    balloon_t * b = ctx->balloons;
+void o_balloons_deinit (balloon_t ** balloons) {
+    balloon_t * b = *balloons;
     while (b != NULL) {
         balloon_t * tmp = b;
         b = b->next;
         free(tmp);
     }
-    ctx->balloons = NULL;
+    *balloons = NULL;
 }
 
-void o_balloons_draw (ctx_t * ctx) {
-    balloon_t * b = ctx->balloons;
+void o_balloons_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, balloon_t * balloons) {
+    balloon_t * b = balloons;
     while (b != NULL) {
-        SDL_Rect tgt = sim2tgt(ctx->scene, b->sim);
-        SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &b->src, &tgt);
+        SDL_Rect tgt = sim2tgt(scene, b->sim);
+        SDL_RenderCopy(renderer, spritesheet, &b->src, &tgt);
         b = b->next;
     }
 }
 
-void o_balloons_init (ctx_t * ctx) {
-    assert(ctx->level != NULL && "levels needs to be initialized before balloons");
-    ctx->balloons = NULL;
-    ctx->nballoons.airborne = 0;
-    ctx->nballoons.hit = 0;
-    ctx->nballoons.miss = 0;
-    ctx->nballoons.orange = ctx->level->nballoons.orange;
-    ctx->nballoons.prespawn = ctx->level->nballoons.prespawn;
-    ctx->nballoons.red = ctx->level->nballoons.red;
-    ctx->nballoons.yellow = ctx->level->nballoons.yellow;
+void o_balloons_init (level_t * level, balloon_t ** balloons, nballoons_t * nballoons) {
+    assert(level != NULL && "levels needs to be initialized before balloons");
+    *balloons = NULL;
+    nballoons->airborne = 0;
+    nballoons->hit = 0;
+    nballoons->miss = 0;
+    nballoons->orange = level->nballoons.orange;
+    nballoons->prespawn = level->nballoons.prespawn;
+    nballoons->red = level->nballoons.red;
+    nballoons->yellow = level->nballoons.yellow;
 }
 
 static float o_balloons_unitrand(void) {
     return (float)(rand()) / (float)(RAND_MAX);
 }
 
-void o_balloons_update (ctx_t * ctx) {
-    o_balloons_update_test_exited(ctx);
-    o_balloons_update_remove(ctx);
-    o_balloons_update_pos(ctx);
-    o_balloons_update_spawn(ctx);
+void o_balloons_update (ctx_t ctx, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
+    o_balloons_update_test_exited(scene, ground, *balloons);
+    o_balloons_update_remove(balloons, nballoons);
+    o_balloons_update_pos(ctx, *balloons);
+    o_balloons_update_spawn(ctx, scene, ground, balloons, nballoons);
 }
 
-static void o_balloons_update_spawn (ctx_t * ctx) {
+static void o_balloons_update_spawn (ctx_t ctx, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
     static const float spawn_rate = 0.35; // balloons per second
-    float spawn_chance = ctx->nballoons.airborne == 0 ? 1 : spawn_rate * ctx->dt.frame;
-    if (ctx->nballoons.prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
+    float spawn_chance = nballoons->airborne == 0 ? 1 : spawn_rate * ctx.dt.frame;
+    if (nballoons->prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
         return;
     }
-    unsigned int remaining = ctx->nballoons.yellow + ctx->nballoons.orange + ctx->nballoons.red;
-    float y = (float)(ctx->nballoons.yellow) / remaining;
-    float o = (float)(ctx->nballoons.orange) / remaining;
+    unsigned int remaining = nballoons->yellow + nballoons->orange + nballoons->red;
+    float y = (float)(nballoons->yellow) / remaining;
+    float o = (float)(nballoons->orange) / remaining;
     float u = o_balloons_unitrand();
     if (u < y) {
-        o_balloons_update_spawn_yellow(ctx);
-        ctx->nballoons.yellow--;
+        o_balloons_update_spawn_yellow(scene, ground, balloons);
+        nballoons->yellow--;
     } else if (u < (y + o)) {
-        o_balloons_update_spawn_orange(ctx);
-        ctx->nballoons.orange--;
+        o_balloons_update_spawn_orange(scene, ground, balloons);
+        nballoons->orange--;
     } else {
-        o_balloons_update_spawn_red(ctx);
-        ctx->nballoons.red--;
+        o_balloons_update_spawn_red(scene, ground, balloons);
+        nballoons->red--;
     }
-    ctx->nballoons.airborne++;
-    ctx->nballoons.prespawn--;
+    nballoons->airborne++;
+    nballoons->prespawn--;
 }
 
-static void o_balloons_update_spawn_orange (ctx_t * ctx) {
+static void o_balloons_update_spawn_orange (scene_t scene, ground_t ground, balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new orange balloon.\n");
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
-        .next = ctx->balloons,
+        .next = *balloons,
         .sim = (SDL_FRect){
             .h = 12,
             .w = 9,
-            .x = ctx->scene.sim.w / 2 + o_balloons_unitrand() * (0.4 * ctx->scene.sim.w),
-            .y = ctx->scene.sim.h - ctx->ground.sim.h,
+            .x = scene.sim.w / 2 + o_balloons_unitrand() * (0.4 * scene.sim.w),
+            .y = scene.sim.h - ground.sim.h,
         },
         .sim2 = {
             .u = 0.0,
@@ -112,22 +113,22 @@ static void o_balloons_update_spawn_orange (ctx_t * ctx) {
         .state = ALIVE,
         .value = 4,
     };
-    ctx->balloons = b;
+    *balloons = b;
 }
 
-static void o_balloons_update_spawn_red (ctx_t * ctx) {
+static void o_balloons_update_spawn_red (scene_t scene, ground_t ground, balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new red balloon.\n");
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
-        .next = ctx->balloons,
+        .next = *balloons,
         .sim = (SDL_FRect){
             .h = 7,
             .w = 6,
-            .x = ctx->scene.sim.w / 2 + o_balloons_unitrand() * (0.4 * ctx->scene.sim.w),
-            .y = ctx->scene.sim.h - ctx->ground.sim.h,
+            .x = scene.sim.w / 2 + o_balloons_unitrand() * (0.4 * scene.sim.w),
+            .y = scene.sim.h - ground.sim.h,
         },
         .sim2 = {
             .u = 0.0,
@@ -142,22 +143,22 @@ static void o_balloons_update_spawn_red (ctx_t * ctx) {
         .state = ALIVE,
         .value = 3,
     };
-    ctx->balloons = b;
+    *balloons = b;
 }
 
-static void o_balloons_update_spawn_yellow (ctx_t * ctx) {
+static void o_balloons_update_spawn_yellow (scene_t scene, ground_t ground, balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new yellow balloon.\n");
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
-        .next = ctx->balloons,
+        .next = *balloons,
         .sim = (SDL_FRect){
             .h = 16,
             .w = 12,
-            .x = ctx->scene.sim.w / 2 + o_balloons_unitrand() * (0.4 * ctx->scene.sim.w),
-            .y = ctx->scene.sim.h - ctx->ground.sim.h,
+            .x = scene.sim.w / 2 + o_balloons_unitrand() * (0.4 * scene.sim.w),
+            .y = scene.sim.h - ground.sim.h,
         },
         .sim2 = {
             .u = 0.0,
@@ -172,20 +173,20 @@ static void o_balloons_update_spawn_yellow (ctx_t * ctx) {
         .state = ALIVE,
         .value = 5,
     };
-    ctx->balloons = b;
+    *balloons = b;
 }
 
-static void o_balloons_update_pos (ctx_t * ctx) {
-    balloon_t * b = ctx->balloons;
+static void o_balloons_update_pos (ctx_t ctx, balloon_t * balloons) {
+    balloon_t * b = balloons;
     while (b != NULL) {
-        b->sim.x += b->sim2.u * ctx->dt.frame;
-        b->sim.y += b->sim2.v * ctx->dt.frame;
+        b->sim.x += b->sim2.u * ctx.dt.frame;
+        b->sim.y += b->sim2.v * ctx.dt.frame;
         b = b->next;
     }
 }
 
-void o_balloons_update_remove (ctx_t * ctx) {
-    balloon_t * this = ctx->balloons;
+static void o_balloons_update_remove (balloon_t ** balloons, nballoons_t * nballoons) {
+    balloon_t * this = *balloons;
     balloon_t * prev = NULL;
     bool isfirst = false;
     bool doremove = false;
@@ -204,12 +205,12 @@ void o_balloons_update_remove (ctx_t * ctx) {
                 balloon_t * tmp = this;
                 prev->next = this->next;
                 if (this->state == EXITED) {
-                    ctx->nballoons.miss++;
-                    ctx->nballoons.airborne--;
+                    nballoons->miss++;
+                    nballoons->airborne--;
                 }
                 if (this->state == HIT) {
-                    ctx->nballoons.hit++;
-                    ctx->nballoons.airborne--;
+                    nballoons->hit++;
+                    nballoons->airborne--;
                 }
                 this = this->next;
                 free(tmp);
@@ -224,14 +225,14 @@ void o_balloons_update_remove (ctx_t * ctx) {
             case 3: {
                 // first, remove
                 balloon_t * tmp = this;
-                ctx->balloons = this->next;
+                *balloons = this->next;
                 if (this->state == EXITED) {
-                    ctx->nballoons.miss++;
-                    ctx->nballoons.airborne--;
+                    nballoons->miss++;
+                    nballoons->airborne--;
                 }
                 if (this->state == HIT) {
-                    ctx->nballoons.hit++;
-                    ctx->nballoons.airborne--;
+                    nballoons->hit++;
+                    nballoons->airborne--;
                 }
                 this = this->next;
                 free(tmp);
@@ -245,14 +246,14 @@ void o_balloons_update_remove (ctx_t * ctx) {
     }
 }
 
-static void o_balloons_update_test_exited (ctx_t * ctx) {
-    balloon_t * this = ctx->balloons;
+static void o_balloons_update_test_exited (scene_t scene, ground_t ground, balloon_t * balloons) {
+    balloon_t * this = balloons;
     bool exited;
     while (this != NULL) {
         exited = this->sim.y < 0 - this->sim.h  ||
-                 this->sim.x > ctx->scene.sim.w ||
+                 this->sim.x > scene.sim.w ||
                  this->sim.x < 0 - this->sim.w  ||
-                 this->sim.y > ctx->scene.sim.h - ctx->ground.sim.h;
+                 this->sim.y > scene.sim.h - ground.sim.h;
         if (exited) {
             this->state = EXITED;
         }

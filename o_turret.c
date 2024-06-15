@@ -5,21 +5,21 @@
 #include "o_turret.h"
 #include "o_scene.h"
 
-void o_turret_draw (ctx_t * ctx) {
-    SDL_Rect tgt = sim2tgt(ctx->scene, ctx->turret.sim);
-    SDL_RenderCopy(ctx->renderer, ctx->spritesheet, &ctx->turret.src, &tgt);
+void o_turret_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, turret_t turret) {
+    SDL_Rect tgt = sim2tgt(scene, turret.sim);
+    SDL_RenderCopy(renderer, spritesheet, &turret.src, &tgt);
 }
 
-void o_turret_init (ctx_t * ctx) {
-    assert(ctx->ground.sim.w != 0 && "ground needs to be initialized before turret");
+void o_turret_init (scene_t scene, ground_t ground, turret_t * turret) {
+    assert(ground.sim.w != 0 && "ground needs to be initialized before turret");
     float h = 47;
     SDL_FRect sim = {
         .h = h,
         .w = 69,
         .x = 180,
-        .y = ctx->scene.sim.h - ctx->ground.sim.h - h,
+        .y = scene.sim.h - ground.sim.h - h,
     };
-    ctx->turret = (turret_t){
+    *turret = (turret_t){
         .sim = sim,
         .src = (SDL_Rect) {
             .h = 47,
