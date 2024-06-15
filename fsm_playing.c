@@ -117,7 +117,7 @@ void fsm_playing_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, 
                 switch (event.window.event) {
                     case SDL_WINDOWEVENT_RESIZED:  // fallthrough
                     case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                         drawing->scene.resized = true;
+                         ctx->resized = true;
                         break;
                     }
                 }

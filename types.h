@@ -188,7 +188,6 @@ struct nbullets_t {
 };
 
 struct scene_t {
-    bool resized;
     float scale;
     float ratio;
     SDL_FRect sim;
