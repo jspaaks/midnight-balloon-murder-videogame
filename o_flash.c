@@ -7,7 +7,7 @@
 #include "o_flash.h"
 #include "o_scene.h"
 
-void o_flash_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, barrel_t barrel, flash_t flash) {
+void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, barrel_t barrel, flash_t flash) {
     if (flash.show) {
         SDL_Rect tgt = sim2tgt(scene, flash.sim);
         SDL_Point pivot_offset = (SDL_Point) {

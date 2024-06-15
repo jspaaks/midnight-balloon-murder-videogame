@@ -30,7 +30,7 @@ void o_balloons_deinit (balloon_t ** balloons) {
     *balloons = NULL;
 }
 
-void o_balloons_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, balloon_t * balloons) {
+void o_balloons_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, balloon_t * balloons) {
     balloon_t * b = balloons;
     while (b != NULL) {
         SDL_Rect tgt = sim2tgt(scene, b->sim);

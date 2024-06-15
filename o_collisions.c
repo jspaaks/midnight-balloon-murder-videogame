@@ -44,7 +44,7 @@ void o_collisions_deinit (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void o_collisions_draw (SDL_Renderer * renderer, scene_t, SDL_Texture *, collision_t * collisions) {
+void o_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t, collision_t * collisions) {
     collision_t * c = collisions;
     SDL_SetRenderDrawColor(renderer, 166, 166, 166, 0);
     while (c != NULL) {

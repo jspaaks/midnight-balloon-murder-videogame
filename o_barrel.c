@@ -18,7 +18,7 @@ static float o_barrel_clip(float v) {
     return v;
 }
 
-void o_barrel_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, barrel_t barrel) {
+void o_barrel_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, barrel_t barrel) {
     SDL_Rect tgt = sim2tgt(scene, barrel.sim);
     SDL_Point pivot_offset = (SDL_Point) {
         .x = (int) (barrel.sim2.pivot_offset.x * scene.scale),

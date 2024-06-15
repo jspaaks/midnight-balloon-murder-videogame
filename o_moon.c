@@ -3,7 +3,7 @@
 #include "o_moon.h"
 #include "o_scene.h"
 
-void o_moon_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, moon_t moon) {
+void o_moon_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, moon_t moon) {
     SDL_Rect tgt = sim2tgt(scene, moon.sim);
     SDL_RenderCopy(renderer, spritesheet, &moon.src, &tgt);
 }

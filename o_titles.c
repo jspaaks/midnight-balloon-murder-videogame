@@ -9,7 +9,7 @@
 #include "o_titles.h"
 #include "o_scene.h"
 
-void o_titles_draw_level_finished (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, counters_t counters) {
+void o_titles_draw_level_finished (SDL_Renderer * renderer,  fonts_t fonts, colors_t colors, scene_t scene, counters_t counters) {
     char title[15];
     if (counters.nballoons.miss == 0) {
         strncpy(title, "PERFECT SCORE!", 15);
@@ -32,7 +32,7 @@ void o_titles_draw_level_finished (SDL_Renderer * renderer, scene_t scene, fonts
     SDL_FreeSurface(surf.payload);
 }
 
-void o_titles_draw_opening_title (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors) {
+void o_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene) {
     static const struct {
         char left[2];
         char middle[22];
@@ -117,7 +117,7 @@ void o_titles_draw_opening_title (SDL_Renderer * renderer, scene_t scene, fonts_
     SDL_FreeSurface(surfs.right.payload);
 }
 
-void o_titles_draw_paused (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors) {
+void o_titles_draw_paused (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene) {
     char title[7] = "PAUSED";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.xlarge, title, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);

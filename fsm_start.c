@@ -22,29 +22,29 @@ void fsm_start_draw (ctx_t, drawing_t drawing, drawables_t drawables, counters_t
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
-                 drawing.scene,
-                 drawing.colors);
+                 drawing.colors,
+                 drawing.scene);
 
     o_moon_draw(drawing.renderer,
-                drawing.scene,
                 drawing.spritesheet,
+                drawing.scene,
                 drawables.moon);
 
     o_ground_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.colors,
+                  drawing.scene,
                   drawables.ground);
 
     o_keymap_draw_start(drawing.renderer,
-                        drawing.scene,
                         drawing.fonts,
                         drawing.colors,
+                        drawing.scene,
                         drawables.ground);
 
     o_titles_draw_opening_title(drawing.renderer,
-                                drawing.scene,
                                 drawing.fonts,
-                                drawing.colors);
+                                drawing.colors,
+                                drawing.scene);
 
     SDL_RenderPresent(drawing.renderer);
 }

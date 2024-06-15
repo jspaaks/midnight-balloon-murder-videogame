@@ -27,7 +27,7 @@ void o_bullets_deinit (bullet_t ** bullets) {
     *bullets = NULL;
 }
 
-void o_bullets_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spritesheet, bullet_t * bullets) {
+void o_bullets_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, bullet_t * bullets) {
     bullet_t * bu = bullets;
     while (bu != NULL) {
         SDL_Rect tgt = sim2tgt(scene, bu->sim);

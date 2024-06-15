@@ -25,7 +25,7 @@ void o_scene_init(scene_t * scene) {
     };
 }
 
-void o_scene_draw (SDL_Renderer * renderer, scene_t scene, colors_t colors) {
+void o_scene_draw (SDL_Renderer * renderer, colors_t colors, scene_t scene) {
     SDL_SetRenderDrawColor(renderer, colors.bg.r,
                                      colors.bg.g,
                                      colors.bg.b,

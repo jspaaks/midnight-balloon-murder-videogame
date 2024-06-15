@@ -25,71 +25,71 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, coun
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
-                 drawing.scene,
-                 drawing.colors);
+                 drawing.colors,
+                 drawing.scene);
 
     o_moon_draw(drawing.renderer,
-                drawing.scene,
                 drawing.spritesheet,
+                drawing.scene,
                 drawables.moon);
 
     o_barrel_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.barrel);
 
     o_turret_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.turret);
 
     o_flash_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.barrel,
                   drawables.flash);
 
     o_legend_draw(ctx,
                   drawing.renderer,
-                  drawing.scene,
                   drawing.fonts,
                   drawing.colors,
+                  drawing.scene,
                   drawables.legend,
                   counters);
 
     o_balloons_draw(drawing.renderer,
-                    drawing.scene,
                     drawing.spritesheet,
+                    drawing.scene,
                     drawables.balloons);
 
     o_bullets_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.bullets);
 
     o_collisions_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.collisions);
 
     o_ground_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.colors,
+                  drawing.scene,
                   drawables.ground);
 
     o_keymap_draw_pause(drawing.renderer,
-                        drawing.scene,
                         drawing.fonts,
                         drawing.colors,
+                        drawing.scene,
                         drawables.ground);
 
     o_keymap_draw_proceedhint(ctx,
-                              counters,
                               drawing.renderer,
-                              drawing.scene,
                               drawing.fonts,
                               drawing.colors,
-                              drawables.ground);
+                              drawing.scene,
+                              drawables.ground,
+                              counters);
 
     SDL_RenderPresent(drawing.renderer);
 }

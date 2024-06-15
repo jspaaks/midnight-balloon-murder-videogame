@@ -5,7 +5,7 @@
 #include "o_ground.h"
 #include "o_scene.h"
 
-void o_ground_draw (SDL_Renderer * renderer, scene_t scene, colors_t colors, ground_t ground) {
+void o_ground_draw (SDL_Renderer * renderer, colors_t colors, scene_t scene, ground_t ground) {
     SDL_Rect tgt = sim2tgt(scene, ground.sim);
     SDL_SetRenderDrawColor(renderer, colors.ground.r,
                                      colors.ground.g,

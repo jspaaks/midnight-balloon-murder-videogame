@@ -10,7 +10,7 @@
 #include "o_keymap.h"
 #include "o_scene.h"
 
-void o_keymap_draw_move_barrel (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, turret_t turret, ground_t ground) {
+void o_keymap_draw_move_barrel (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground) {
     char action[21] = "W / S TO MOVE BARREL";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, action, colors.middlegray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -28,7 +28,7 @@ void o_keymap_draw_move_barrel (SDL_Renderer * renderer, scene_t scene, fonts_t 
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_pause (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, ground_t ground) {
+void o_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground) {
     char keymap[12] = "ESC TO PAUSE";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, keymap, colors.middlegray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -46,7 +46,7 @@ void o_keymap_draw_pause (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_proceedhint (ctx_t ctx, counters_t counters, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, ground_t ground) {
+void o_keymap_draw_proceedhint (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground, counters_t counters) {
     SDL_Color color = colors.middlegray;
     char str[100];
     if (ctx.ilevel == ctx.nlevels - 1) {
@@ -76,7 +76,7 @@ void o_keymap_draw_proceedhint (ctx_t ctx, counters_t counters, SDL_Renderer * r
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_quit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, turret_t turret, ground_t ground) {
+void o_keymap_draw_quit (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground) {
     char keymap[10] = "Q TO QUIT";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, keymap, colors.middlegray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -94,7 +94,7 @@ void o_keymap_draw_quit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, 
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_restart (ctx_t ctx, counters_t counters, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, turret_t turret, ground_t ground) {
+void o_keymap_draw_restart (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground, counters_t counters) {
     if (counters.nballoons.prespawn == ctx.level->nballoons.prespawn &&
         counters.nbullets.prespawn == ctx.level->nbullets.prespawn) {
         // we're effectively at the start of the level already
@@ -117,7 +117,7 @@ void o_keymap_draw_restart (ctx_t ctx, counters_t counters, SDL_Renderer * rende
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_shoot (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, turret_t turret, ground_t ground) {
+void o_keymap_draw_shoot (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground) {
     char action[15] = "SPACE TO SHOOT";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, action, colors.middlegray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -135,7 +135,7 @@ void o_keymap_draw_shoot (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_start (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, ground_t ground) {
+void o_keymap_draw_start (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground) {
     char keymap[20] = "PRESS ENTER TO PLAY";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, keymap, colors.lightgray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -153,7 +153,7 @@ void o_keymap_draw_start (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_unpause (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, ground_t ground) {
+void o_keymap_draw_unpause (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground) {
     char keymap[15] = "ESC TO UNPAUSE";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, keymap, colors.middlegray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);

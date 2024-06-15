@@ -212,7 +212,7 @@ static void o_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t scene, fo
     SDL_FreeSurface(surf.payload);
 }
 
-void o_legend_draw (ctx_t ctx, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, legend_t legend, counters_t counters) {
+void o_legend_draw (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, legend_t legend, counters_t counters) {
     o_legend_draw_bars(ctx, renderer, scene, colors, legend, counters);
     o_legend_draw_rect_nbullets(renderer, scene, colors, legend, counters);
     o_legend_draw_text_nbullets(renderer, scene, fonts, colors, legend, counters);

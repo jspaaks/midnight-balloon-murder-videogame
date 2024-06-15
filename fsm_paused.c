@@ -28,106 +28,106 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
-                 drawing.scene,
-                 drawing.colors);
+                 drawing.colors,
+                 drawing.scene);
 
     o_moon_draw(drawing.renderer,
-                drawing.scene,
                 drawing.spritesheet,
+                drawing.scene,
                 drawables.moon);
 
     o_barrel_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.barrel);
 
     o_turret_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.turret);
 
     o_flash_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.barrel,
                   drawables.flash);
 
     o_legend_draw(ctx,
                   drawing.renderer,
-                  drawing.scene,
                   drawing.fonts,
                   drawing.colors,
+                  drawing.scene,
                   drawables.legend,
                   counters);
 
     o_balloons_draw(drawing.renderer,
-                    drawing.scene,
                     drawing.spritesheet,
+                    drawing.scene,
                     drawables.balloons);
 
     o_bullets_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.bullets);
 
     o_collisions_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.spritesheet,
+                  drawing.scene,
                   drawables.collisions);
 
     o_ground_draw(drawing.renderer,
-                  drawing.scene,
                   drawing.colors,
+                  drawing.scene,
                   drawables.ground);
 
     o_keymap_draw_move_barrel(drawing.renderer,
-                              drawing.scene,
                               drawing.fonts,
                               drawing.colors,
+                              drawing.scene,
                               drawables.turret,
                               drawables.ground);
 
     o_keymap_draw_shoot(drawing.renderer,
-                        drawing.scene,
                         drawing.fonts,
-                        drawing. colors,
+                        drawing.colors,
+                        drawing.scene,
                         drawables.turret,
                         drawables.ground);
 
     o_keymap_draw_proceedhint(ctx,
-                              counters,
                               drawing.renderer,
-                              drawing.scene,
                               drawing.fonts,
                               drawing.colors,
-                              drawables.ground);
+                              drawing.scene,
+                              drawables.ground,
+                              counters);
 
     o_keymap_draw_unpause(drawing.renderer,
-                          drawing.scene,
                           drawing.fonts,
                           drawing.colors,
+                          drawing.scene,
                           drawables.ground);
 
     o_keymap_draw_restart(ctx,
-                          counters,
                           drawing.renderer,
-                          drawing.scene,
                           drawing.fonts,
                           drawing.colors,
+                          drawing.scene,
                           drawables.turret,
-                          drawables.ground);
+                          drawables.ground,
+                          counters);
 
     o_keymap_draw_quit(drawing.renderer,
-                       drawing.scene,
                        drawing.fonts,
                        drawing.colors,
+                       drawing.scene,
                        drawables.turret,
                        drawables.ground);
 
     o_titles_draw_paused(drawing.renderer,
-                         drawing.scene,
                          drawing.fonts,
-                         drawing.colors);
+                         drawing.colors,
+                         drawing.scene);
 
     SDL_RenderPresent(drawing.renderer);
 }
