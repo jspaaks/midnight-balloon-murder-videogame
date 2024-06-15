@@ -10,7 +10,7 @@
 #include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
-static void o_collisions_update_pos (ctx_t, collision_t **);
+static void o_collisions_update_pos (timing_t, collision_t **);
 static void o_collisions_update_remove(collision_t **);
 static void o_collisions_update_spawn (ctx_t *, balloon_t **, bullet_t **);
 static void o_collisions_update_test_exited (scene_t, ground_t, collision_t **);
@@ -56,20 +56,20 @@ void o_collisions_init (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void o_collisions_update (scene_t scene, ground_t ground, ctx_t * ctx, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {
+void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {
     o_collisions_update_test_exited(scene, ground, collisions);
     o_collisions_update_remove(collisions);
-    o_collisions_update_pos(*ctx, collisions);
+    o_collisions_update_pos(timing, collisions);
     o_collisions_update_spawn(ctx, balloons, bullets);
 }
 
-static void o_collisions_update_pos (ctx_t ctx, collision_t ** collisions) {
+static void o_collisions_update_pos (timing_t timing, collision_t ** collisions) {
     const float gravity = 70; // pixels per second per second
     collision_t * c = *collisions;
     while (c != NULL) {
-        c->sim2.v += gravity * ctx.dt.frame;
-        c->sim.x += c->sim2.u * ctx.dt.frame;
-        c->sim.y += c->sim2.v * ctx.dt.frame;
+        c->sim2.v += gravity * timing.dt.frame;
+        c->sim.x += c->sim2.u * timing.dt.frame;
+        c->sim.y += c->sim2.v * timing.dt.frame;
         c = c->next;
     }
 }

@@ -12,9 +12,9 @@
 #include "o_scene.h"
 
 static float o_balloons_unitrand(void);
-static void o_balloons_update_pos (ctx_t, balloon_t *);
+static void o_balloons_update_pos (timing_t, balloon_t *);
 static void o_balloons_update_remove (balloon_t **, nballoons_t *);
-static void o_balloons_update_spawn (ctx_t, scene_t, ground_t, balloon_t **, nballoons_t *);
+static void o_balloons_update_spawn (timing_t, scene_t, ground_t, balloon_t **, nballoons_t *);
 static void o_balloons_update_spawn_orange (scene_t, ground_t, balloon_t **);
 static void o_balloons_update_spawn_red (scene_t, ground_t, balloon_t **);
 static void o_balloons_update_spawn_yellow (scene_t, ground_t, balloon_t **);
@@ -55,16 +55,16 @@ static float o_balloons_unitrand(void) {
     return (float)(rand()) / (float)(RAND_MAX);
 }
 
-void o_balloons_update (ctx_t ctx, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
+void o_balloons_update (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
     o_balloons_update_test_exited(scene, ground, *balloons);
     o_balloons_update_remove(balloons, nballoons);
-    o_balloons_update_pos(ctx, *balloons);
-    o_balloons_update_spawn(ctx, scene, ground, balloons, nballoons);
+    o_balloons_update_pos(timing, *balloons);
+    o_balloons_update_spawn(timing, scene, ground, balloons, nballoons);
 }
 
-static void o_balloons_update_spawn (ctx_t ctx, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
+static void o_balloons_update_spawn (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
     static const float spawn_rate = 0.35; // balloons per second
-    float spawn_chance = nballoons->airborne == 0 ? 1 : spawn_rate * ctx.dt.frame;
+    float spawn_chance = nballoons->airborne == 0 ? 1 : spawn_rate * timing.dt.frame;
     if (nballoons->prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
         return;
     }
@@ -176,11 +176,11 @@ static void o_balloons_update_spawn_yellow (scene_t scene, ground_t ground, ball
     *balloons = b;
 }
 
-static void o_balloons_update_pos (ctx_t ctx, balloon_t * balloons) {
+static void o_balloons_update_pos (timing_t timing, balloon_t * balloons) {
     balloon_t * b = balloons;
     while (b != NULL) {
-        b->sim.x += b->sim2.u * ctx.dt.frame;
-        b->sim.y += b->sim2.v * ctx.dt.frame;
+        b->sim.x += b->sim2.u * timing.dt.frame;
+        b->sim.y += b->sim2.v * timing.dt.frame;
         b = b->next;
     }
 }

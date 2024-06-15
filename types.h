@@ -50,6 +50,7 @@ typedef struct moon_t moon_t;
 typedef struct nballoons_t nballoons_t;
 typedef struct nbullets_t nbullets_t;
 typedef struct scene_t scene_t;
+typedef struct timing_t timing_t;
 typedef struct turret_t turret_t;
 
 struct balloon_t {
@@ -143,7 +144,7 @@ struct fonts_t {
 
 struct gamestate_t {
     void (*draw)(ctx_t, drawing_t, drawables_t);
-    void (*update)(ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
+    void (*update)(timing_t, ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
     gamestate_enum_t label;
 };
 
@@ -260,11 +261,14 @@ struct drawables_t {
     turret_t turret;
 };
 
-struct ctx_t {
-    chunks_t chunks;
+struct timing_t {
     struct {
         float frame;    // s
     } dt;
+};
+
+struct ctx_t {
+    chunks_t chunks;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
     bool isfullscreen;

@@ -193,7 +193,7 @@ static void fsm_level_finished_draw_keymap_repeat_button(SDL_Renderer * renderer
             SDL_FreeSurface(surf.payload);
 }
 
-void fsm_level_finished_update (ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_level_finished_update (timing_t, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
     if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }

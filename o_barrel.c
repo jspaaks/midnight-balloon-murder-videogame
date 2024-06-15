@@ -77,16 +77,16 @@ static float o_barrel_min(float a, float b) {
     return a < b ? a : b;
 }
 
-void o_barrel_update (ctx_t * ctx, barrel_t * barrel) {
-    int flags = ctx->keys[SDL_SCANCODE_W] |
-                ctx->keys[SDL_SCANCODE_S] << 1;
+void o_barrel_update (timing_t timing, ctx_t ctx, barrel_t * barrel) {
+    int flags = ctx.keys[SDL_SCANCODE_W] |
+                ctx.keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + -1 * barrel->sim2.speed * ctx->dt.frame);
+            barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + -1 * barrel->sim2.speed * timing.dt.frame);
             break;
         }
         case 2: {
-            barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + 1 * barrel->sim2.speed * ctx->dt.frame);
+            barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + 1 * barrel->sim2.speed * timing.dt.frame);
             break;
         }
     }

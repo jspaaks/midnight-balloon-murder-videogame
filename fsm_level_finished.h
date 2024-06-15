@@ -5,6 +5,6 @@
 #include "types.h"
 
 void fsm_level_finished_draw (ctx_t, drawing_t, drawables_t);
-void fsm_level_finished_update (ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
+void fsm_level_finished_update (timing_t, ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
 
 #endif

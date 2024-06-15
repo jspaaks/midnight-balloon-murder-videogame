@@ -27,7 +27,7 @@
 #include "o_turret.h"
 
 static void deinit (ctx_t *, SDL_Window **, drawing_t *, drawables_t *);
-static void init_ctx (ctx_t *);
+static void init_ctx (ctx_t *, timing_t *);
 static void init_sdl (void);
 static void init_drawing (drawing_t *, SDL_Window **);
 static void init_drawables (ctx_t, drawing_t *, drawables_t *);
@@ -50,11 +50,11 @@ static void deinit (ctx_t * ctx, SDL_Window ** window, drawing_t * drawing, draw
     SDL_Quit();
 }
 
-static void init_ctx (ctx_t * ctx) {
+static void init_ctx (ctx_t * ctx, timing_t * timing) {
     keystate_init(ctx);
     chunks_init(ctx);
     levels_init(ctx);
-    ctx->dt.frame = 0.0000000000001;
+    timing->dt.frame = 0.0000000000001;
     ctx->isfullscreen = false;
     ctx->resized = true;
 }
@@ -93,13 +93,14 @@ int main (void) {
     ctx_t ctx;
     drawables_t drawables;
     drawing_t drawing;
+    timing_t timing;
     SDL_Window * window = NULL;
 
     srand(time(NULL));
 
     init_sdl();
     init_drawing(&drawing, &window);
-    init_ctx(&ctx);
+    init_ctx(&ctx, &timing);
     init_drawables(ctx, &drawing, &drawables);
 
     levels_set(&ctx, LEVEL_NOVICE, &drawing, &drawables);
@@ -116,14 +117,14 @@ int main (void) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
         frame->draw(ctx, drawing, drawables);
-        frame->update(&ctx, window, &drawing, &drawables, &gamestate);
+        frame->update(timing, &ctx, window, &drawing, &drawables, &gamestate);
 
         nframes++;
 
         SDL_Delay(1);
         tnow = SDL_GetTicks64();
         if (tnow - tstart > 10) {
-            ctx.dt.frame = ((float) (tnow - tstart)) / nframes / 1000;
+            timing.dt.frame = ((float) (tnow - tstart)) / nframes / 1000;
             nframes = 0;
             tstart = SDL_GetTicks64();
         }

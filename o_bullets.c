@@ -12,7 +12,7 @@
 #include "o_bullets.h"
 #include "o_scene.h"
 
-static void o_bullets_update_pos (ctx_t *, bullet_t **);
+static void o_bullets_update_pos (timing_t, bullet_t **);
 static void o_bullets_update_remove (ctx_t *, bullet_t **);
 static void o_bullets_update_spawn (ctx_t *, barrel_t, bullet_t **);
 static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t **);
@@ -44,7 +44,7 @@ void o_bullets_init (level_t * level, ground_t ground, bullet_t ** bullets, nbul
     nbullets->airborne = 0;
 }
 
-void o_bullets_update (scene_t scene, ground_t ground, ctx_t * ctx, barrel_t barrel, bullet_t ** bullets) {
+void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, barrel_t barrel, bullet_t ** bullets) {
     // mark bullets that are out of frame
     o_bullets_update_test_exited(scene, ground, bullets);
 
@@ -52,7 +52,7 @@ void o_bullets_update (scene_t scene, ground_t ground, ctx_t * ctx, barrel_t bar
     o_bullets_update_remove(ctx, bullets);
 
     // update position
-    o_bullets_update_pos(ctx, bullets);
+    o_bullets_update_pos(timing, bullets);
 
     // if SPACE down, add a bullet to the list
     o_bullets_update_spawn(ctx, barrel, bullets);
@@ -105,13 +105,13 @@ static void o_bullets_update_spawn (ctx_t * ctx, barrel_t barrel, bullet_t ** bu
     }
 }
 
-static void o_bullets_update_pos (ctx_t * ctx, bullet_t ** bullets) {
+static void o_bullets_update_pos (timing_t timing, bullet_t ** bullets) {
     const float gravity = 70; // pixels per second per second
     bullet_t * b = *bullets;
     while (b != NULL) {
-        b->sim2.v += gravity * ctx->dt.frame;
-        b->sim.x += b->sim2.u * ctx->dt.frame;
-        b->sim.y += b->sim2.v * ctx->dt.frame;
+        b->sim2.v += gravity * timing.dt.frame;
+        b->sim.x += b->sim2.u * timing.dt.frame;
+        b->sim.y += b->sim2.v * timing.dt.frame;
         b = b->next;
     }
 }
