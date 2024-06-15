@@ -12,7 +12,7 @@
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
 static void o_collisions_update_pos (timing_t, collision_t **);
 static void o_collisions_update_remove(collision_t **);
-static void o_collisions_update_spawn (ctx_t *, balloon_t **, bullet_t **);
+static void o_collisions_update_spawn (ctx_t *, counters_t *, balloon_t **, bullet_t **);
 static void o_collisions_update_test_exited (scene_t, ground_t, collision_t **);
 
 static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
@@ -56,11 +56,11 @@ void o_collisions_init (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {
+void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, counters_t * counters, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {
     o_collisions_update_test_exited(scene, ground, collisions);
     o_collisions_update_remove(collisions);
     o_collisions_update_pos(timing, collisions);
-    o_collisions_update_spawn(ctx, balloons, bullets);
+    o_collisions_update_spawn(ctx, counters, balloons, bullets);
 }
 
 static void o_collisions_update_pos (timing_t timing, collision_t ** collisions) {
@@ -119,7 +119,7 @@ static void o_collisions_update_remove (collision_t ** collisions) {
     }
 }
 
-static void o_collisions_update_spawn (ctx_t * ctx, balloon_t ** balloons, bullet_t ** bullets) {
+static void o_collisions_update_spawn (ctx_t * ctx, counters_t * counters, balloon_t ** balloons, bullet_t ** bullets) {
     balloon_t * ba = *balloons;
     while (ba != NULL) {
         bullet_t * bu = *bullets;
@@ -127,7 +127,7 @@ static void o_collisions_update_spawn (ctx_t * ctx, balloon_t ** balloons, bulle
             if (o_collisions_colliding(ba, bu)) {
 
                 // increase nbullets
-                ctx->nbullets.prespawn += ba->value;
+                counters->nbullets.prespawn += ba->value;
 
                 // mark bullet and balloon for deletion
                 ba->state = HIT;

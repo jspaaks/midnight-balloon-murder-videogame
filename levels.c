@@ -111,7 +111,7 @@ void levels_init (ctx_t * ctx) {
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
 }
 
-void levels_set (ctx_t * ctx, unsigned int ilevel, drawing_t * drawing, drawables_t * drawables) {
+void levels_set (ctx_t * ctx, counters_t * counters, unsigned int ilevel, drawing_t * drawing, drawables_t * drawables) {
     // --- deinit entities from previous levels
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
@@ -137,12 +137,12 @@ void levels_set (ctx_t * ctx, unsigned int ilevel, drawing_t * drawing, drawable
 
     o_balloons_init(ctx->level,
                     &drawables->balloons,
-                    &ctx->nballoons);
+                    counters);
 
     o_bullets_init(ctx->level,
                    drawables->ground,
                    &drawables->bullets,
-                   &ctx->nbullets);
+                   counters);
 
     o_collisions_init(&drawables->collisions);
 

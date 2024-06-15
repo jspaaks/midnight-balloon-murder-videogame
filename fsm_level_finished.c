@@ -27,7 +27,7 @@ static void fsm_level_finished_draw_keymap_repeat_button(SDL_Renderer *, scene_t
 static bool next_unlocked;
 static bool next_exists;
 
-void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
@@ -55,8 +55,7 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
                   drawing.fonts,
                   drawing.colors,
                   drawables.legend,
-                  ctx.nballoons,
-                  ctx.nbullets);
+                  counters);
 
     o_ground_draw(drawing.renderer,
                   drawing.scene,
@@ -64,6 +63,7 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
                   drawables.ground);
 
     o_keymap_draw_proceedhint(ctx,
+                              counters,
                               drawing.renderer,
                               drawing.scene,
                               drawing.fonts,
@@ -74,7 +74,7 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
                                  drawing.scene,
                                  drawing.fonts,
                                  drawing.colors,
-                                 ctx.nballoons.miss);
+                                 counters);
 
     fsm_level_finished_draw_keymap_proceed(drawing.renderer,
                                            drawing.scene,
@@ -193,8 +193,8 @@ static void fsm_level_finished_draw_keymap_repeat_button(SDL_Renderer * renderer
             SDL_FreeSurface(surf.payload);
 }
 
-void fsm_level_finished_update (timing_t, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
-    if (ctx->nballoons.hit >= ctx->level->nballoons.proceed) {
+void fsm_level_finished_update (timing_t, counters_t * counters, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+    if (counters->nballoons.hit >= ctx->level->nballoons.proceed) {
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }
     next_unlocked = ctx->ilevel + 1 <= ctx->ilevel_unlocked;
@@ -205,11 +205,11 @@ void fsm_level_finished_update (timing_t, ctx_t * ctx, SDL_Window * window, draw
             case SDL_KEYDOWN: {
                 if (next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
                     ctx->ilevel += next_exists ? 1 : 0;
-                    levels_set(ctx, ctx->ilevel, drawing, drawables);
+                    levels_set(ctx, counters, ctx->ilevel, drawing, drawables);
                     SDL_Log("playing -- next level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_r) {
-                    levels_set(ctx, ctx->ilevel, drawing, drawables);
+                    levels_set(ctx, counters, ctx->ilevel, drawing, drawables);
                     SDL_Log("playing -- same level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {

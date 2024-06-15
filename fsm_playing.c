@@ -20,7 +20,7 @@
 #include "o_scene.h"
 #include "o_turret.h"
 
-void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
     o_background_draw(drawing.renderer);
 
@@ -55,8 +55,7 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
                   drawing.fonts,
                   drawing.colors,
                   drawables.legend,
-                  ctx.nballoons,
-                  ctx.nbullets);
+                  counters);
 
     o_balloons_draw(drawing.renderer,
                     drawing.scene,
@@ -85,6 +84,7 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
                         drawables.ground);
 
     o_keymap_draw_proceedhint(ctx,
+                              counters,
                               drawing.renderer,
                               drawing.scene,
                               drawing.fonts,
@@ -94,7 +94,7 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_playing_update (timing_t timing, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_playing_update (timing_t timing, counters_t * counters, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -139,12 +139,13 @@ void fsm_playing_update (timing_t timing, ctx_t * ctx, SDL_Window * window, draw
                       drawing->scene,
                       drawables->ground,
                       &drawables->balloons,
-                      &ctx->nballoons);
+                      counters);
 
     o_bullets_update(timing,
                      drawing->scene,
                      drawables->ground,
                      ctx,
+                     counters,
                      drawables->barrel,
                      &drawables->bullets);
 
@@ -152,16 +153,17 @@ void fsm_playing_update (timing_t timing, ctx_t * ctx, SDL_Window * window, draw
                         drawing->scene,
                         drawables->ground,
                         ctx,
+                        counters,
                         &drawables->balloons,
                         &drawables->bullets,
                         &drawables->collisions);
 
-    bool no_more_balloons = ctx->nballoons.prespawn + ctx->nballoons.airborne == 0;
-    bool no_more_bullets = ctx->nbullets.prespawn + ctx->nbullets.airborne == 0;
+    bool no_more_balloons = counters->nballoons.prespawn + counters->nballoons.airborne == 0;
+    bool no_more_bullets = counters->nbullets.prespawn + counters->nbullets.airborne == 0;
     if (no_more_balloons || no_more_bullets) {
-        ctx->nballoons.miss += ctx->nballoons.prespawn + ctx->nballoons.airborne;
-        ctx->nballoons.prespawn = 0;
-        ctx->nballoons.airborne = 0;
+        counters->nballoons.miss += counters->nballoons.prespawn + counters->nballoons.airborne;
+        counters->nballoons.prespawn = 0;
+        counters->nballoons.airborne = 0;
         SDL_Log("finishing level\n");
         *gamestate = fsm_gamestate_get(GAMESTATE_FINISHING_LEVEL);
     }

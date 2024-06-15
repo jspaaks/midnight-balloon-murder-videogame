@@ -9,9 +9,9 @@
 #include "o_titles.h"
 #include "o_scene.h"
 
-void o_titles_draw_level_finished (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, unsigned int nmiss) {
+void o_titles_draw_level_finished (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, counters_t counters) {
     char title[15];
-    if (nmiss == 0) {
+    if (counters.nballoons.miss == 0) {
         strncpy(title, "PERFECT SCORE!", 15);
     } else {
         strncpy(title, "LEVEL FINISHED", 15);

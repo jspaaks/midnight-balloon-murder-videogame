@@ -30,7 +30,7 @@ static void deinit (ctx_t *, SDL_Window **, drawing_t *, drawables_t *);
 static void init_ctx (ctx_t *, timing_t *);
 static void init_sdl (void);
 static void init_drawing (drawing_t *, SDL_Window **);
-static void init_drawables (ctx_t, drawing_t *, drawables_t *);
+static void init_drawables (ctx_t, drawing_t *, drawables_t *, counters_t *);
 
 static void deinit (ctx_t * ctx, SDL_Window ** window, drawing_t * drawing, drawables_t * drawables) {
     // --- concrete entities
@@ -67,13 +67,13 @@ static void init_sdl (void) {
     }
 }
 
-static void init_drawables (ctx_t ctx, drawing_t * drawing, drawables_t * drawables) {
+static void init_drawables (ctx_t ctx, drawing_t * drawing, drawables_t * drawables, counters_t * counters) {
     o_ground_init(drawing->scene, &drawables->ground);
     o_moon_init(drawing->scene, &drawables->moon);
     o_turret_init(drawing->scene, drawables->ground, &drawables->turret);
     o_barrel_init(drawables->turret, &drawables->barrel);
-    o_balloons_init(ctx.level, &drawables->balloons, &ctx.nballoons);
-    o_bullets_init(ctx.level, drawables->ground, &drawables->bullets, &ctx.nbullets);
+    o_balloons_init(ctx.level, &drawables->balloons, counters);
+    o_bullets_init(ctx.level, drawables->ground, &drawables->bullets, counters);
     o_collisions_init(&drawables->collisions);
     o_flash_init(drawables->barrel, &drawables->flash);
     o_legend_init(&drawables->legend);
@@ -94,6 +94,7 @@ int main (void) {
     drawables_t drawables;
     drawing_t drawing;
     timing_t timing;
+    counters_t counters;
     SDL_Window * window = NULL;
 
     srand(time(NULL));
@@ -101,9 +102,9 @@ int main (void) {
     init_sdl();
     init_drawing(&drawing, &window);
     init_ctx(&ctx, &timing);
-    init_drawables(ctx, &drawing, &drawables);
+    init_drawables(ctx, &drawing, &drawables, &counters);
 
-    levels_set(&ctx, LEVEL_NOVICE, &drawing, &drawables);
+    levels_set(&ctx, &counters, LEVEL_NOVICE, &drawing, &drawables);
 
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
@@ -116,8 +117,8 @@ int main (void) {
     while (true) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
-        frame->draw(ctx, drawing, drawables);
-        frame->update(timing, &ctx, window, &drawing, &drawables, &gamestate);
+        frame->draw(ctx, drawing, drawables, counters);
+        frame->update(timing, &counters, &ctx, window, &drawing, &drawables, &gamestate);
 
         nframes++;
 

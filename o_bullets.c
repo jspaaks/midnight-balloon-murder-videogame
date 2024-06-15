@@ -13,8 +13,8 @@
 #include "o_scene.h"
 
 static void o_bullets_update_pos (timing_t, bullet_t **);
-static void o_bullets_update_remove (ctx_t *, bullet_t **);
-static void o_bullets_update_spawn (ctx_t *, barrel_t, bullet_t **);
+static void o_bullets_update_remove (counters_t *, bullet_t **);
+static void o_bullets_update_spawn (ctx_t *, counters_t *, barrel_t, bullet_t **);
 static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t **);
 
 void o_bullets_deinit (bullet_t ** bullets) {
@@ -36,33 +36,33 @@ void o_bullets_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * sprit
     }
 }
 
-void o_bullets_init (level_t * level, ground_t ground, bullet_t ** bullets, nbullets_t * nbullets) {
+void o_bullets_init (level_t * level, ground_t ground, bullet_t ** bullets, counters_t * counters) {
     assert(level != NULL && "levels needs to be initialized before bullets");
     assert(ground.sim.w != 0 && "ground needs to be initialized before bullets");
     *bullets = NULL;
-    nbullets->prespawn = level->nbullets.prespawn;
-    nbullets->airborne = 0;
+    counters->nbullets.prespawn = level->nbullets.prespawn;
+    counters->nbullets.airborne = 0;
 }
 
-void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, barrel_t barrel, bullet_t ** bullets) {
+void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, counters_t * counters, barrel_t barrel, bullet_t ** bullets) {
     // mark bullets that are out of frame
     o_bullets_update_test_exited(scene, ground, bullets);
 
     // if bullet is marked for deletion, delete it from the list
-    o_bullets_update_remove(ctx, bullets);
+    o_bullets_update_remove(counters, bullets);
 
     // update position
     o_bullets_update_pos(timing, bullets);
 
     // if SPACE down, add a bullet to the list
-    o_bullets_update_spawn(ctx, barrel, bullets);
+    o_bullets_update_spawn(ctx, counters, barrel, bullets);
 }
 
-static void o_bullets_update_spawn (ctx_t * ctx, barrel_t barrel, bullet_t ** bullets) {
+static void o_bullets_update_spawn (ctx_t * ctx, counters_t * counters, barrel_t barrel, bullet_t ** bullets) {
     static const float PI = 3.14159265358979323846f;
     Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
-    bool has_bullets = ctx->nbullets.prespawn > 0;
+    bool has_bullets = counters->nbullets.prespawn > 0;
     bool key_pressed = ctx->keys[SDL_SCANCODE_SPACE];
     bool cooled_off = SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout;
 
@@ -94,8 +94,8 @@ static void o_bullets_update_spawn (ctx_t * ctx, barrel_t barrel, bullet_t ** bu
                 .state = ALIVE,
             };
             *bullets = b;
-            ctx->nbullets.prespawn--;
-            ctx->nbullets.airborne++;
+            counters->nbullets.prespawn--;
+            counters->nbullets.airborne++;
             ctx->tspawn_latestbullet = SDL_GetTicks64();
             Mix_PlayChannel(-1, ctx->chunks.shoot, 0);
         } else {
@@ -116,7 +116,7 @@ static void o_bullets_update_pos (timing_t timing, bullet_t ** bullets) {
     }
 }
 
-void o_bullets_update_remove (ctx_t * ctx, bullet_t ** bullets) {
+void o_bullets_update_remove (counters_t * counters, bullet_t ** bullets) {
     bullet_t * this = *bullets;
     bullet_t * prev = NULL;
     bool isfirst = false;
@@ -136,7 +136,7 @@ void o_bullets_update_remove (ctx_t * ctx, bullet_t ** bullets) {
                 bullet_t * tmp = this;
                 prev->next = this->next;
                 if (this->state == HIT || this->state == EXITED) {
-                    ctx->nbullets.airborne--;
+                    counters->nbullets.airborne--;
                 }
                 this = this->next;
                 free(tmp);
@@ -152,7 +152,7 @@ void o_bullets_update_remove (ctx_t * ctx, bullet_t ** bullets) {
                 // first, remove
                 bullet_t * tmp = this;
                 if (this->state == HIT || this->state == EXITED) {
-                    ctx->nbullets.airborne--;
+                    counters->nbullets.airborne--;
                 }
                 *bullets = this->next;
                 this = this->next;

@@ -23,7 +23,7 @@
 #include "o_turret.h"
 #include "o_titles.h"
 
-void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
+void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
     o_background_draw(drawing.renderer);
 
@@ -58,8 +58,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
                   drawing.fonts,
                   drawing.colors,
                   drawables.legend,
-                  ctx.nballoons,
-                  ctx.nbullets);
+                  counters);
 
     o_balloons_draw(drawing.renderer,
                     drawing.scene,
@@ -96,6 +95,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
                         drawables.ground);
 
     o_keymap_draw_proceedhint(ctx,
+                              counters,
                               drawing.renderer,
                               drawing.scene,
                               drawing.fonts,
@@ -109,6 +109,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
                           drawables.ground);
 
     o_keymap_draw_restart(ctx,
+                          counters,
                           drawing.renderer,
                           drawing.scene,
                           drawing.fonts,
@@ -131,7 +132,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables) {
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_paused_update (timing_t, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_paused_update (timing_t, counters_t * counters, ctx_t * ctx, SDL_Window * window, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -143,9 +144,9 @@ void fsm_paused_update (timing_t, ctx_t * ctx, SDL_Window * window, drawing_t * 
                     SDL_Log("quitting\n");
                     exit(EXIT_SUCCESS);
                 } else if (event.key.keysym.sym == SDLK_r) {
-                    if (ctx->nballoons.prespawn < ctx->level->nballoons.prespawn || ctx->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
+                    if (counters->nballoons.prespawn < ctx->level->nballoons.prespawn || counters->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
                         SDL_Log("restarting level\n");
-                        levels_set(ctx, ctx->ilevel, drawing, drawables);
+                        levels_set(ctx, counters, ctx->ilevel, drawing, drawables);
                         *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                     }
                 } else if (event.key.keysym.sym == SDLK_F11) {

@@ -13,8 +13,8 @@
 
 static float o_balloons_unitrand(void);
 static void o_balloons_update_pos (timing_t, balloon_t *);
-static void o_balloons_update_remove (balloon_t **, nballoons_t *);
-static void o_balloons_update_spawn (timing_t, scene_t, ground_t, balloon_t **, nballoons_t *);
+static void o_balloons_update_remove (balloon_t **, counters_t *);
+static void o_balloons_update_spawn (timing_t, scene_t, ground_t, balloon_t **, counters_t *);
 static void o_balloons_update_spawn_orange (scene_t, ground_t, balloon_t **);
 static void o_balloons_update_spawn_red (scene_t, ground_t, balloon_t **);
 static void o_balloons_update_spawn_yellow (scene_t, ground_t, balloon_t **);
@@ -39,51 +39,51 @@ void o_balloons_draw (SDL_Renderer * renderer, scene_t scene, SDL_Texture * spri
     }
 }
 
-void o_balloons_init (level_t * level, balloon_t ** balloons, nballoons_t * nballoons) {
+void o_balloons_init (level_t * level, balloon_t ** balloons, counters_t * counters) {
     assert(level != NULL && "levels needs to be initialized before balloons");
     *balloons = NULL;
-    nballoons->airborne = 0;
-    nballoons->hit = 0;
-    nballoons->miss = 0;
-    nballoons->orange = level->nballoons.orange;
-    nballoons->prespawn = level->nballoons.prespawn;
-    nballoons->red = level->nballoons.red;
-    nballoons->yellow = level->nballoons.yellow;
+    counters->nballoons.airborne = 0;
+    counters->nballoons.hit = 0;
+    counters->nballoons.miss = 0;
+    counters->nballoons.orange = level->nballoons.orange;
+    counters->nballoons.prespawn = level->nballoons.prespawn;
+    counters->nballoons.red = level->nballoons.red;
+    counters->nballoons.yellow = level->nballoons.yellow;
 }
 
 static float o_balloons_unitrand(void) {
     return (float)(rand()) / (float)(RAND_MAX);
 }
 
-void o_balloons_update (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
+void o_balloons_update (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, counters_t * counters) {
     o_balloons_update_test_exited(scene, ground, *balloons);
-    o_balloons_update_remove(balloons, nballoons);
+    o_balloons_update_remove(balloons, counters);
     o_balloons_update_pos(timing, *balloons);
-    o_balloons_update_spawn(timing, scene, ground, balloons, nballoons);
+    o_balloons_update_spawn(timing, scene, ground, balloons, counters);
 }
 
-static void o_balloons_update_spawn (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, nballoons_t * nballoons) {
+static void o_balloons_update_spawn (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, counters_t * counters) {
     static const float spawn_rate = 0.35; // balloons per second
-    float spawn_chance = nballoons->airborne == 0 ? 1 : spawn_rate * timing.dt.frame;
-    if (nballoons->prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
+    float spawn_chance = counters->nballoons.airborne == 0 ? 1 : spawn_rate * timing.dt.frame;
+    if (counters->nballoons.prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
         return;
     }
-    unsigned int remaining = nballoons->yellow + nballoons->orange + nballoons->red;
-    float y = (float)(nballoons->yellow) / remaining;
-    float o = (float)(nballoons->orange) / remaining;
+    unsigned int remaining = counters->nballoons.yellow + counters->nballoons.orange + counters->nballoons.red;
+    float y = (float)(counters->nballoons.yellow) / remaining;
+    float o = (float)(counters->nballoons.orange) / remaining;
     float u = o_balloons_unitrand();
     if (u < y) {
         o_balloons_update_spawn_yellow(scene, ground, balloons);
-        nballoons->yellow--;
+        counters->nballoons.yellow--;
     } else if (u < (y + o)) {
         o_balloons_update_spawn_orange(scene, ground, balloons);
-        nballoons->orange--;
+        counters->nballoons.orange--;
     } else {
         o_balloons_update_spawn_red(scene, ground, balloons);
-        nballoons->red--;
+        counters->nballoons.red--;
     }
-    nballoons->airborne++;
-    nballoons->prespawn--;
+    counters->nballoons.airborne++;
+    counters->nballoons.prespawn--;
 }
 
 static void o_balloons_update_spawn_orange (scene_t scene, ground_t ground, balloon_t ** balloons) {
@@ -185,7 +185,7 @@ static void o_balloons_update_pos (timing_t timing, balloon_t * balloons) {
     }
 }
 
-static void o_balloons_update_remove (balloon_t ** balloons, nballoons_t * nballoons) {
+static void o_balloons_update_remove (balloon_t ** balloons, counters_t * counters) {
     balloon_t * this = *balloons;
     balloon_t * prev = NULL;
     bool isfirst = false;
@@ -205,12 +205,12 @@ static void o_balloons_update_remove (balloon_t ** balloons, nballoons_t * nball
                 balloon_t * tmp = this;
                 prev->next = this->next;
                 if (this->state == EXITED) {
-                    nballoons->miss++;
-                    nballoons->airborne--;
+                    counters->nballoons.miss++;
+                    counters->nballoons.airborne--;
                 }
                 if (this->state == HIT) {
-                    nballoons->hit++;
-                    nballoons->airborne--;
+                    counters->nballoons.hit++;
+                    counters->nballoons.airborne--;
                 }
                 this = this->next;
                 free(tmp);
@@ -227,12 +227,12 @@ static void o_balloons_update_remove (balloon_t ** balloons, nballoons_t * nball
                 balloon_t * tmp = this;
                 *balloons = this->next;
                 if (this->state == EXITED) {
-                    nballoons->miss++;
-                    nballoons->airborne--;
+                    counters->nballoons.miss++;
+                    counters->nballoons.airborne--;
                 }
                 if (this->state == HIT) {
-                    nballoons->hit++;
-                    nballoons->airborne--;
+                    counters->nballoons.hit++;
+                    counters->nballoons.airborne--;
                 }
                 this = this->next;
                 free(tmp);

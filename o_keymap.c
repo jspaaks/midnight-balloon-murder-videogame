@@ -46,15 +46,15 @@ void o_keymap_draw_pause (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_proceedhint (ctx_t ctx, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, ground_t ground) {
+void o_keymap_draw_proceedhint (ctx_t ctx, counters_t counters, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, ground_t ground) {
     SDL_Color color = colors.middlegray;
     char str[100];
     if (ctx.ilevel == ctx.nlevels - 1) {
         sprintf(str, "FINAL LEVEL");
-    } else if (ctx.nballoons.miss > ctx.level->nballoons.prespawn - ctx.level->nballoons.proceed) {
+    } else if (counters.nballoons.miss > ctx.level->nballoons.prespawn - ctx.level->nballoons.proceed) {
         sprintf(str, "NOT ENOUGH HITS TO PROCEED TO NEXT LEVEL");
         color = colors.lightgray;
-    } else if (ctx.nballoons.hit >= ctx.level->nballoons.proceed) {
+    } else if (counters.nballoons.hit >= ctx.level->nballoons.proceed) {
         sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!");
         color = colors.lightgray;
     } else {
@@ -94,8 +94,9 @@ void o_keymap_draw_quit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts, 
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_restart (ctx_t ctx, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, turret_t turret, ground_t ground) {
-    if (ctx.nballoons.prespawn == ctx.level->nballoons.prespawn && ctx.nbullets.prespawn == ctx.level->nbullets.prespawn) {
+void o_keymap_draw_restart (ctx_t ctx, counters_t counters, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, turret_t turret, ground_t ground) {
+    if (counters.nballoons.prespawn == ctx.level->nballoons.prespawn &&
+        counters.nbullets.prespawn == ctx.level->nbullets.prespawn) {
         // we're effectively at the start of the level already
         return;
     }
