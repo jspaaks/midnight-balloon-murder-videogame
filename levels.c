@@ -14,6 +14,7 @@
 
 static level_t levels[] = {
     {
+        .label = LEVEL_NOVICE,
         .name = "novice",
         .nballoons = {
             .orange = 3,
@@ -27,6 +28,7 @@ static level_t levels[] = {
         },
     },
     {
+        .label = LEVEL_PRIVATE,
         .name = "private",
         .nballoons = {
             .orange = 6,
@@ -40,6 +42,7 @@ static level_t levels[] = {
         },
     },
     {
+        .label = LEVEL_GUNNY,
         .name = "gunny",
         .nballoons = {
             .orange = 12,
@@ -53,6 +56,7 @@ static level_t levels[] = {
         },
     },
     {
+        .label = LEVEL_SHARPSHOOTER,
         .name = "sharpshooter",
         .nballoons = {
             .orange = 21,
@@ -66,6 +70,7 @@ static level_t levels[] = {
         },
     },
     {
+        .label = LEVEL_ASSASSIN,
         .name = "assassin",
         .nballoons = {
             .orange = 30,
@@ -79,6 +84,7 @@ static level_t levels[] = {
         },
     },
     {
+        .label = LEVEL_BERSERKER,
         .name = "berserker",
         .nballoons = {
             .orange = 300,

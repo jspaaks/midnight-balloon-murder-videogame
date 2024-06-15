@@ -102,7 +102,7 @@ int main (void) {
     init_ctx(&ctx);
     init_drawables(ctx, &drawing, &drawables);
 
-    levels_set(&ctx, 0, &drawing, &drawables);
+    levels_set(&ctx, LEVEL_NOVICE, &drawing, &drawables);
 
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;

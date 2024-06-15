@@ -20,7 +20,16 @@ typedef enum {
     GAMESTATE_PLAYING,
     GAMESTATE_PAUSING,
     GAMESTATE_FINISHING_LEVEL,
-} gamestate_name_t;
+} gamestate_enum_t;
+
+typedef enum {
+    LEVEL_NOVICE = 0,
+    LEVEL_PRIVATE,
+    LEVEL_GUNNY,
+    LEVEL_SHARPSHOOTER,
+    LEVEL_ASSASSIN,
+    LEVEL_BERSERKER,
+} level_enum_t;
 
 typedef struct balloon_t balloon_t;
 typedef struct barrel_t barrel_t;
@@ -135,7 +144,7 @@ struct fonts_t {
 struct gamestate_t {
     void (*draw)(ctx_t, drawing_t, drawables_t);
     void (*update)(ctx_t *, SDL_Window *, drawing_t *, drawables_t *, gamestate_t **);
-    gamestate_name_t label;
+    gamestate_enum_t label;
 };
 
 struct ground_t {
@@ -154,6 +163,7 @@ struct legend_t {
 };
 
 struct level_t {
+    level_enum_t label;
     char name[20];
     struct {
         unsigned int orange;
