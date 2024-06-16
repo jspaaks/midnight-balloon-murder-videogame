@@ -2,7 +2,7 @@
 #define CHUNKS_H
 #include "types.h"
 
-void chunks_deinit(ctx_t *);
-void chunks_init(ctx_t *);
+void chunks_deinit(chunks_t *);
+chunks_t chunks_init(void);
 
 #endif

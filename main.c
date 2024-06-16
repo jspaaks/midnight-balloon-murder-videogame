@@ -31,10 +31,10 @@
 #include "o_moon.h"
 #include "o_turret.h"
 
-static void deinit (ctx_t *, drawing_t *, drawables_t *);
+static void deinit (ctx_t *, chunks_t *, drawing_t *, drawables_t *);
 static void sdl_init (void);
 
-static void deinit (ctx_t * ctx, drawing_t * drawing, drawables_t * drawables) {
+static void deinit (ctx_t * ctx, chunks_t * chunks, drawing_t * drawing, drawables_t * drawables) {
     // --- concrete entities
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
@@ -42,7 +42,7 @@ static void deinit (ctx_t * ctx, drawing_t * drawing, drawables_t * drawables) {
     // --- abstract entities
     levels_deinit(ctx);
     fonts_deinit(&drawing->fonts);
-    chunks_deinit(ctx);
+    chunks_deinit(chunks);
     keystate_deinit(ctx);
     // --- sdl infrastructure
     renderer_deinit(&drawing->renderer);
@@ -72,6 +72,7 @@ int main (void) {
     drawing_t drawing = drawing_init();
     drawables_t drawables = drawables_init(drawing.scene);
     timing_t timing = timing_init();
+    chunks_t chunks = chunks_init();
 
     levels_set(drawing.scene, LEVEL_NOVICE, &ctx, &counters, &drawables);
 
@@ -87,7 +88,7 @@ int main (void) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
         frame->draw(ctx, drawing, drawables, counters);
-        frame->update(timing, &counters, &ctx, &drawing, &drawables, &gamestate);
+        frame->update(timing, chunks, &counters, &ctx, &drawing, &drawables, &gamestate);
 
         nframes++;
 
@@ -99,6 +100,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    deinit(&ctx, &drawing, &drawables);
+    deinit(&ctx, &chunks, &drawing, &drawables);
     return EXIT_SUCCESS;
 }

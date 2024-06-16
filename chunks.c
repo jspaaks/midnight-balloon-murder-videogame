@@ -2,23 +2,23 @@
 #include "SDL_mixer.h"
 #include "chunks.h"
 
-void chunks_deinit(ctx_t * ctx) {
+void chunks_deinit(chunks_t * chunks) {
 
     // clean up chunks
-    Mix_FreeChunk(ctx->chunks.shoot);
-    ctx->chunks.shoot = NULL;
+    Mix_FreeChunk(chunks->shoot);
+    chunks->shoot = NULL;
 
-    Mix_FreeChunk(ctx->chunks.pop);
-    ctx->chunks.pop = NULL;
+    Mix_FreeChunk(chunks->pop);
+    chunks->pop = NULL;
 
-    Mix_FreeChunk(ctx->chunks.hit.red);
-    ctx->chunks.hit.red = NULL;
+    Mix_FreeChunk(chunks->hit.red);
+    chunks->hit.red = NULL;
 
-    Mix_FreeChunk(ctx->chunks.hit.orange);
-    ctx->chunks.hit.orange = NULL;
+    Mix_FreeChunk(chunks->hit.orange);
+    chunks->hit.orange = NULL;
 
-    Mix_FreeChunk(ctx->chunks.hit.yellow);
-    ctx->chunks.hit.yellow = NULL;
+    Mix_FreeChunk(chunks->hit.yellow);
+    chunks->hit.yellow = NULL;
 
     // clean up audio device resource
     Mix_CloseAudio();
@@ -27,7 +27,7 @@ void chunks_deinit(ctx_t * ctx) {
     Mix_Quit();
 }
 
-void chunks_init(ctx_t * ctx) {
+chunks_t chunks_init(void) {
 
     // --- initialize the audio module
 
@@ -58,47 +58,50 @@ void chunks_init(ctx_t * ctx) {
 
     // --- load music data
 
+    chunks_t chunks;
     char * filename = NULL;
 
     filename = "chunks/empty.wav";
-    ctx->chunks.empty = Mix_LoadWAV(filename);
-    if (ctx->chunks.empty == NULL) {
+    chunks.empty = Mix_LoadWAV(filename);
+    if (chunks.empty == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
 
     filename = "chunks/hit-red.wav";
-    ctx->chunks.hit.red = Mix_LoadWAV(filename);
-    if (ctx->chunks.hit.red == NULL) {
+    chunks.hit.red = Mix_LoadWAV(filename);
+    if (chunks.hit.red == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
 
     filename = "chunks/hit-orange.wav";
-    ctx->chunks.hit.orange = Mix_LoadWAV(filename);
-    if (ctx->chunks.hit.orange == NULL) {
+    chunks.hit.orange = Mix_LoadWAV(filename);
+    if (chunks.hit.orange == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
 
     filename = "chunks/hit-yellow.wav";
-    ctx->chunks.hit.yellow = Mix_LoadWAV(filename);
-    if (ctx->chunks.hit.yellow == NULL) {
+    chunks.hit.yellow = Mix_LoadWAV(filename);
+    if (chunks.hit.yellow == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
 
     filename = "chunks/pop.wav";
-    ctx->chunks.pop = Mix_LoadWAV(filename);
-    if (ctx->chunks.pop == NULL) {
+    chunks.pop = Mix_LoadWAV(filename);
+    if (chunks.pop == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
 
     filename = "chunks/shot.wav";
-    ctx->chunks.shoot = Mix_LoadWAV(filename);
-    if (ctx->chunks.shoot == NULL) {
+    chunks.shoot = Mix_LoadWAV(filename);
+    if (chunks.shoot == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
         exit(EXIT_FAILURE);
     }
+
+    return chunks;
 }

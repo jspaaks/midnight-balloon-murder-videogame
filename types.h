@@ -162,7 +162,7 @@ struct fonts_t {
 
 struct gamestate_t {
     void (*draw)(ctx_t, drawing_t, drawables_t, counters_t);
-    void (*update)(timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
+    void (*update)(timing_t, chunks_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
     gamestate_enum_t label;
 };
 
@@ -241,7 +241,6 @@ struct timing_t {
 };
 
 struct ctx_t {
-    chunks_t chunks;
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
     bool isfullscreen;

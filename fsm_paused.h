@@ -5,6 +5,6 @@
 #include "types.h"
 
 void fsm_paused_draw (ctx_t, drawing_t, drawables_t, counters_t);
-void fsm_paused_update (timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
+void fsm_paused_update (timing_t, chunks_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
 
 #endif
