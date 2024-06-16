@@ -201,11 +201,11 @@ void fsm_level_finished_update (timing_t, counters_t * counters, ctx_t * ctx, dr
             case SDL_KEYDOWN: {
                 if (next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
                     ctx->ilevel += next_exists ? 1 : 0;
-                    levels_set(drawing->scene, ctx, counters, ctx->ilevel, drawables);
+                    levels_set(drawing->scene, ctx->ilevel, ctx, counters, drawables);
                     SDL_Log("playing -- next level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_r) {
-                    levels_set(drawing->scene, ctx, counters, ctx->ilevel, drawables);
+                    levels_set(drawing->scene, ctx->ilevel, ctx, counters, drawables);
                     SDL_Log("playing -- same level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {

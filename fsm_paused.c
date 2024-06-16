@@ -142,7 +142,7 @@ void fsm_paused_update (timing_t, counters_t * counters, ctx_t * ctx, drawing_t 
                 } else if (event.key.keysym.sym == SDLK_r) {
                     if (counters->nballoons.prespawn < ctx->level->nballoons.prespawn || counters->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
                         SDL_Log("restarting level\n");
-                        levels_set(drawing->scene, ctx, counters, ctx->ilevel, drawables);
+                        levels_set(drawing->scene, ctx->ilevel, ctx, counters, drawables);
                         *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                     }
                 } else if (event.key.keysym.sym == SDLK_F11) {

@@ -4,6 +4,6 @@
 
 void levels_deinit(ctx_t *);
 void levels_init(ctx_t *);
-void levels_set (scene_t, ctx_t *, counters_t *, unsigned int, drawables_t *);
+void levels_set (scene_t, unsigned int, ctx_t *, counters_t *, drawables_t *);
 
 #endif

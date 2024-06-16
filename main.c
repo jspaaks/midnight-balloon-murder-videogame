@@ -73,7 +73,7 @@ int main (void) {
     drawables_t drawables = drawables_init(drawing.scene);
     timing_t timing = timing_init();
 
-    levels_set(drawing.scene, &ctx, &counters, LEVEL_NOVICE, &drawables);
+    levels_set(drawing.scene, LEVEL_NOVICE, &ctx, &counters, &drawables);
 
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
