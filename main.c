@@ -8,12 +8,10 @@
 #include "chunks.h"
 #include "colors.h"
 #include "counters.h"
-#include "ctx.h"
 #include "drawables.h"
 #include "drawing.h"
 #include "fonts.h"
 #include "fsm.h"
-#include "keystate.h"
 #include "levels.h"
 #include "renderer.h"
 #include "scene.h"
@@ -31,10 +29,10 @@
 #include "o_moon.h"
 #include "o_turret.h"
 
-static void deinit (ctx_t *, chunks_t *, drawing_t *, drawables_t *);
+static void deinit (chunks_t *, drawing_t *, drawables_t *);
 static void sdl_init (void);
 
-static void deinit (ctx_t * ctx, chunks_t * chunks, drawing_t * drawing, drawables_t * drawables) {
+static void deinit (chunks_t * chunks, drawing_t * drawing, drawables_t * drawables) {
     // --- concrete entities
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
@@ -42,7 +40,6 @@ static void deinit (ctx_t * ctx, chunks_t * chunks, drawing_t * drawing, drawabl
     // --- abstract entities
     fonts_deinit(&drawing->fonts);
     chunks_deinit(chunks);
-    keystate_deinit(ctx);
     // --- sdl infrastructure
     renderer_deinit(&drawing->renderer);
     window_deinit(&drawing->window);
@@ -66,7 +63,6 @@ int main (void) {
     srand(time(NULL));
 
     sdl_init();
-    ctx_t ctx = ctx_init();
     level_t level = levels_get_level(LEVEL_NOVICE);
     counters_t counters = counters_init(level);
     drawing_t drawing = drawing_init();
@@ -88,7 +84,7 @@ int main (void) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
         frame->draw(level, drawing, drawables, counters);
-        frame->update(timing, chunks, &counters, &ctx, &drawing, &drawables, &gamestate, &level);
+        frame->update(timing, chunks, &counters, &drawing, &drawables, &gamestate, &level);
 
         nframes++;
 
@@ -100,6 +96,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    deinit(&ctx, &chunks, &drawing, &drawables);
+    deinit(&chunks, &drawing, &drawables);
     return EXIT_SUCCESS;
 }

@@ -90,7 +90,7 @@ void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables, 
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t *) {
+void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t *) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -124,7 +124,6 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
     scene_update(drawing->renderer, &drawing->scene);
 
     o_barrel_update(timing,
-                    *ctx,
                     &drawables->barrel);
 
     o_balloons_update(timing,
@@ -137,7 +136,6 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
                      drawing->scene,
                      drawables->ground,
                      chunks,
-                     *ctx,
                      counters,
                      &drawables->barrel,
                      &drawables->flash,

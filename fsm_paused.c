@@ -128,7 +128,7 @@ void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables, c
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_paused_update (timing_t, chunks_t, counters_t * counters, ctx_t *, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
+void fsm_paused_update (timing_t, chunks_t, counters_t * counters, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {

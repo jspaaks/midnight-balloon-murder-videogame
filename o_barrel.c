@@ -79,9 +79,10 @@ static float o_barrel_min(float a, float b) {
     return a < b ? a : b;
 }
 
-void o_barrel_update (timing_t timing, ctx_t ctx, barrel_t * barrel) {
-    int flags = ctx.keys[SDL_SCANCODE_W] |
-                ctx.keys[SDL_SCANCODE_S] << 1;
+void o_barrel_update (timing_t timing, barrel_t * barrel) {
+    const Uint8 * keys = SDL_GetKeyboardState(NULL);
+    int flags = keys[SDL_SCANCODE_W] |
+                keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
             barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + -1 * barrel->sim2.speed * timing.dt.frame);

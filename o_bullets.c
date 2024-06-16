@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
+#include "SDL_keyboard.h"
 #include "SDL_mixer.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
@@ -14,7 +15,7 @@
 
 static void o_bullets_update_pos (timing_t, bullet_t **);
 static void o_bullets_update_remove (counters_t *, bullet_t **);
-static void o_bullets_update_spawn (ctx_t, chunks_t, counters_t *, barrel_t *, flash_t *, bullet_t **);
+static void o_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, flash_t *, bullet_t **);
 static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t **);
 
 void o_bullets_deinit (bullet_t ** bullets) {
@@ -40,7 +41,7 @@ bullet_t * o_bullets_init (void) {
     return NULL;
 }
 
-void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks, ctx_t ctx, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
+void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
     // mark bullets that are out of frame
     o_bullets_update_test_exited(scene, ground, bullets);
 
@@ -51,14 +52,15 @@ void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, chunks_t
     o_bullets_update_pos(timing, bullets);
 
     // if SPACE down, add a bullet to the list
-    o_bullets_update_spawn(ctx, chunks, counters, barrel, flash, bullets);
+    o_bullets_update_spawn(chunks, counters, barrel, flash, bullets);
 }
 
-static void o_bullets_update_spawn (ctx_t ctx, chunks_t chunks, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
+static void o_bullets_update_spawn (chunks_t chunks, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
     static const float PI = 3.14159265358979323846f;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
+    const Uint8 * keys = SDL_GetKeyboardState(NULL);
     bool has_bullets = counters->nbullets.prespawn > 0;
-    bool key_pressed = ctx.keys[SDL_SCANCODE_SPACE];
+    bool key_pressed = keys[SDL_SCANCODE_SPACE];
     bool cooled_down = barrel->countdown_remaining <= 0;
 
     if (key_pressed && cooled_down) {

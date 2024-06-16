@@ -38,7 +38,6 @@ typedef struct chunks_t chunks_t;
 typedef struct collision_t collision_t;
 typedef struct colors_t colors_t;
 typedef struct counters_t counters_t;
-typedef struct ctx_t ctx_t;
 typedef struct drawables_t drawables_t;
 typedef struct drawing_t drawing_t;
 typedef struct flash_t flash_t;
@@ -162,7 +161,7 @@ struct fonts_t {
 
 struct gamestate_t {
     void (*draw)(level_t, drawing_t, drawables_t, counters_t);
-    void (*update)(timing_t, chunks_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **, level_t *);
+    void (*update)(timing_t, chunks_t, counters_t *, drawing_t *, drawables_t *, gamestate_t **, level_t *);
     gamestate_enum_t label;
 };
 
@@ -242,10 +241,6 @@ struct timing_t {
     struct {
         float frame;    // s
     } dt;
-};
-
-struct ctx_t {
-    const Uint8 * keys;
 };
 
 #endif

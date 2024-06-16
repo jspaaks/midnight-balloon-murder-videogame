@@ -45,7 +45,7 @@ void fsm_start_draw (level_t, drawing_t drawing, drawables_t drawables, counters
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (timing_t, chunks_t, counters_t *, ctx_t *, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate, level_t *) {
+void fsm_start_update (timing_t, chunks_t, counters_t *, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate, level_t *) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
