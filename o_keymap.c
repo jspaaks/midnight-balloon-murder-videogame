@@ -46,19 +46,19 @@ void o_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_t color
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_proceedhint (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground, counters_t counters) {
+void o_keymap_draw_proceedhint (level_t level, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground, counters_t counters) {
     SDL_Color color = colors.middlegray;
+
     char str[100];
-    if (ctx.level->label == LEVEL_BERSERKER) {
+    if (level.label == LEVEL_BERSERKER) {
         sprintf(str, "FINAL LEVEL");
-    } else if (counters.nballoons.miss > ctx.level->nballoons.prespawn - ctx.level->nballoons.proceed) {
+    } else if (counters.nballoons.miss > level.nballoons.prespawn - level.nballoons.proceed) {
         sprintf(str, "NOT ENOUGH HITS TO PROCEED TO NEXT LEVEL");
-        color = colors.lightgray;
-    } else if (counters.nballoons.hit >= ctx.level->nballoons.proceed) {
-        sprintf(str, "PLAYER PROCEEDS TO NEXT LEVEL!");
+    } else if (level.next_unlocked || counters.nballoons.hit >= level.nballoons.proceed) {
+        sprintf(str, "NEXT LEVEL UNLOCKED");
         color = colors.lightgray;
     } else {
-        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", ctx.level->nballoons.proceed);
+        sprintf(str, "NEED %d HITS TO PROCEED TO NEXT LEVEL", level.nballoons.proceed);
     }
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, str, color, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -94,9 +94,9 @@ void o_keymap_draw_quit (SDL_Renderer * renderer, fonts_t fonts, colors_t colors
     SDL_FreeSurface(surf.payload);
 }
 
-void o_keymap_draw_restart (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground, counters_t counters) {
-    if (counters.nballoons.prespawn == ctx.level->nballoons.prespawn &&
-        counters.nbullets.prespawn == ctx.level->nbullets.prespawn) {
+void o_keymap_draw_restart (level_t level, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground, counters_t counters) {
+    if (counters.nballoons.prespawn == level.nballoons.prespawn &&
+        counters.nbullets.prespawn == level.nbullets.prespawn) {
         // we're effectively at the start of the level already
         return;
     }

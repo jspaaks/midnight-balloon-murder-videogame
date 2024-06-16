@@ -2,8 +2,7 @@
 #define LEVELS_H
 #include "types.h"
 
-void levels_deinit(ctx_t *);
-void levels_init(ctx_t *);
-void levels_set (scene_t, unsigned int, ctx_t *, counters_t *, drawables_t *);
+level_t levels_get_level (level_enum_t);
+void levels_reset_level (level_t, drawing_t, drawables_t *, counters_t *);
 
 #endif

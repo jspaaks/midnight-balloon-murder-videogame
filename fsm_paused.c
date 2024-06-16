@@ -23,7 +23,7 @@
 #include "o_titles.h"
 #include "o_turret.h"
 
-void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
+void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
     o_background_draw(drawing.renderer, drawing.colors, drawing.scene);
 
@@ -48,7 +48,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
                   drawables.barrel,
                   drawables.flash);
 
-    o_legend_draw(ctx,
+    o_legend_draw(level,
                   drawing.renderer,
                   drawing.fonts,
                   drawing.colors,
@@ -90,7 +90,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
                         drawables.turret,
                         drawables.ground);
 
-    o_keymap_draw_proceedhint(ctx,
+    o_keymap_draw_proceedhint(level,
                               drawing.renderer,
                               drawing.fonts,
                               drawing.colors,
@@ -104,7 +104,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
                           drawing.scene,
                           drawables.ground);
 
-    o_keymap_draw_restart(ctx,
+    o_keymap_draw_restart(level,
                           drawing.renderer,
                           drawing.fonts,
                           drawing.colors,
@@ -128,7 +128,7 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_paused_update (timing_t, chunks_t, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_paused_update (timing_t, chunks_t, counters_t * counters, ctx_t *, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -140,9 +140,9 @@ void fsm_paused_update (timing_t, chunks_t, counters_t * counters, ctx_t * ctx, 
                     SDL_Log("quitting\n");
                     exit(EXIT_SUCCESS);
                 } else if (event.key.keysym.sym == SDLK_r) {
-                    if (counters->nballoons.prespawn < ctx->level->nballoons.prespawn || counters->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
+                    if (counters->nballoons.prespawn < level->nballoons.prespawn || counters->nbullets.prespawn < level->nbullets.prespawn ) {
                         SDL_Log("restarting level\n");
-                        levels_set(drawing->scene, ctx->ilevel, ctx, counters, drawables);
+                        levels_reset_level(*level, *drawing, drawables, counters);
                         *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                     }
                 } else if (event.key.keysym.sym == SDLK_F11) {

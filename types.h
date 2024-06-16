@@ -161,8 +161,8 @@ struct fonts_t {
 };
 
 struct gamestate_t {
-    void (*draw)(ctx_t, drawing_t, drawables_t, counters_t);
-    void (*update)(timing_t, chunks_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
+    void (*draw)(level_t, drawing_t, drawables_t, counters_t);
+    void (*update)(timing_t, chunks_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **, level_t *);
     gamestate_enum_t label;
 };
 
@@ -183,6 +183,7 @@ struct legend_t {
 
 struct level_t {
     level_enum_t label;
+    level_enum_t label_next;
     char name[20];
     struct {
         unsigned int orange;
@@ -194,6 +195,7 @@ struct level_t {
     struct {
         unsigned int prespawn;
     } nbullets;
+    bool next_unlocked;
 };
 
 struct moon_t {
@@ -243,11 +245,7 @@ struct timing_t {
 };
 
 struct ctx_t {
-    unsigned int ilevel;
-    unsigned int ilevel_unlocked;
     const Uint8 * keys;
-    level_t * level;
-    level_t * levels;
 };
 
 #endif

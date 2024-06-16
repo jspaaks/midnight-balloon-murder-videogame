@@ -8,6 +8,5 @@
 ctx_t ctx_init (void) {
     ctx_t ctx;
     keystate_init(&ctx);
-    levels_init(&ctx);
     return ctx;
 }

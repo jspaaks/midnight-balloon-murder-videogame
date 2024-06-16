@@ -20,14 +20,11 @@
 #include "o_titles.h"
 #include "o_turret.h"
 
-static void fsm_level_finished_draw_keymap_proceed(SDL_Renderer *, colors_t, fonts_t, scene_t);
+static void fsm_level_finished_draw_keymap_proceed(SDL_Renderer *, colors_t, fonts_t, scene_t, level_t);
 static void fsm_level_finished_draw_keymap_repeat_action(SDL_Renderer *, fonts_t, colors_t, scene_t);
 static void fsm_level_finished_draw_keymap_repeat_button(SDL_Renderer *, fonts_t, colors_t, scene_t);
 
-static bool next_unlocked;
-static bool next_exists;
-
-void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
+void fsm_level_finished_draw (level_t level, drawing_t drawing, drawables_t drawables, counters_t counters) {
     o_background_draw(drawing.renderer, drawing.colors, drawing.scene);
 
     o_moon_draw(drawing.renderer,
@@ -45,7 +42,7 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
                   drawing.scene,
                   drawables.turret);
 
-    o_legend_draw(ctx,
+    o_legend_draw(level,
                   drawing.renderer,
                   drawing.fonts,
                   drawing.colors,
@@ -58,7 +55,7 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
                   drawing.scene,
                   drawables.ground);
 
-    o_keymap_draw_proceedhint(ctx,
+    o_keymap_draw_proceedhint(level,
                               drawing.renderer,
                               drawing.fonts,
                               drawing.colors,
@@ -75,7 +72,8 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
     fsm_level_finished_draw_keymap_proceed(drawing.renderer,
                                            drawing.colors,
                                            drawing.fonts,
-                                           drawing.scene);
+                                           drawing.scene,
+                                           level);
 
     fsm_level_finished_draw_keymap_repeat_button(drawing.renderer,
                                                  drawing.fonts,
@@ -90,9 +88,10 @@ void fsm_level_finished_draw (ctx_t ctx, drawing_t drawing, drawables_t drawable
     SDL_RenderPresent(drawing.renderer);
 }
 
-static void fsm_level_finished_draw_keymap_proceed(SDL_Renderer * renderer, colors_t colors, fonts_t fonts, scene_t scene) {
+static void fsm_level_finished_draw_keymap_proceed(SDL_Renderer * renderer, colors_t colors, fonts_t fonts, scene_t scene, level_t level) {
     SDL_Color color;
-    int c = next_exists << 1 | next_unlocked;
+    bool next_exists = level.label < LEVEL_BERSERKER;
+    int c = next_exists << 1 | level.next_unlocked;
     switch (c) {
         case 0: {
             // next level doesnt exist, dont show anything
@@ -189,23 +188,19 @@ static void fsm_level_finished_draw_keymap_repeat_button(SDL_Renderer * renderer
             SDL_FreeSurface(surf.payload);
 }
 
-void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
-    if (counters->nballoons.hit >= ctx->level->nballoons.proceed) {
-        ctx->ilevel_unlocked = ctx->ilevel +  1;
-    }
-    next_unlocked = ctx->ilevel + 1 <= ctx->ilevel_unlocked;
-    next_exists = ctx->level->label < LEVEL_BERSERKER;
+void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters, ctx_t *, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
+    level->next_unlocked = level->next_unlocked || counters->nballoons.hit >= level->nballoons.proceed;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_KEYDOWN: {
-                if (next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
-                    ctx->ilevel += next_exists ? 1 : 0;
-                    levels_set(drawing->scene, ctx->ilevel, ctx, counters, drawables);
+                if (level->next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
+                    *level = levels_get_level(level->label_next);
+                    levels_reset_level(*level, *drawing, drawables, counters);
                     SDL_Log("playing -- next level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_r) {
-                    levels_set(drawing->scene, ctx->ilevel, ctx, counters, drawables);
+                    levels_reset_level(*level, *drawing, drawables, counters);
                     SDL_Log("playing -- same level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {

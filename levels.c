@@ -16,6 +16,7 @@
 static level_t levels[] = {
     {
         .label = LEVEL_NOVICE,
+        .label_next = LEVEL_PRIVATE,
         .name = "novice",
         .nballoons = {
             .orange = 3,
@@ -27,9 +28,11 @@ static level_t levels[] = {
         .nbullets = {
             .prespawn = 100,
         },
+        .next_unlocked = false,
     },
     {
         .label = LEVEL_PRIVATE,
+        .label_next = LEVEL_GUNNY,
         .name = "private",
         .nballoons = {
             .orange = 6,
@@ -41,9 +44,11 @@ static level_t levels[] = {
         .nbullets = {
             .prespawn = 70,
         },
+        .next_unlocked = false,
     },
     {
         .label = LEVEL_GUNNY,
+        .label_next = LEVEL_SHARPSHOOTER,
         .name = "gunny",
         .nballoons = {
             .orange = 12,
@@ -55,9 +60,11 @@ static level_t levels[] = {
         .nbullets = {
             .prespawn = 40,
         },
+        .next_unlocked = false,
     },
     {
         .label = LEVEL_SHARPSHOOTER,
+        .label_next = LEVEL_ASSASSIN,
         .name = "sharpshooter",
         .nballoons = {
             .orange = 21,
@@ -69,9 +76,11 @@ static level_t levels[] = {
         .nbullets = {
             .prespawn = 20,
         },
+        .next_unlocked = false,
     },
     {
         .label = LEVEL_ASSASSIN,
+        .label_next = LEVEL_BERSERKER,
         .name = "assassin",
         .nballoons = {
             .orange = 30,
@@ -83,9 +92,11 @@ static level_t levels[] = {
         .nbullets = {
             .prespawn = 10,
         },
+        .next_unlocked = false,
     },
     {
         .label = LEVEL_BERSERKER,
+        .label_next = LEVEL_BERSERKER,
         .name = "berserker",
         .nballoons = {
             .orange = 300,
@@ -97,41 +108,30 @@ static level_t levels[] = {
         .nbullets = {
             .prespawn = 10,
         },
+        .next_unlocked = false,
     },
 };
 
-void levels_deinit (ctx_t * ctx) {
-    ctx->levels = NULL;
+level_t levels_get_level (level_enum_t label) {
+    return levels[label];
 }
 
-void levels_init (ctx_t * ctx) {
-    ctx->ilevel = 0;
-    ctx->ilevel_unlocked = 0;
-    ctx->level = &levels[0];
-    ctx->levels = &levels[0];
-}
-
-void levels_set (scene_t scene, unsigned int ilevel, ctx_t * ctx, counters_t * counters, drawables_t * drawables) {
+void levels_reset_level (level_t level, drawing_t drawing, drawables_t * drawables, counters_t * counters) {
 
     // --- deinit entities from previous levels
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
     o_collisions_deinit(&drawables->collisions);
 
-    // --- new level
-    ctx->ilevel = ilevel;
-    ctx->level = &levels[ilevel];
-    ctx->levels = &levels[0];
-
     // --- concrete entities
-    drawables->ground = o_ground_init(scene);
-    drawables->moon = o_moon_init(scene);
-    drawables->turret = o_turret_init(scene, drawables->ground);
+    drawables->ground = o_ground_init(drawing.scene);
+    drawables->moon = o_moon_init(drawing.scene);
+    drawables->turret = o_turret_init(drawing.scene, drawables->ground);
     drawables->barrel = o_barrel_init(drawables->turret);
     drawables->flash = o_flash_init(drawables->barrel);
     drawables->legend = o_legend_init();
     drawables->balloons = o_balloons_init();
     drawables->bullets = o_bullets_init();
     drawables->collisions = o_collisions_init();
-    *counters = counters_init(*ctx->level);
+    *counters = counters_init(level);
 }

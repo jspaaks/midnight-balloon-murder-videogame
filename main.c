@@ -40,7 +40,6 @@ static void deinit (ctx_t * ctx, chunks_t * chunks, drawing_t * drawing, drawabl
     o_bullets_deinit(&drawables->bullets);
     o_collisions_deinit(&drawables->collisions);
     // --- abstract entities
-    levels_deinit(ctx);
     fonts_deinit(&drawing->fonts);
     chunks_deinit(chunks);
     keystate_deinit(ctx);
@@ -68,13 +67,14 @@ int main (void) {
 
     sdl_init();
     ctx_t ctx = ctx_init();
-    counters_t counters = counters_init(*ctx.level);
+    level_t level = levels_get_level(LEVEL_NOVICE);
+    counters_t counters = counters_init(level);
     drawing_t drawing = drawing_init();
     drawables_t drawables = drawables_init(drawing.scene);
     timing_t timing = timing_init();
     chunks_t chunks = chunks_init();
 
-    levels_set(drawing.scene, LEVEL_NOVICE, &ctx, &counters, &drawables);
+    levels_reset_level(level, drawing, &drawables, &counters);
 
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
@@ -87,8 +87,8 @@ int main (void) {
     while (true) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
-        frame->draw(ctx, drawing, drawables, counters);
-        frame->update(timing, chunks, &counters, &ctx, &drawing, &drawables, &gamestate);
+        frame->draw(level, drawing, drawables, counters);
+        frame->update(timing, chunks, &counters, &ctx, &drawing, &drawables, &gamestate, &level);
 
         nframes++;
 

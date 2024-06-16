@@ -11,21 +11,21 @@
 #include "o_balloons.h"
 #include "o_legend.h"
 
-static void o_legend_draw_bars (ctx_t, SDL_Renderer *, scene_t, colors_t, legend_t, counters_t);
+static void o_legend_draw_bars (level_t, SDL_Renderer *, scene_t, colors_t, legend_t, counters_t);
 static void o_legend_draw_rect_nbullets (SDL_Renderer *, scene_t, colors_t, legend_t, counters_t);
 static void o_legend_draw_text_hit (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t);
-static void o_legend_draw_text_level (ctx_t, SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t);
+static void o_legend_draw_text_level (level_t, SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t);
 static void o_legend_draw_text_miss (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t);
-static void o_legend_draw_text_nballoons (ctx_t, SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t, counters_t);
+static void o_legend_draw_text_nballoons (level_t, SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t, counters_t);
 static void o_legend_draw_text_nbullets (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t, counters_t);
 static void o_legend_draw_text_nhit (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t, counters_t);
 static void o_legend_draw_text_nmiss (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t, counters_t);
 static SDL_Color o_legend_get_ammolow_bgcolor(counters_t, colors_t);
 
-static void o_legend_draw_bars (ctx_t ctx, SDL_Renderer * renderer, scene_t scene, colors_t colors, legend_t legend, counters_t counters) {
+static void o_legend_draw_bars (level_t level, SDL_Renderer * renderer, scene_t scene, colors_t colors, legend_t legend, counters_t counters) {
     int j = 0;
-    int nhit = legend.nbars * counters.nballoons.hit / ctx.level->nballoons.prespawn;
-    int nmiss = legend.nbars * counters.nballoons.miss / ctx.level->nballoons.prespawn;
+    int nhit = legend.nbars * counters.nballoons.hit / level.nballoons.prespawn;
+    int nmiss = legend.nbars * counters.nballoons.miss / level.nballoons.prespawn;
     int nmiddle = legend.nbars - nhit - nmiss;
     SDL_SetRenderDrawColor(renderer, colors.hit.r,
                                      colors.hit.g,
@@ -87,9 +87,9 @@ static void o_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scene, font
     SDL_FreeSurface(surf.payload);
 }
 
-static void o_legend_draw_text_level (ctx_t ctx, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, legend_t legend) {
+static void o_legend_draw_text_level (level_t level, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, legend_t legend) {
     char caption[30];
-    sprintf(caption, "%s LEVEL", ctx.level->name);
+    sprintf(caption, "%s LEVEL", level.name);
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
@@ -126,14 +126,14 @@ static void o_legend_draw_text_miss (SDL_Renderer * renderer, scene_t scene, fon
     SDL_FreeSurface(surf.payload);
 }
 
-static void o_legend_draw_text_nballoons (ctx_t ctx, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, legend_t legend, counters_t counters) {
+static void o_legend_draw_text_nballoons (level_t level, SDL_Renderer * renderer, scene_t scene, fonts_t fonts, colors_t colors, legend_t legend, counters_t counters) {
     int nremaining = counters.nballoons.prespawn + counters.nballoons.airborne;
     if (nremaining == 0) {
         // we're in the level finished screen
         return;
     }
     char caption[30];
-    sprintf(caption, "BALLOONS %d / %d", nremaining, ctx.level->nballoons.prespawn);
+    sprintf(caption, "BALLOONS %d / %d", nremaining, level.nballoons.prespawn);
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
@@ -212,16 +212,16 @@ static void o_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t scene, fo
     SDL_FreeSurface(surf.payload);
 }
 
-void o_legend_draw (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, legend_t legend, counters_t counters) {
-    o_legend_draw_bars(ctx, renderer, scene, colors, legend, counters);
+void o_legend_draw (level_t level, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, legend_t legend, counters_t counters) {
+    o_legend_draw_bars(level, renderer, scene, colors, legend, counters);
     o_legend_draw_rect_nbullets(renderer, scene, colors, legend, counters);
     o_legend_draw_text_nbullets(renderer, scene, fonts, colors, legend, counters);
     o_legend_draw_text_hit(renderer, scene, fonts, colors, legend);
     o_legend_draw_text_miss(renderer, scene, fonts, colors, legend);
     o_legend_draw_text_nhit(renderer, scene, fonts, colors, legend, counters);
     o_legend_draw_text_nmiss(renderer, scene, fonts, colors, legend, counters);
-    o_legend_draw_text_nballoons(ctx, renderer, scene, fonts, colors, legend, counters);
-    o_legend_draw_text_level(ctx, renderer, scene, fonts, colors, legend);
+    o_legend_draw_text_nballoons(level, renderer, scene, fonts, colors, legend, counters);
+    o_legend_draw_text_level(level, renderer, scene, fonts, colors, legend);
 }
 
 static SDL_Color o_legend_get_ammolow_bgcolor(counters_t counters, colors_t colors) {

@@ -20,7 +20,7 @@
 #include "o_moon.h"
 #include "o_turret.h"
 
-void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
+void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
     o_background_draw(drawing.renderer, drawing.colors, drawing.scene);
 
@@ -45,7 +45,7 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, coun
                   drawables.barrel,
                   drawables.flash);
 
-    o_legend_draw(ctx,
+    o_legend_draw(level,
                   drawing.renderer,
                   drawing.fonts,
                   drawing.colors,
@@ -79,7 +79,7 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, coun
                         drawing.scene,
                         drawables.ground);
 
-    o_keymap_draw_proceedhint(ctx,
+    o_keymap_draw_proceedhint(level,
                               drawing.renderer,
                               drawing.fonts,
                               drawing.colors,
@@ -90,7 +90,7 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, coun
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, level_t *) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
