@@ -5,6 +5,6 @@
 #include "types.h"
 
 void renderer_deinit (SDL_Renderer **);
-void renderer_init (SDL_Window *, SDL_Renderer **);
+SDL_Renderer * renderer_init (SDL_Window *);
 
 #endif

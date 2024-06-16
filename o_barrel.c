@@ -31,7 +31,7 @@ void o_barrel_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t 
                                             SDL_FLIP_NONE);
 }
 
-void o_barrel_init (turret_t turret, barrel_t * barrel) {
+barrel_t o_barrel_init (turret_t turret) {
     assert(turret.sim.x != 0 && "turret needs to be initialized before barrel");
     SDL_Rect src = {
         .h = 11,
@@ -45,7 +45,9 @@ void o_barrel_init (turret_t turret, barrel_t * barrel) {
         .x = turret.sim.x + (turret.sim.w - 1) / 2,
         .y = turret.sim.y + (turret.sim.w - 1) / 2 - (src.h - 1) / 2,
     };
-    *barrel = (barrel_t) {
+    return (barrel_t) {
+        .countdown_duration = 75,
+        .countdown_remaining = 0,
         .sim = {
             .h = sim.h,
             .w = sim.w,
@@ -89,5 +91,8 @@ void o_barrel_update (timing_t timing, ctx_t ctx, barrel_t * barrel) {
             barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + 1 * barrel->sim2.speed * timing.dt.frame);
             break;
         }
+    }
+    if (barrel->countdown_remaining > 0) {
+        barrel->countdown_remaining -= timing.dt.frame;
     }
 }

@@ -2,6 +2,6 @@
 #define COLORS_H
 #include "types.h"
 
-void colors_init (colors_t *);
+colors_t colors_init (void);
 
 #endif

@@ -240,27 +240,29 @@ static SDL_Color o_legend_get_ammolow_bgcolor(counters_t counters, colors_t colo
     return color;
 }
 
-void o_legend_init (legend_t * legend) {
+legend_t o_legend_init (void) {
     const unsigned int n = 10;
-    legend->nbars = n;
+    legend_t legend;
+    legend.nbars = n;
     SDL_Rect first = {
         .x = 60,
         .y = 55,
         .w = 15,
         .h = 20,
     };
-    for (unsigned int i = 0; i < legend->nbars; i++) {
-        legend->bars[i].sim = (SDL_FRect) {
+    for (unsigned int i = 0; i < legend.nbars; i++) {
+        legend.bars[i].sim = (SDL_FRect) {
             .x = first.x + i * (first.w + 5),
             .y = first.y,
             .w = first.w,
             .h = first.h,
         };
     }
-    legend->highlight.sim = (SDL_FRect) {
-        .x = legend->bars[0].sim.x,
-        .y = legend->bars[0].sim.y + legend->bars[0].sim.h + 7,
-        .w = (legend->bars[n-1].sim.x + legend->bars[n-1].sim.w) - legend->bars[0].sim.x,
+    legend.highlight.sim = (SDL_FRect) {
+        .x = legend.bars[0].sim.x,
+        .y = legend.bars[0].sim.y + legend.bars[0].sim.h + 7,
+        .w = (legend.bars[n-1].sim.x + legend.bars[n-1].sim.w) - legend.bars[0].sim.x,
         .h = 40,
     };
+    return legend;
 }

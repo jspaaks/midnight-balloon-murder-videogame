@@ -8,7 +8,8 @@
 #include "o_scene.h"
 
 void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, barrel_t barrel, flash_t flash) {
-    if (flash.show) {
+    bool show = flash.countdown_remaining > 0 && flash.had_bullets;
+    if (show) {
         SDL_Rect tgt = sim2tgt(scene, flash.sim);
         SDL_Point pivot_offset = (SDL_Point) {
             .x = (int) (flash.sim2.pivot_offset.x * scene.scale),
@@ -22,7 +23,7 @@ void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t s
     }
 }
 
-void o_flash_init (barrel_t barrel, flash_t * flash) {
+flash_t o_flash_init (barrel_t barrel) {
     assert(barrel.sim.x != 0 && "barrel needs to be initialized before flash");
     float h = 21;
     float w = 30;
@@ -39,8 +40,9 @@ void o_flash_init (barrel_t barrel, flash_t * flash) {
         .x = barrel.sim2.pivot.x + loffset,
         .y = barrel.sim2.pivot.y - (h - 1) / 2,
     };
-    *flash = (flash_t) {
-        .show = false,
+    return (flash_t) {
+        .countdown_duration = 30,
+        .countdown_remaining = 0,
         .sim = sim,
         .sim2 = {
             .pivot_offset = (SDL_FPoint) {
@@ -52,7 +54,8 @@ void o_flash_init (barrel_t barrel, flash_t * flash) {
     };
 }
 
-void o_flash_update (ctx_t * ctx, flash_t * flash) {
-    static Uint64 timeout = 25;
-    flash->show = SDL_GetTicks64() < ctx->tspawn_latestbullet  + timeout;
+void o_flash_update (timing_t timing, flash_t * flash) {
+    if (flash->countdown_remaining > 0) {
+        flash->countdown_remaining -= timing.dt.frame;
+    }
 }

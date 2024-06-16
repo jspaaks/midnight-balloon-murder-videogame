@@ -52,8 +52,8 @@ void o_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t, collisi
     }
 }
 
-void o_collisions_init (collision_t ** collisions) {
-    *collisions = NULL;
+collision_t * o_collisions_init (void) {
+    return NULL;
 }
 
 void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, counters_t * counters, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {

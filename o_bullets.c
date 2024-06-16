@@ -14,7 +14,7 @@
 
 static void o_bullets_update_pos (timing_t, bullet_t **);
 static void o_bullets_update_remove (counters_t *, bullet_t **);
-static void o_bullets_update_spawn (ctx_t *, counters_t *, barrel_t, bullet_t **);
+static void o_bullets_update_spawn (ctx_t *, counters_t *, barrel_t *, flash_t *, bullet_t **);
 static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t **);
 
 void o_bullets_deinit (bullet_t ** bullets) {
@@ -36,15 +36,11 @@ void o_bullets_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t
     }
 }
 
-void o_bullets_init (level_t * level, ground_t ground, bullet_t ** bullets, counters_t * counters) {
-    assert(level != NULL && "levels needs to be initialized before bullets");
-    assert(ground.sim.w != 0 && "ground needs to be initialized before bullets");
-    *bullets = NULL;
-    counters->nbullets.prespawn = level->nbullets.prespawn;
-    counters->nbullets.airborne = 0;
+bullet_t * o_bullets_init (void) {
+    return NULL;
 }
 
-void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, counters_t * counters, barrel_t barrel, bullet_t ** bullets) {
+void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * ctx, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
     // mark bullets that are out of frame
     o_bullets_update_test_exited(scene, ground, bullets);
 
@@ -55,27 +51,27 @@ void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, ctx_t * 
     o_bullets_update_pos(timing, bullets);
 
     // if SPACE down, add a bullet to the list
-    o_bullets_update_spawn(ctx, counters, barrel, bullets);
+    o_bullets_update_spawn(ctx, counters, barrel, flash, bullets);
 }
 
-static void o_bullets_update_spawn (ctx_t * ctx, counters_t * counters, barrel_t barrel, bullet_t ** bullets) {
+static void o_bullets_update_spawn (ctx_t * ctx, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
     static const float PI = 3.14159265358979323846f;
-    Uint64 timeout = 150;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
     bool has_bullets = counters->nbullets.prespawn > 0;
     bool key_pressed = ctx->keys[SDL_SCANCODE_SPACE];
-    bool cooled_off = SDL_GetTicks64() > ctx->tspawn_latestbullet + timeout;
+    bool cooled_down = barrel->countdown_remaining <= 0;
 
-    if (key_pressed && cooled_off) {
+    if (key_pressed && cooled_down) {
         if (has_bullets) {
+            flash->had_bullets = true;
             bullet_t * b = malloc(1 * sizeof(bullet_t));
             if (b == NULL) {
                 SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new bullet.\n");
                 exit(EXIT_FAILURE);
             }
-            float a = PI * barrel.sim2.angle / 180;
-            float x = barrel.sim2.pivot.x + cos(a) * (barrel.sim2.length + 20) - (src_bullet.w - 1) / 2;
-            float y = barrel.sim2.pivot.y + sin(a) * (barrel.sim2.length + 20) - (src_bullet.h - 1) / 2;
+            float a = PI * barrel->sim2.angle / 180;
+            float x = barrel->sim2.pivot.x + cos(a) * (barrel->sim2.length + 20) - (src_bullet.w - 1) / 2;
+            float y = barrel->sim2.pivot.y + sin(a) * (barrel->sim2.length + 20) - (src_bullet.h - 1) / 2;
 
             float speed = 380;
             *b = (bullet_t) {
@@ -96,12 +92,13 @@ static void o_bullets_update_spawn (ctx_t * ctx, counters_t * counters, barrel_t
             *bullets = b;
             counters->nbullets.prespawn--;
             counters->nbullets.airborne++;
-            ctx->tspawn_latestbullet = SDL_GetTicks64();
             Mix_PlayChannel(-1, ctx->chunks.shoot, 0);
         } else {
             Mix_PlayChannel(-1, ctx->chunks.empty, 0);
-            ctx->tspawn_latestbullet = SDL_GetTicks64();
+            flash->had_bullets = false;
         }
+        barrel->countdown_remaining = barrel->countdown_duration;
+        flash->countdown_remaining = flash->countdown_duration;
     }
 }
 

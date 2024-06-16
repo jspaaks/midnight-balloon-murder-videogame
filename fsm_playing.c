@@ -20,32 +20,32 @@
 #include "o_scene.h"
 #include "o_turret.h"
 
-void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
+void fsm_playing_draw (ctx_t ctx, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
                  drawing.colors,
-                 drawing.scene);
+                 scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
-                drawing.scene,
+                scene,
                 drawables.moon);
 
     o_barrel_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.barrel);
 
     o_turret_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.turret);
 
     o_flash_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.barrel,
                   drawables.flash);
 
@@ -53,48 +53,48 @@ void fsm_playing_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, coun
                   drawing.renderer,
                   drawing.fonts,
                   drawing.colors,
-                  drawing.scene,
+                  scene,
                   drawables.legend,
                   counters);
 
     o_balloons_draw(drawing.renderer,
                     drawing.spritesheet,
-                    drawing.scene,
+                    scene,
                     drawables.balloons);
 
     o_bullets_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.bullets);
 
     o_collisions_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.collisions);
 
     o_ground_draw(drawing.renderer,
                   drawing.colors,
-                  drawing.scene,
+                  scene,
                   drawables.ground);
 
     o_keymap_draw_pause(drawing.renderer,
                         drawing.fonts,
                         drawing.colors,
-                        drawing.scene,
+                        scene,
                         drawables.ground);
 
     o_keymap_draw_proceedhint(ctx,
                               drawing.renderer,
                               drawing.fonts,
                               drawing.colors,
-                              drawing.scene,
+                              scene,
                               drawables.ground,
                               counters);
 
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_playing_update (SDL_Window * window, timing_t timing, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_playing_update (SDL_Window * window, timing_t timing, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, scene_t * scene) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -125,32 +125,31 @@ void fsm_playing_update (SDL_Window * window, timing_t timing, counters_t * coun
             }
         }
     }
-    o_scene_update(ctx,
-                   drawing->renderer,
-                   &drawing->scene);
+    o_scene_update(ctx, drawing->renderer, scene);
 
     o_barrel_update(timing,
                     *ctx,
                     &drawables->barrel);
 
-    o_flash_update(ctx, &drawables->flash);
-
     o_balloons_update(timing,
-                      drawing->scene,
+                      *scene,
                       drawables->ground,
                       &drawables->balloons,
                       counters);
 
     o_bullets_update(timing,
-                     drawing->scene,
+                     *scene,
                      drawables->ground,
                      ctx,
                      counters,
-                     drawables->barrel,
+                     &drawables->barrel,
+                     &drawables->flash,
                      &drawables->bullets);
 
+    o_flash_update (timing, &drawables->flash);
+
     o_collisions_update(timing,
-                        drawing->scene,
+                        *scene,
                         drawables->ground,
                         ctx,
                         counters,

@@ -65,6 +65,8 @@ struct balloon_t {
 };
 
 struct barrel_t {
+    unsigned int countdown_duration;
+    unsigned int countdown_remaining;
     SDL_FRect sim;
     struct {
         float angle;
@@ -140,8 +142,9 @@ struct colors_t {
 };
 
 struct flash_t {
-
-    bool show;
+    unsigned int countdown_duration;
+    unsigned int countdown_remaining;
+    bool had_bullets;
     SDL_FRect sim;
     struct {
         SDL_FPoint pivot_offset;
@@ -158,8 +161,8 @@ struct fonts_t {
 };
 
 struct gamestate_t {
-    void (*draw)(ctx_t, drawing_t, drawables_t, counters_t);
-    void (*update)(SDL_Window *, timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
+    void (*draw)(ctx_t, scene_t, drawing_t, drawables_t, counters_t);
+    void (*update)(SDL_Window *, timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **, scene_t *);
     gamestate_enum_t label;
 };
 
@@ -214,7 +217,6 @@ struct drawing_t {
     colors_t colors;
     fonts_t fonts;
     SDL_Renderer * renderer;
-    scene_t scene;
     SDL_Texture * spritesheet;
 };
 
@@ -246,7 +248,6 @@ struct ctx_t {
     level_t * levels;
     unsigned int nlevels;
     bool resized;
-    Uint64 tspawn_latestbullet;
 };
 
 #endif

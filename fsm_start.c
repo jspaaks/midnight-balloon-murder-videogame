@@ -18,38 +18,38 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void fsm_start_draw (ctx_t, drawing_t drawing, drawables_t drawables, counters_t) {
+void fsm_start_draw (ctx_t, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t) {
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
                  drawing.colors,
-                 drawing.scene);
+                 scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
-                drawing.scene,
+                scene,
                 drawables.moon);
 
     o_ground_draw(drawing.renderer,
                   drawing.colors,
-                  drawing.scene,
+                  scene,
                   drawables.ground);
 
     o_keymap_draw_start(drawing.renderer,
                         drawing.fonts,
                         drawing.colors,
-                        drawing.scene,
+                        scene,
                         drawables.ground);
 
     o_titles_draw_opening_title(drawing.renderer,
                                 drawing.fonts,
                                 drawing.colors,
-                                drawing.scene);
+                                scene);
 
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate) {
+void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate, scene_t * scene) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -71,7 +71,5 @@ void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx,
             }
         }
     }
-    o_scene_update(ctx,
-                   drawing->renderer,
-                   &drawing->scene);
+    o_scene_update(ctx, drawing->renderer, scene);
 }

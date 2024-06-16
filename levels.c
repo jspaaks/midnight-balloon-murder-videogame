@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include "counters.h"
 #include "types.h"
 #include "levels.h"
 #include "o_balloons.h"
@@ -111,7 +112,7 @@ void levels_init (ctx_t * ctx) {
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
 }
 
-void levels_set (ctx_t * ctx, counters_t * counters, unsigned int ilevel, drawing_t * drawing, drawables_t * drawables) {
+void levels_set (scene_t scene, ctx_t * ctx, counters_t * counters, unsigned int ilevel, drawables_t * drawables) {
     // --- deinit entities from previous levels
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
@@ -122,32 +123,14 @@ void levels_set (ctx_t * ctx, counters_t * counters, unsigned int ilevel, drawin
     ctx->levels = &levels[0];
     ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
     // --- concrete entities
-    o_ground_init(drawing->scene,
-                  &drawables->ground);
-
-    o_moon_init(drawing->scene,
-                &drawables->moon);
-
-    o_turret_init(drawing->scene,
-                  drawables->ground,
-                  &drawables->turret);
-
-    o_barrel_init(drawables->turret,
-                  &drawables->barrel);
-
-    o_balloons_init(ctx->level,
-                    &drawables->balloons,
-                    counters);
-
-    o_bullets_init(ctx->level,
-                   drawables->ground,
-                   &drawables->bullets,
-                   counters);
-
-    o_collisions_init(&drawables->collisions);
-
-    o_flash_init(drawables->barrel,
-                 &drawables->flash);
-
-    o_legend_init(&drawables->legend);
+    drawables->ground = o_ground_init(scene);
+    drawables->moon = o_moon_init(scene);
+    drawables->turret = o_turret_init(scene, drawables->ground);
+    drawables->barrel = o_barrel_init(drawables->turret);
+    drawables->flash = o_flash_init(drawables->barrel);
+    drawables->legend = o_legend_init();
+    drawables->balloons = o_balloons_init();
+    drawables->bullets = o_bullets_init();
+    drawables->collisions = o_collisions_init();
+    *counters = counters_init(*ctx->level);
 }

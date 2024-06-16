@@ -9,11 +9,11 @@ void renderer_deinit (SDL_Renderer ** renderer) {
     *renderer = NULL;
 }
 
-void renderer_init (SDL_Window * window, SDL_Renderer ** renderer) {
-    *renderer = SDL_CreateRenderer(window, -1, 0);
-    if (*renderer == NULL) {
+SDL_Renderer * renderer_init (SDL_Window * window) {
+    SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
+    if (renderer == NULL) {
         SDL_LogError(SDL_ENOMEM, "Error initializing renderer: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
     }
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+    return renderer;
 }

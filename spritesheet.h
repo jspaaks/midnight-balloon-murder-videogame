@@ -4,6 +4,6 @@
 #include "types.h"
 
 void spritesheet_deinit (SDL_Texture **);
-void spritesheet_init (SDL_Renderer *, SDL_Texture **);
+SDL_Texture * spritesheet_init (SDL_Renderer *);
 
 #endif

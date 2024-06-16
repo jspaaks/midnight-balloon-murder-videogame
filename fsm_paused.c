@@ -23,32 +23,32 @@
 #include "o_turret.h"
 #include "o_titles.h"
 
-void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, counters_t counters) {
+void fsm_paused_draw (ctx_t ctx, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
     o_background_draw(drawing.renderer);
 
     o_scene_draw(drawing.renderer,
                  drawing.colors,
-                 drawing.scene);
+                 scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
-                drawing.scene,
+                scene,
                 drawables.moon);
 
     o_barrel_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.barrel);
 
     o_turret_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.turret);
 
     o_flash_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.barrel,
                   drawables.flash);
 
@@ -56,41 +56,41 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
                   drawing.renderer,
                   drawing.fonts,
                   drawing.colors,
-                  drawing.scene,
+                  scene,
                   drawables.legend,
                   counters);
 
     o_balloons_draw(drawing.renderer,
                     drawing.spritesheet,
-                    drawing.scene,
+                    scene,
                     drawables.balloons);
 
     o_bullets_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.bullets);
 
     o_collisions_draw(drawing.renderer,
                   drawing.spritesheet,
-                  drawing.scene,
+                  scene,
                   drawables.collisions);
 
     o_ground_draw(drawing.renderer,
                   drawing.colors,
-                  drawing.scene,
+                  scene,
                   drawables.ground);
 
     o_keymap_draw_move_barrel(drawing.renderer,
                               drawing.fonts,
                               drawing.colors,
-                              drawing.scene,
+                              scene,
                               drawables.turret,
                               drawables.ground);
 
     o_keymap_draw_shoot(drawing.renderer,
                         drawing.fonts,
                         drawing.colors,
-                        drawing.scene,
+                        scene,
                         drawables.turret,
                         drawables.ground);
 
@@ -98,21 +98,21 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
                               drawing.renderer,
                               drawing.fonts,
                               drawing.colors,
-                              drawing.scene,
+                              scene,
                               drawables.ground,
                               counters);
 
     o_keymap_draw_unpause(drawing.renderer,
                           drawing.fonts,
                           drawing.colors,
-                          drawing.scene,
+                          scene,
                           drawables.ground);
 
     o_keymap_draw_restart(ctx,
                           drawing.renderer,
                           drawing.fonts,
                           drawing.colors,
-                          drawing.scene,
+                          scene,
                           drawables.turret,
                           drawables.ground,
                           counters);
@@ -120,19 +120,19 @@ void fsm_paused_draw (ctx_t ctx, drawing_t drawing, drawables_t drawables, count
     o_keymap_draw_quit(drawing.renderer,
                        drawing.fonts,
                        drawing.colors,
-                       drawing.scene,
+                       scene,
                        drawables.turret,
                        drawables.ground);
 
     o_titles_draw_paused(drawing.renderer,
                          drawing.fonts,
                          drawing.colors,
-                         drawing.scene);
+                         scene);
 
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_paused_update (SDL_Window * window, timing_t, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate) {
+void fsm_paused_update (SDL_Window * window, timing_t, counters_t * counters, ctx_t * ctx, drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate, scene_t * scene) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -146,7 +146,7 @@ void fsm_paused_update (SDL_Window * window, timing_t, counters_t * counters, ct
                 } else if (event.key.keysym.sym == SDLK_r) {
                     if (counters->nballoons.prespawn < ctx->level->nballoons.prespawn || counters->nbullets.prespawn < ctx->level->nbullets.prespawn ) {
                         SDL_Log("restarting level\n");
-                        levels_set(ctx, counters, ctx->ilevel, drawing, drawables);
+                        levels_set(*scene, ctx, counters, ctx->ilevel, drawables);
                         *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                     }
                 } else if (event.key.keysym.sym == SDLK_F11) {
@@ -163,8 +163,5 @@ void fsm_paused_update (SDL_Window * window, timing_t, counters_t * counters, ct
             }
         }
     }
-    o_scene_update(ctx,
-                   drawing->renderer,
-                   &drawing->scene);
-
+    o_scene_update(ctx, drawing->renderer, scene);
 }

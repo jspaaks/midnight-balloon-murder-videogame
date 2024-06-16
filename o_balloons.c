@@ -39,16 +39,8 @@ void o_balloons_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_
     }
 }
 
-void o_balloons_init (level_t * level, balloon_t ** balloons, counters_t * counters) {
-    assert(level != NULL && "levels needs to be initialized before balloons");
-    *balloons = NULL;
-    counters->nballoons.airborne = 0;
-    counters->nballoons.hit = 0;
-    counters->nballoons.miss = 0;
-    counters->nballoons.orange = level->nballoons.orange;
-    counters->nballoons.prespawn = level->nballoons.prespawn;
-    counters->nballoons.red = level->nballoons.red;
-    counters->nballoons.yellow = level->nballoons.yellow;
+balloon_t * o_balloons_init (void) {
+    return NULL;
 }
 
 static float o_balloons_unitrand(void) {

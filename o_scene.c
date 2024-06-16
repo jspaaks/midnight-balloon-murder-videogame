@@ -4,10 +4,10 @@
 #include "o_scene.h"
 #include "types.h"
 
-void o_scene_init(scene_t * scene) {
+scene_t o_scene_init(void) {
     float h = 720.0;
     float w = 1280.0;
-    *scene = (scene_t) {
+    return (scene_t) {
         .sim = {
             .h = h,
             .w = w,

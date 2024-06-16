@@ -8,8 +8,8 @@ void o_moon_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t sc
     SDL_RenderCopy(renderer, spritesheet, &moon.src, &tgt);
 }
 
-void o_moon_init (scene_t scene, moon_t * moon) {
-    *moon = (moon_t){
+moon_t o_moon_init (scene_t scene) {
+    return (moon_t){
         .src = (SDL_Rect){
             .x = 75,
             .y = 1,

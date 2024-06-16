@@ -3,6 +3,6 @@
 #include "types.h"
 
 void fonts_deinit(fonts_t *);
-void fonts_init(fonts_t *);
+fonts_t fonts_init(void);
 
 #endif
