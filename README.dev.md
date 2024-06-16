@@ -89,11 +89,4 @@ Sounds effects are from https://sfxr.me/.
 1. review directory structure (src / bin / test etc)
 1. packaging / distribution
 1. consider adding tests, cmocka maybe
-1. review lifecycle of flash, barrel cooldown
-
-
-1. return nonvoid if single out parameter
-1. rethink levels
 1. in parameters before out parameters
-1. make o_scene abstract, allows for updating signature of .update
-
