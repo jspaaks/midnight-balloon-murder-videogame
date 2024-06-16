@@ -78,6 +78,10 @@ Converting SVG images to BMP with transparency using ImageMagick's `convert` com
 convert -background none -density 96 img/sprites.svg img/sprites.bmp
 ```
 
+# Sound effects
+
+Sounds effects are from https://sfxr.me/.
+
 ## TODO
 
 1. hitpoints texts
