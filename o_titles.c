@@ -4,10 +4,10 @@
 #include "SDL_render.h"
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
+#include "scene.h"
 #include "types.h"
 #include "wrapped.h"
 #include "o_titles.h"
-#include "o_scene.h"
 
 void o_titles_draw_level_finished (SDL_Renderer * renderer,  fonts_t fonts, colors_t colors, scene_t scene, counters_t counters) {
     char title[15];

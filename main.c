@@ -16,6 +16,7 @@
 #include "keystate.h"
 #include "levels.h"
 #include "renderer.h"
+#include "scene.h"
 #include "spritesheet.h"
 #include "timing.h"
 #include "types.h"
@@ -28,7 +29,6 @@
 #include "o_ground.h"
 #include "o_legend.h"
 #include "o_moon.h"
-#include "o_scene.h"
 #include "o_turret.h"
 
 static void deinit (ctx_t *, SDL_Window **, drawing_t *, drawables_t *);
@@ -69,7 +69,7 @@ int main (void) {
     sdl_init();
     ctx_t ctx = ctx_init();
     counters_t counters = counters_init(*ctx.level);
-    scene_t scene = o_scene_init();
+    scene_t scene = scene_init();
     SDL_Window * window = window_init(scene);
     drawing_t drawing = drawing_init(window);
     drawables_t drawables = drawables_init(scene);

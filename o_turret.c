@@ -1,9 +1,9 @@
 #include <assert.h>
 #include "SDL_render.h"
 #include "SDL_rect.h"
+#include "scene.h"
 #include "types.h"
 #include "o_turret.h"
-#include "o_scene.h"
 
 void o_turret_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, turret_t turret) {
     SDL_Rect tgt = sim2tgt(scene, turret.sim);

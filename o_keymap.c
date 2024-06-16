@@ -5,10 +5,10 @@
 #include "SDL_render.h"
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
+#include "scene.h"
 #include "types.h"
 #include "wrapped.h"
 #include "o_keymap.h"
-#include "o_scene.h"
 
 void o_keymap_draw_move_barrel (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, turret_t turret, ground_t ground) {
     char action[21] = "W / S TO MOVE BARREL";

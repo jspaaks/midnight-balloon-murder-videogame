@@ -3,13 +3,13 @@
 #include "SDL_rect.h"
 #include "SDL_log.h"
 #include "SDL_ttf.h"
-#include "types.h"
 #include "colors.h"
 #include "levels.h"
-#include "o_legend.h"
-#include "o_balloons.h"
-#include "o_scene.h"
+#include "scene.h"
+#include "types.h"
 #include "wrapped.h"
+#include "o_balloons.h"
+#include "o_legend.h"
 
 static void o_legend_draw_bars (ctx_t, SDL_Renderer *, scene_t, colors_t, legend_t, counters_t);
 static void o_legend_draw_rect_nbullets (SDL_Renderer *, scene_t, colors_t, legend_t, counters_t);

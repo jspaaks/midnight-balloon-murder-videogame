@@ -3,8 +3,9 @@
 #include "SDL_keycode.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
-#include "fsm.h"
 #include "fsm_playing.h"
+#include "fsm.h"
+#include "scene.h"
 #include "types.h"
 #include "wrapped.h"
 #include "o_background.h"
@@ -17,16 +18,11 @@
 #include "o_keymap.h"
 #include "o_legend.h"
 #include "o_moon.h"
-#include "o_scene.h"
 #include "o_turret.h"
 
 void fsm_playing_draw (ctx_t ctx, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
-    o_background_draw(drawing.renderer);
-
-    o_scene_draw(drawing.renderer,
-                 drawing.colors,
-                 scene);
+    o_background_draw(drawing.renderer, drawing.colors, scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
@@ -125,7 +121,7 @@ void fsm_playing_update (SDL_Window * window, timing_t timing, counters_t * coun
             }
         }
     }
-    o_scene_update(ctx, drawing->renderer, scene);
+    scene_update(ctx, drawing->renderer, scene);
 
     o_barrel_update(timing,
                     *ctx,

@@ -3,9 +3,9 @@
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_timer.h"
+#include "scene.h"
 #include "types.h"
 #include "o_flash.h"
-#include "o_scene.h"
 
 void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, barrel_t barrel, flash_t flash) {
     bool show = flash.countdown_remaining > 0 && flash.had_bullets;

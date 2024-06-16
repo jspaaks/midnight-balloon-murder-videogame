@@ -9,8 +9,8 @@
 #include "SDL_scancode.h"
 #include "SDL_log.h"
 #include "SDL_error.h"
+#include "scene.h"
 #include "o_bullets.h"
-#include "o_scene.h"
 
 static void o_bullets_update_pos (timing_t, bullet_t **);
 static void o_bullets_update_remove (counters_t *, bullet_t **);

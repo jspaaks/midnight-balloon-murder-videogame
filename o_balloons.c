@@ -1,15 +1,15 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "SDL_timer.h"
+#include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
-#include "SDL_error.h"
-#include "types.h"
+#include "SDL_timer.h"
 #include "levels.h"
+#include "scene.h"
+#include "types.h"
 #include "o_balloons.h"
-#include "o_scene.h"
 
 static float o_balloons_unitrand(void);
 static void o_balloons_update_pos (timing_t, balloon_t *);

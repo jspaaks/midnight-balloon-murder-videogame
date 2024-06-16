@@ -4,12 +4,12 @@
 #include "SDL_log.h"
 #include "SDL_render.h"
 #include "SDL_video.h"
-#include "types.h"
-#include "fsm.h"
-#include "o_keymap.h"
-#include "levels.h"
-#include "wrapped.h"
 #include "fsm_paused.h"
+#include "fsm.h"
+#include "levels.h"
+#include "scene.h"
+#include "types.h"
+#include "wrapped.h"
 #include "o_background.h"
 #include "o_balloons.h"
 #include "o_barrel.h"
@@ -17,19 +17,15 @@
 #include "o_collisions.h"
 #include "o_flash.h"
 #include "o_ground.h"
+#include "o_keymap.h"
 #include "o_legend.h"
 #include "o_moon.h"
-#include "o_scene.h"
-#include "o_turret.h"
 #include "o_titles.h"
+#include "o_turret.h"
 
 void fsm_paused_draw (ctx_t ctx, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t counters) {
 
-    o_background_draw(drawing.renderer);
-
-    o_scene_draw(drawing.renderer,
-                 drawing.colors,
-                 scene);
+    o_background_draw(drawing.renderer, drawing.colors, scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
@@ -163,5 +159,5 @@ void fsm_paused_update (SDL_Window * window, timing_t, counters_t * counters, ct
             }
         }
     }
-    o_scene_update(ctx, drawing->renderer, scene);
+    scene_update(ctx, drawing->renderer, scene);
 }

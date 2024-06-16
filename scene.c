@@ -1,10 +1,10 @@
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_log.h"
-#include "o_scene.h"
+#include "scene.h"
 #include "types.h"
 
-scene_t o_scene_init(void) {
+scene_t scene_init(void) {
     float h = 720.0;
     float w = 1280.0;
     return (scene_t) {
@@ -25,15 +25,7 @@ scene_t o_scene_init(void) {
     };
 }
 
-void o_scene_draw (SDL_Renderer * renderer, colors_t colors, scene_t scene) {
-    SDL_SetRenderDrawColor(renderer, colors.bg.r,
-                                     colors.bg.g,
-                                     colors.bg.b,
-                                     colors.bg.a);
-    SDL_RenderFillRect(renderer, &scene.tgt);
-}
-
-void o_scene_update (ctx_t * ctx, SDL_Renderer * renderer, scene_t * scene) {
+void scene_update (ctx_t * ctx, SDL_Renderer * renderer, scene_t * scene) {
     if (ctx->resized) {
         int w0;
         int h0;

@@ -1,9 +1,9 @@
 #include <assert.h>
 #include "SDL_render.h"
 #include "SDL_rect.h"
+#include "scene.h"
 #include "types.h"
 #include "o_ground.h"
-#include "o_scene.h"
 
 void o_ground_draw (SDL_Renderer * renderer, colors_t colors, scene_t scene, ground_t ground) {
     SDL_Rect tgt = sim2tgt(scene, ground.sim);

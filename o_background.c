@@ -2,7 +2,12 @@
 #include "types.h"
 #include "o_background.h"
 
-void o_background_draw (SDL_Renderer * renderer) {
+void o_background_draw (SDL_Renderer * renderer, colors_t colors, scene_t scene) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, colors.bg.r,
+                                     colors.bg.g,
+                                     colors.bg.b,
+                                     colors.bg.a);
+    SDL_RenderFillRect(renderer, &scene.tgt);
 }

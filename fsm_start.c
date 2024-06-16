@@ -7,9 +7,9 @@
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
 #include "SDL_video.h"
-#include "o_scene.h"
-#include "fsm.h"
 #include "fsm_start.h"
+#include "fsm.h"
+#include "scene.h"
 #include "types.h"
 #include "wrapped.h"
 #include "o_background.h"
@@ -19,11 +19,7 @@
 #include "o_titles.h"
 
 void fsm_start_draw (ctx_t, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t) {
-    o_background_draw(drawing.renderer);
-
-    o_scene_draw(drawing.renderer,
-                 drawing.colors,
-                 scene);
+    o_background_draw(drawing.renderer, drawing.colors, scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
@@ -71,5 +67,5 @@ void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx,
             }
         }
     }
-    o_scene_update(ctx, drawing->renderer, scene);
+    scene_update(ctx, drawing->renderer, scene);
 }

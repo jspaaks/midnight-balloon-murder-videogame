@@ -2,9 +2,9 @@
 #include "SDL_scancode.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
+#include "scene.h"
 #include "types.h"
 #include "o_barrel.h"
-#include "o_scene.h"
 
 static float o_barrel_max (float, float);
 static float o_barrel_min (float, float);
