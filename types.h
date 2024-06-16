@@ -248,7 +248,6 @@ struct ctx_t {
     const Uint8 * keys;
     level_t * level;
     level_t * levels;
-    unsigned int nlevels;
 };
 
 #endif

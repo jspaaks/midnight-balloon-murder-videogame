@@ -49,7 +49,7 @@ void o_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_t color
 void o_keymap_draw_proceedhint (ctx_t ctx, SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene, ground_t ground, counters_t counters) {
     SDL_Color color = colors.middlegray;
     char str[100];
-    if (ctx.ilevel == ctx.nlevels - 1) {
+    if (ctx.level->label == LEVEL_BERSERKER) {
         sprintf(str, "FINAL LEVEL");
     } else if (counters.nballoons.miss > ctx.level->nballoons.prespawn - ctx.level->nballoons.proceed) {
         sprintf(str, "NOT ENOUGH HITS TO PROCEED TO NEXT LEVEL");

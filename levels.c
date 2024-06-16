@@ -109,19 +109,20 @@ void levels_init (ctx_t * ctx) {
     ctx->ilevel_unlocked = 0;
     ctx->level = &levels[0];
     ctx->levels = &levels[0];
-    ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
 }
 
 void levels_set (scene_t scene, unsigned int ilevel, ctx_t * ctx, counters_t * counters, drawables_t * drawables) {
+
     // --- deinit entities from previous levels
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
     o_collisions_deinit(&drawables->collisions);
+
     // --- new level
     ctx->ilevel = ilevel;
     ctx->level = &levels[ilevel];
     ctx->levels = &levels[0];
-    ctx->nlevels = sizeof(levels) / sizeof(levels[0]);
+
     // --- concrete entities
     drawables->ground = o_ground_init(scene);
     drawables->moon = o_moon_init(scene);

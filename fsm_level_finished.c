@@ -194,7 +194,7 @@ void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters, ctx_t
         ctx->ilevel_unlocked = ctx->ilevel +  1;
     }
     next_unlocked = ctx->ilevel + 1 <= ctx->ilevel_unlocked;
-    next_exists = ctx->ilevel + 1 < ctx->nlevels;
+    next_exists = ctx->level->label < LEVEL_BERSERKER;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
