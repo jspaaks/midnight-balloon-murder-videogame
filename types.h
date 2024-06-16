@@ -161,8 +161,8 @@ struct fonts_t {
 };
 
 struct gamestate_t {
-    void (*draw)(ctx_t, scene_t, drawing_t, drawables_t, counters_t);
-    void (*update)(SDL_Window *, timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **, scene_t *);
+    void (*draw)(ctx_t, drawing_t, drawables_t, counters_t);
+    void (*update)(timing_t, counters_t *, ctx_t *, drawing_t *, drawables_t *, gamestate_t **);
     gamestate_enum_t label;
 };
 
@@ -217,7 +217,9 @@ struct drawing_t {
     colors_t colors;
     fonts_t fonts;
     SDL_Renderer * renderer;
+    scene_t scene;
     SDL_Texture * spritesheet;
+    SDL_Window * window;
 };
 
 struct drawables_t {

@@ -31,10 +31,10 @@
 #include "o_moon.h"
 #include "o_turret.h"
 
-static void deinit (ctx_t *, SDL_Window **, drawing_t *, drawables_t *);
+static void deinit (ctx_t *, drawing_t *, drawables_t *);
 static void sdl_init (void);
 
-static void deinit (ctx_t * ctx, SDL_Window ** window, drawing_t * drawing, drawables_t * drawables) {
+static void deinit (ctx_t * ctx, drawing_t * drawing, drawables_t * drawables) {
     // --- concrete entities
     o_balloons_deinit(&drawables->balloons);
     o_bullets_deinit(&drawables->bullets);
@@ -46,7 +46,7 @@ static void deinit (ctx_t * ctx, SDL_Window ** window, drawing_t * drawing, draw
     keystate_deinit(ctx);
     // --- sdl infrastructure
     renderer_deinit(&drawing->renderer);
-    window_deinit(window);
+    window_deinit(&drawing->window);
     spritesheet_deinit(&drawing->spritesheet);
     // --- deinitialize sdl library
     SDL_Quit();
@@ -69,13 +69,11 @@ int main (void) {
     sdl_init();
     ctx_t ctx = ctx_init();
     counters_t counters = counters_init(*ctx.level);
-    scene_t scene = scene_init();
-    SDL_Window * window = window_init(scene);
-    drawing_t drawing = drawing_init(window);
-    drawables_t drawables = drawables_init(scene);
+    drawing_t drawing = drawing_init();
+    drawables_t drawables = drawables_init(drawing.scene);
     timing_t timing = timing_init();
 
-    levels_set(scene, &ctx, &counters, LEVEL_NOVICE, &drawables);
+    levels_set(drawing.scene, &ctx, &counters, LEVEL_NOVICE, &drawables);
 
     gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
     gamestate_t * frame = gamestate;
@@ -88,8 +86,8 @@ int main (void) {
     while (true) {
 
         frame = gamestate;  // so .update() and .draw() are of the same state
-        frame->draw(ctx, scene, drawing, drawables, counters);
-        frame->update(window, timing, &counters, &ctx, &drawing, &drawables, &gamestate, &scene);
+        frame->draw(ctx, drawing, drawables, counters);
+        frame->update(timing, &counters, &ctx, &drawing, &drawables, &gamestate);
 
         nframes++;
 
@@ -101,6 +99,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    deinit(&ctx, &window, &drawing, &drawables);
+    deinit(&ctx, &drawing, &drawables);
     return EXIT_SUCCESS;
 }

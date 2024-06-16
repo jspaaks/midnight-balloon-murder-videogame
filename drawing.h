@@ -3,6 +3,6 @@
 #include "SDL_video.h"
 #include "drawing.h"
 
-drawing_t drawing_init (SDL_Window *);
+drawing_t drawing_init (void);
 
 #endif

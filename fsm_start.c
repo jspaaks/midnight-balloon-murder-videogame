@@ -18,34 +18,34 @@
 #include "o_keymap.h"
 #include "o_titles.h"
 
-void fsm_start_draw (ctx_t, scene_t scene, drawing_t drawing, drawables_t drawables, counters_t) {
-    o_background_draw(drawing.renderer, drawing.colors, scene);
+void fsm_start_draw (ctx_t, drawing_t drawing, drawables_t drawables, counters_t) {
+    o_background_draw(drawing.renderer, drawing.colors, drawing.scene);
 
     o_moon_draw(drawing.renderer,
                 drawing.spritesheet,
-                scene,
+                drawing.scene,
                 drawables.moon);
 
     o_ground_draw(drawing.renderer,
                   drawing.colors,
-                  scene,
+                  drawing.scene,
                   drawables.ground);
 
     o_keymap_draw_start(drawing.renderer,
                         drawing.fonts,
                         drawing.colors,
-                        scene,
+                        drawing.scene,
                         drawables.ground);
 
     o_titles_draw_opening_title(drawing.renderer,
                                 drawing.fonts,
                                 drawing.colors,
-                                scene);
+                                drawing.scene);
 
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate, scene_t * scene) {
+void fsm_start_update (timing_t, counters_t *, ctx_t * ctx, drawing_t * drawing, drawables_t *, gamestate_t ** gamestate) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -54,7 +54,7 @@ void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx,
                     SDL_Log("playing\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
-                    SDL_SetWindowFullscreen(window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    SDL_SetWindowFullscreen(drawing->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
                     ctx->isfullscreen = !ctx->isfullscreen;
                 }
                 break;
@@ -67,5 +67,5 @@ void fsm_start_update (SDL_Window * window, timing_t, counters_t *, ctx_t * ctx,
             }
         }
     }
-    scene_update(ctx, drawing->renderer, scene);
+    scene_update(ctx, drawing->renderer, &drawing->scene);
 }
