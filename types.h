@@ -202,6 +202,8 @@ struct moon_t {
 };
 
 struct scene_t {
+    bool isfullscreen;
+    bool resized;
     float scale;
     float ratio;
     SDL_FRect sim;
@@ -243,12 +245,10 @@ struct timing_t {
 struct ctx_t {
     unsigned int ilevel;
     unsigned int ilevel_unlocked;
-    bool isfullscreen;
     const Uint8 * keys;
     level_t * level;
     level_t * levels;
     unsigned int nlevels;
-    bool resized;
 };
 
 #endif

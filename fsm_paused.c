@@ -146,18 +146,18 @@ void fsm_paused_update (timing_t, chunks_t, counters_t * counters, ctx_t * ctx, 
                         *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                     }
                 } else if (event.key.keysym.sym == SDLK_F11) {
-                    SDL_SetWindowFullscreen(drawing->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
-                    ctx->isfullscreen = !ctx->isfullscreen;
+                    SDL_SetWindowFullscreen(drawing->window, drawing->scene.isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                    drawing->scene.isfullscreen = !drawing->scene.isfullscreen;
                 }
                 break;
             }
             case SDL_WINDOWEVENT: {
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    ctx->resized = true;
+                    drawing->scene.resized = true;
                 }
                 break;
             }
         }
     }
-    scene_update(ctx, drawing->renderer, &drawing->scene);
+    scene_update(drawing->renderer, &drawing->scene);
 }

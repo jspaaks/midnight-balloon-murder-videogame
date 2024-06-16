@@ -8,6 +8,8 @@ scene_t scene_init(void) {
     float h = 720.0;
     float w = 1280.0;
     return (scene_t) {
+        .isfullscreen = false,
+        .resized = true,
         .sim = {
             .h = h,
             .w = w,
@@ -25,8 +27,8 @@ scene_t scene_init(void) {
     };
 }
 
-void scene_update (ctx_t * ctx, SDL_Renderer * renderer, scene_t * scene) {
-    if (ctx->resized) {
+void scene_update (SDL_Renderer * renderer, scene_t * scene) {
+    if (scene->resized) {
         int w0;
         int h0;
         SDL_GetRendererOutputSize(renderer, &w0, &h0);
@@ -53,7 +55,7 @@ void scene_update (ctx_t * ctx, SDL_Renderer * renderer, scene_t * scene) {
             scene->tgt.y = 0;
         }
         scene->scale = scene->tgt.w / scene->sim.w;
-        ctx->resized = false;
+        scene->resized = false;
     }
 }
 

@@ -102,8 +102,8 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
                         break;
                     }
                     case SDLK_F11: {
-                        SDL_SetWindowFullscreen(drawing->window, ctx->isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
-                        ctx->isfullscreen = !ctx->isfullscreen;
+                        SDL_SetWindowFullscreen(drawing->window, drawing->scene.isfullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
+                        drawing->scene.isfullscreen = !drawing->scene.isfullscreen;
                         break;
                     }
                 }
@@ -113,7 +113,7 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
                 switch (event.window.event) {
                     case SDL_WINDOWEVENT_RESIZED:  // fallthrough
                     case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                         ctx->resized = true;
+                        drawing->scene.resized = true;
                         break;
                     }
                 }
@@ -121,7 +121,7 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
             }
         }
     }
-    scene_update(ctx, drawing->renderer, &drawing->scene);
+    scene_update(drawing->renderer, &drawing->scene);
 
     o_barrel_update(timing,
                     *ctx,
