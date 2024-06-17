@@ -147,9 +147,9 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
                         drawing->scene,
                         drawables->ground,
                         chunks,
+                        drawables->balloons,
+                        drawables->bullets,
                         counters,
-                        &drawables->balloons,
-                        &drawables->bullets,
                         &drawables->collisions);
 
     bool no_more_balloons = counters->nballoons.prespawn + counters->nballoons.airborne == 0;

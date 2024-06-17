@@ -10,10 +10,10 @@
 #include "o_collisions.h"
 
 static bool o_collisions_colliding(balloon_t *, bullet_t *);
-static void o_collisions_update_pos (timing_t, collision_t **);
+static void o_collisions_update_pos (timing_t, collision_t *);
 static void o_collisions_update_remove(collision_t **);
-static void o_collisions_update_spawn (chunks_t, counters_t *, balloon_t **, bullet_t **);
-static void o_collisions_update_test_exited (scene_t, ground_t, collision_t **);
+static void o_collisions_update_spawn (chunks_t, balloon_t *, bullet_t *, counters_t *);
+static void o_collisions_update_test_exited (scene_t, ground_t, collision_t *);
 
 static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
@@ -56,16 +56,16 @@ collision_t * o_collisions_init (void) {
     return NULL;
 }
 
-void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks, counters_t * counters, balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions) {
-    o_collisions_update_test_exited(scene, ground, collisions);
+void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks, balloon_t * balloons, bullet_t * bullets, counters_t * counters, collision_t ** collisions) {
+    o_collisions_update_test_exited(scene, ground, *collisions);
     o_collisions_update_remove(collisions);
-    o_collisions_update_pos(timing, collisions);
-    o_collisions_update_spawn(chunks, counters, balloons, bullets);
+    o_collisions_update_pos(timing, *collisions);
+    o_collisions_update_spawn(chunks, balloons, bullets, counters);
 }
 
-static void o_collisions_update_pos (timing_t timing, collision_t ** collisions) {
+static void o_collisions_update_pos (timing_t timing, collision_t * collisions) {
     const float gravity = 70; // pixels per second per second
-    collision_t * c = *collisions;
+    collision_t * c = collisions;
     while (c != NULL) {
         c->sim2.v += gravity * timing.dt.frame;
         c->sim.x += c->sim2.u * timing.dt.frame;
@@ -119,10 +119,10 @@ static void o_collisions_update_remove (collision_t ** collisions) {
     }
 }
 
-static void o_collisions_update_spawn (chunks_t chunks, counters_t * counters, balloon_t ** balloons, bullet_t ** bullets) {
-    balloon_t * ba = *balloons;
+static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bullet_t * bullets, counters_t * counters) {
+    balloon_t * ba = balloons;
     while (ba != NULL) {
-        bullet_t * bu = *bullets;
+        bullet_t * bu = bullets;
         while (bu != NULL) {
             if (o_collisions_colliding(ba, bu)) {
 
@@ -133,8 +133,7 @@ static void o_collisions_update_spawn (chunks_t chunks, counters_t * counters, b
                 ba->state = HIT;
                 bu->state = HIT;
 
-                // spawn collision effect
-                // TODO
+                // play sound effect
                 Mix_PlayChannel(-1, chunks.pop, 0);
                 switch (ba->value) {
                     case 3: {
@@ -153,6 +152,9 @@ static void o_collisions_update_spawn (chunks_t chunks, counters_t * counters, b
                         SDL_LogError(SDL_UNSUPPORTED, "Something went wrong with assigning the sound to the collision.\n");
                     }
                 }
+
+                // spawn collision effect
+                // TODO
             }
             bu = bu->next;
         }
@@ -160,8 +162,8 @@ static void o_collisions_update_spawn (chunks_t chunks, counters_t * counters, b
     }
 }
 
-static void o_collisions_update_test_exited (scene_t scene, ground_t ground, collision_t ** collisions) {
-    collision_t * this = *collisions;
+static void o_collisions_update_test_exited (scene_t scene, ground_t ground, collision_t * collisions) {
+    collision_t * this = collisions;
     bool exited;
     while (this != NULL) {
         exited = this->sim.y < 0 - this->sim.h  ||

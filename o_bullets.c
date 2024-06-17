@@ -13,10 +13,10 @@
 #include "scene.h"
 #include "o_bullets.h"
 
-static void o_bullets_update_pos (timing_t, bullet_t **);
+static void o_bullets_update_pos (timing_t, bullet_t *);
 static void o_bullets_update_remove (counters_t *, bullet_t **);
 static void o_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, flash_t *, bullet_t **);
-static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t **);
+static void o_bullets_update_test_exited (scene_t, ground_t,  bullet_t *);
 
 void o_bullets_deinit (bullet_t ** bullets) {
     bullet_t * b = *bullets;
@@ -43,13 +43,13 @@ bullet_t * o_bullets_init (void) {
 
 void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks, counters_t * counters, barrel_t * barrel, flash_t * flash, bullet_t ** bullets) {
     // mark bullets that are out of frame
-    o_bullets_update_test_exited(scene, ground, bullets);
+    o_bullets_update_test_exited(scene, ground, *bullets);
 
     // if bullet is marked for deletion, delete it from the list
     o_bullets_update_remove(counters, bullets);
 
     // update position
-    o_bullets_update_pos(timing, bullets);
+    o_bullets_update_pos(timing, *bullets);
 
     // if SPACE down, add a bullet to the list
     o_bullets_update_spawn(chunks, counters, barrel, flash, bullets);
@@ -104,9 +104,9 @@ static void o_bullets_update_spawn (chunks_t chunks, counters_t * counters, barr
     }
 }
 
-static void o_bullets_update_pos (timing_t timing, bullet_t ** bullets) {
+static void o_bullets_update_pos (timing_t timing, bullet_t * bullets) {
     const float gravity = 70; // pixels per second per second
-    bullet_t * b = *bullets;
+    bullet_t * b = bullets;
     while (b != NULL) {
         b->sim2.v += gravity * timing.dt.frame;
         b->sim.x += b->sim2.u * timing.dt.frame;
@@ -166,8 +166,8 @@ void o_bullets_update_remove (counters_t * counters, bullet_t ** bullets) {
     }
 }
 
-static void o_bullets_update_test_exited (scene_t scene, ground_t ground,  bullet_t ** bullets) {
-    bullet_t * this = *bullets;
+static void o_bullets_update_test_exited (scene_t scene, ground_t ground,  bullet_t * bullets) {
+    bullet_t * this = bullets;
     bool exited;
     while (this != NULL) {
         exited = this->sim.y < 0 - this->sim.h  ||
