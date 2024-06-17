@@ -9,60 +9,27 @@ cd <your project dir>
 git clone https://github.com/jspaaks/libsdl2-game.git --recursive .
 ```
 
-Compile and install SDL2 from the bundled submodule (`third_party/sdl`):
+## Building with CMake
 
 ```shell
-cd <project dir>
-mkdir -p build/sdl
-cd build/sdl
-../../third_party/sdl/configure --prefix <project dir>/lib
-make
-make install
-```
-After this, `sdl-config --version` returns `2.31.0`.
+# generate the build files
+mkdir build && cd build
+cmake .. -DSDL2MIXER_OPUS=OFF \
+         -DSDL2MIXER_MOD=OFF \
+         -DSDL2MIXER_MIDI_FLUIDSYNTH=OFF \
+         -DSDL2MIXER_WAVPACK=OFF
 
-Compile and install SDL_ttf from the bundled submodule (`third_party/sdl_ttf`):
+# compile using the generated build files
+cmake --build .
 
-```shell
-cd <project dir>
-mkdir -p build/sdl_ttf
-cd build/sdl_ttf
-../../third_party/sdl_ttf/configure --prefix <project dir>/lib
-make
-make install
+# Run the binary from the project root
+cd .. && ./build/src/mbm
 ```
 
-Compile and install SDL_mixer from the bundled submodule (`third_party/sdl_mixer`):
+### See also
 
-```shell
-cd <project dir>
-mkdir -p build/sdl_mixer
-cd build/sdl_mixer
-../../third_party/sdl_mixer/configure --prefix <project dir>/lib
-make
-make install
-```
-
-## Uninstalling SDL2
-
-```shell
-cd <your project dir>/build/sdl
-make uninstall
-```
-
-## Uninstalling SDL_ttf
-
-```shell
-cd <your project dir>/build/sdl_ttf
-make uninstall
-```
-
-## Uninstalling SDL_mixer
-
-```shell
-cd <your project dir>/build/sdl_mixer
-make uninstall
-```
+- https://www.youtube.com/watch?v=IZXNsim9TWI Bret Brown CppCon 2021
+- https://www.youtube.com/watch?v=eC9-iRN2b04 Mathieu Ropert CppCon 2017
 
 ## Generating a bitmap image from SVG
 

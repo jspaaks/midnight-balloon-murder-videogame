@@ -10,7 +10,7 @@ void spritesheet_deinit (SDL_Texture ** spritesheet) {
 }
 
 SDL_Texture * spritesheet_init (SDL_Renderer * renderer) {
-    SDL_Surface * image = SDL_LoadBMP("img/sprites.bmp");
+    SDL_Surface * image = SDL_LoadBMP("images/sprites.bmp");
     if (image == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong creating spritesheet surface: %s\n",
                      SDL_GetError());
