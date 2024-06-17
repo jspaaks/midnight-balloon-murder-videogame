@@ -1,7 +1,7 @@
-#include "SDL_error.h"
-#include "SDL_render.h"
-#include "SDL_hints.h"
 #include "renderer.h"
+#include "SDL_error.h"
+#include "SDL_hints.h"
+#include "SDL_render.h"
 #include "types.h"
 
 void renderer_deinit (SDL_Renderer ** renderer) {

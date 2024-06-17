@@ -1,10 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "SDL_error.h"
-#include "SDL_log.h"
-#include "SDL_timer.h"
-#include "SDL.h"
 #include "chunks.h"
 #include "colors.h"
 #include "counters.h"
@@ -13,12 +6,6 @@
 #include "fonts.h"
 #include "fsm.h"
 #include "levels.h"
-#include "renderer.h"
-#include "scene.h"
-#include "spritesheet.h"
-#include "timing.h"
-#include "types.h"
-#include "window.h"
 #include "o_balloons.h"
 #include "o_barrel.h"
 #include "o_bullets.h"
@@ -28,6 +15,19 @@
 #include "o_legend.h"
 #include "o_moon.h"
 #include "o_turret.h"
+#include "renderer.h"
+#include "scene.h"
+#include "SDL.h"
+#include "SDL_error.h"
+#include "SDL_log.h"
+#include "SDL_timer.h"
+#include "spritesheet.h"
+#include "timing.h"
+#include "types.h"
+#include "window.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 static void deinit (chunks_t *, drawing_t *, drawables_t *);
 static void sdl_init (void);
@@ -82,7 +82,7 @@ int main (void) {
     SDL_Log("starting\n");
     while (true) {
 
-        frame = gamestate;  // so .update() and .draw() are of the same state
+        frame = gamestate; // so .update() and .draw() are of the same state
         frame->draw(level, drawing, drawables, counters);
         frame->update(timing, chunks, &counters, &drawing, &drawables, &gamestate, &level);
 

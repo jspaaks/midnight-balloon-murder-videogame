@@ -2,6 +2,6 @@
 #define COUNTERS_H
 #include "types.h"
 
-counters_t counters_init (level_t);
+counters_t counters_init(level_t);
 
 #endif

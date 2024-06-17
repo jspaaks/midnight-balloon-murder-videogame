@@ -1,21 +1,21 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "o_collisions.h"
+#include "o_balloons.h"
+#include "o_bullets.h"
 #include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
 #include "types.h"
-#include "o_balloons.h"
-#include "o_bullets.h"
-#include "o_collisions.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-static bool o_collisions_colliding(balloon_t *, bullet_t *);
+static bool o_collisions_colliding (balloon_t *, bullet_t *);
 static void o_collisions_update_pos (timing_t, collision_t *);
-static void o_collisions_update_remove(collision_t **);
+static void o_collisions_update_remove (collision_t **);
 static void o_collisions_update_spawn (chunks_t, balloon_t *, bullet_t *, counters_t *);
 static void o_collisions_update_test_exited (scene_t, ground_t, collision_t *);
 
-static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
+static bool o_collisions_colliding (balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
     float ba_r = ba->sim.x + ba->sim.w;
     float ba_t = ba->sim.y;
@@ -26,10 +26,7 @@ static bool o_collisions_colliding(balloon_t * ba, bullet_t * bu) {
     float bu_t = bu->sim.y;
     float bu_b = bu->sim.y + bu->sim.h;
 
-    bool separated = ba_t > bu_b ||
-                     ba_r < bu_l ||
-                     ba_b < bu_t ||
-                     ba_l > bu_r;
+    bool separated = ba_t > bu_b || ba_r < bu_l || ba_b < bu_t || ba_l > bu_r;
 
     return !separated;
 }
@@ -56,7 +53,9 @@ collision_t * o_collisions_init (void) {
     return NULL;
 }
 
-void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks, balloon_t * balloons, bullet_t * bullets, counters_t * counters, collision_t ** collisions) {
+void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks,
+                          balloon_t * balloons, bullet_t * bullets, counters_t * counters,
+                          collision_t ** collisions) {
     o_collisions_update_test_exited(scene, ground, *collisions);
     o_collisions_update_remove(collisions);
     o_collisions_update_pos(timing, *collisions);
@@ -82,7 +81,7 @@ static void o_collisions_update_remove (collision_t ** collisions) {
     while (this != NULL) {
         isfirst = prev == NULL;
         doremove = this->state != ALIVE;
-        switch (isfirst << 1 | doremove ) {
+        switch (isfirst << 1 | doremove) {
             case 0: {
                 // not first, not remove
                 prev = this;
@@ -112,14 +111,16 @@ static void o_collisions_update_remove (collision_t ** collisions) {
                 break;
             }
             default: {
-                SDL_LogError(SDL_UNSUPPORTED, "Something went wrong in removing a collision from the list.\n");
+                SDL_LogError(SDL_UNSUPPORTED,
+                             "Something went wrong in removing a collision from the list.\n");
                 exit(EXIT_FAILURE);
             }
         }
     }
 }
 
-static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bullet_t * bullets, counters_t * counters) {
+static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bullet_t * bullets,
+                                       counters_t * counters) {
     balloon_t * ba = balloons;
     while (ba != NULL) {
         bullet_t * bu = bullets;
@@ -149,7 +150,9 @@ static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bu
                         break;
                     }
                     default: {
-                        SDL_LogError(SDL_UNSUPPORTED, "Something went wrong with assigning the sound to the collision.\n");
+                        SDL_LogError(
+                            SDL_UNSUPPORTED,
+                            "Something went wrong with assigning the sound to the collision.\n");
                     }
                 }
 
@@ -162,14 +165,13 @@ static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bu
     }
 }
 
-static void o_collisions_update_test_exited (scene_t scene, ground_t ground, collision_t * collisions) {
+static void o_collisions_update_test_exited (scene_t scene, ground_t ground,
+                                             collision_t * collisions) {
     collision_t * this = collisions;
     bool exited;
     while (this != NULL) {
-        exited = this->sim.y < 0 - this->sim.h  ||
-                 this->sim.x > scene.sim.w ||
-                 this->sim.x < 0 - this->sim.w  ||
-                 this->sim.y > scene.sim.h - ground.sim.h;
+        exited = this->sim.y < 0 - this->sim.h || this->sim.x > scene.sim.w ||
+                 this->sim.x < 0 - this->sim.w || this->sim.y > scene.sim.h - ground.sim.h;
         if (exited) {
             this->state = EXITED;
         }

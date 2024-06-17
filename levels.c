@@ -1,8 +1,5 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include "counters.h"
-#include "types.h"
 #include "levels.h"
+#include "counters.h"
 #include "o_balloons.h"
 #include "o_barrel.h"
 #include "o_bullets.h"
@@ -12,6 +9,9 @@
 #include "o_legend.h"
 #include "o_moon.h"
 #include "o_turret.h"
+#include "types.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 static level_t levels[] = {
     {
@@ -116,7 +116,8 @@ level_t levels_get_level (level_enum_t label) {
     return levels[label];
 }
 
-void levels_reset_level (level_t level, drawing_t drawing, drawables_t * drawables, counters_t * counters) {
+void levels_reset_level (level_t level, drawing_t drawing, drawables_t * drawables,
+                         counters_t * counters) {
 
     // --- deinit entities from previous levels
     o_balloons_deinit(&drawables->balloons);

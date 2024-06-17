@@ -1,7 +1,7 @@
-#include "SDL_rect.h"
-#include "scene.h"
-#include "types.h"
 #include "o_moon.h"
+#include "scene.h"
+#include "SDL_rect.h"
+#include "types.h"
 
 void o_moon_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, moon_t moon) {
     SDL_Rect tgt = sim2tgt(scene, moon.sim);

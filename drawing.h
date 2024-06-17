@@ -1,7 +1,8 @@
 #ifndef DRAWING_H
 #define DRAWING_H
-#include "SDL_video.h"
 #include "drawing.h"
+#include "SDL_video.h"
+#include "types.h"
 
 drawing_t drawing_init (void);
 

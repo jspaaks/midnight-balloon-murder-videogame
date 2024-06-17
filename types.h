@@ -1,12 +1,12 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <stdbool.h>
 #include "SDL_mixer.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_ttf.h"
 #include "SDL_video.h"
+#include <stdbool.h>
 
 typedef enum {
     ALIVE = 0,
@@ -54,10 +54,12 @@ typedef struct turret_t turret_t;
 struct balloon_t {
     struct balloon_t * next;
     SDL_FRect sim;
+
     struct {
         float u;
         float v;
     } sim2;
+
     SDL_Rect src;
     delete_reason_t state;
     unsigned int value;
@@ -67,6 +69,7 @@ struct barrel_t {
     unsigned int countdown_duration;
     unsigned int countdown_remaining;
     SDL_FRect sim;
+
     struct {
         float angle;
         SDL_FPoint pivot;
@@ -74,6 +77,7 @@ struct barrel_t {
         float length;
         float speed;
     } sim2;
+
     SDL_Rect src;
 };
 
@@ -81,20 +85,24 @@ struct bullet_t {
     struct bullet_t * next;
     const SDL_Rect * src;
     SDL_FRect sim;
+
     struct {
         float u;
         float v;
     } sim2;
+
     delete_reason_t state;
 };
 
 struct chunks_t {
     Mix_Chunk * empty;
+
     struct {
         Mix_Chunk * orange;
         Mix_Chunk * red;
         Mix_Chunk * yellow;
     } hit;
+
     Mix_Chunk * pop;
     Mix_Chunk * shoot;
 };
@@ -109,6 +117,7 @@ struct counters_t {
         unsigned int red;
         unsigned int yellow;
     } nballoons;
+
     struct {
         unsigned int airborne;
         unsigned int prespawn;
@@ -118,10 +127,12 @@ struct counters_t {
 struct collision_t {
     struct collision_t * next;
     SDL_FRect sim;
+
     struct {
         float u;
         float v;
     } sim2;
+
     delete_reason_t state;
 };
 
@@ -145,9 +156,11 @@ struct flash_t {
     unsigned int countdown_remaining;
     bool had_bullets;
     SDL_FRect sim;
+
     struct {
         SDL_FPoint pivot_offset;
     } sim2;
+
     SDL_Rect src;
 };
 
@@ -161,7 +174,8 @@ struct fonts_t {
 
 struct gamestate_t {
     void (*draw)(level_t, drawing_t, drawables_t, counters_t);
-    void (*update)(timing_t, chunks_t, counters_t *, drawing_t *, drawables_t *, gamestate_t **, level_t *);
+    void (*update)(timing_t, chunks_t, counters_t *, drawing_t *, drawables_t *, gamestate_t **,
+                   level_t *);
     gamestate_enum_t label;
 };
 
@@ -171,9 +185,11 @@ struct ground_t {
 
 struct legend_t {
     unsigned int nbars;
+
     struct {
         SDL_FRect sim;
     } bars[10];
+
     struct {
         SDL_FRect sim;
         SDL_Color bg;
@@ -184,6 +200,7 @@ struct level_t {
     level_enum_t label;
     level_enum_t label_next;
     char name[20];
+
     struct {
         unsigned int orange;
         unsigned int prespawn;
@@ -191,9 +208,11 @@ struct level_t {
         unsigned int red;
         unsigned int yellow;
     } nballoons;
+
     struct {
         unsigned int prespawn;
     } nbullets;
+
     bool next_unlocked;
 };
 
@@ -239,7 +258,7 @@ struct drawables_t {
 
 struct timing_t {
     struct {
-        float frame;    // s
+        float frame; // s
     } dt;
 };
 

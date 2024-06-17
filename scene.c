@@ -1,10 +1,10 @@
+#include "scene.h"
+#include "SDL_log.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
-#include "SDL_log.h"
-#include "scene.h"
 #include "types.h"
 
-scene_t scene_init(void) {
+scene_t scene_init (void) {
     float h = 720.0;
     float w = 1280.0;
     return (scene_t) {
@@ -38,13 +38,13 @@ void scene_update (SDL_Renderer * renderer, scene_t * scene) {
         if (ratio > scene->ratio) {
             // -- too wide
             scene->tgt.h = h;
-            scene->tgt.w = (int)(scene->ratio * h);
+            scene->tgt.w = (int) (scene->ratio * h);
             scene->tgt.x = (int) ((w - scene->tgt.w) / 2);
             scene->tgt.y = 0;
         } else if (ratio < scene->ratio) {
             // -- too tall
             scene->tgt.w = w;
-            scene->tgt.h = (int)(w / scene->ratio);
+            scene->tgt.h = (int) (w / scene->ratio);
             scene->tgt.x = 0;
             scene->tgt.y = (int) ((h - scene->tgt.h) / 2);
         } else {
@@ -59,11 +59,11 @@ void scene_update (SDL_Renderer * renderer, scene_t * scene) {
     }
 }
 
-SDL_Rect sim2tgt(scene_t scene, SDL_FRect sim) {
+SDL_Rect sim2tgt (scene_t scene, SDL_FRect sim) {
     return (SDL_Rect){
-        .x = scene.tgt.x + (int)(sim.x * scene.scale),
-        .y = scene.tgt.y + (int)(sim.y * scene.scale),
-        .w = (int)(sim.w * scene.scale),
-        .h = (int)(sim.h * scene.scale),
+        .x = scene.tgt.x + (int) (sim.x * scene.scale),
+        .y = scene.tgt.y + (int) (sim.y * scene.scale),
+        .w = (int) (sim.w * scene.scale),
+        .h = (int) (sim.h * scene.scale),
     };
 }

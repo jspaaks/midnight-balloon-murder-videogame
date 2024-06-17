@@ -1,11 +1,12 @@
-#include <assert.h>
-#include "SDL_render.h"
-#include "SDL_rect.h"
-#include "scene.h"
-#include "types.h"
 #include "o_turret.h"
+#include "scene.h"
+#include "SDL_rect.h"
+#include "SDL_render.h"
+#include "types.h"
+#include <assert.h>
 
-void o_turret_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, turret_t turret) {
+void o_turret_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+                    turret_t turret) {
     SDL_Rect tgt = sim2tgt(scene, turret.sim);
     SDL_RenderCopy(renderer, spritesheet, &turret.src, &tgt);
 }
@@ -21,11 +22,12 @@ turret_t o_turret_init (scene_t scene, ground_t ground) {
     };
     return (turret_t){
         .sim = sim,
-        .src = (SDL_Rect) {
-            .h = 47,
-            .w = 69,
-            .x = 4,
-            .y = 1,
-        },
+        .src =
+            (SDL_Rect){
+                       .h = 47,
+                       .w = 69,
+                       .x = 4,
+                       .y = 1,
+                       },
     };
 }

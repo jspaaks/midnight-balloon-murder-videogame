@@ -1,25 +1,23 @@
-#include <stdio.h>
-#include <assert.h>
+#include "o_flash.h"
+#include "scene.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_timer.h"
-#include "scene.h"
 #include "types.h"
-#include "o_flash.h"
+#include <assert.h>
+#include <stdio.h>
 
-void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, barrel_t barrel, flash_t flash) {
+void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+                   barrel_t barrel, flash_t flash) {
     bool show = flash.countdown_remaining > 0 && flash.had_bullets;
     if (show) {
         SDL_Rect tgt = sim2tgt(scene, flash.sim);
-        SDL_Point pivot_offset = (SDL_Point) {
+        SDL_Point pivot_offset = (SDL_Point){
             .x = (int) (flash.sim2.pivot_offset.x * scene.scale),
             .y = (int) (flash.sim2.pivot_offset.y * scene.scale),
         };
-        SDL_RenderCopyEx(renderer, spritesheet, &flash.src,
-                                                &tgt,
-                                                barrel.sim2.angle,
-                                                &pivot_offset,
-                                                SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, spritesheet, &flash.src, &tgt, barrel.sim2.angle, &pivot_offset,
+                         SDL_FLIP_NONE);
     }
 }
 

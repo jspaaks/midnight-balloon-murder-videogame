@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include "SDL_mixer.h"
 #include "chunks.h"
+#include "SDL_mixer.h"
+#include <stdlib.h>
 
-void chunks_deinit(chunks_t * chunks) {
+void chunks_deinit (chunks_t * chunks) {
 
     // clean up chunks
     Mix_FreeChunk(chunks->shoot);
@@ -27,32 +27,29 @@ void chunks_deinit(chunks_t * chunks) {
     Mix_Quit();
 }
 
-chunks_t chunks_init(void) {
+chunks_t chunks_init (void) {
 
     // --- initialize the audio module
 
     MIX_InitFlags flags = 0x00000000 | MIX_INIT_MP3;
     if ((Mix_Init(flags) & 0x11111111) == flags) {
-        SDL_LogError(SDL_UNSUPPORTED, "Something went wrong initializing the audio. %s\n", Mix_GetError());
+        SDL_LogError(SDL_UNSUPPORTED, "Something went wrong initializing the audio. %s\n",
+                     Mix_GetError());
         exit(EXIT_FAILURE);
     }
 
     // --- open an audio device
 
-    int frequency = 48000;  // Hz
+    int frequency = 48000; // Hz
     Uint16 format = AUDIO_F32SYS;
     int nchannels = 2;
     int chunksize = 4096;
     const char * device = NULL;
     int allowed_changes = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE;
 
-    if (Mix_OpenAudioDevice(frequency,
-                            format,
-                            nchannels,
-                            chunksize,
-                            device,
-                            allowed_changes) < 0) {
-        SDL_LogError(SDL_UNSUPPORTED, "Something went wrong opening the audio device. %s\n", Mix_GetError());
+    if (Mix_OpenAudioDevice(frequency, format, nchannels, chunksize, device, allowed_changes) < 0) {
+        SDL_LogError(SDL_UNSUPPORTED, "Something went wrong opening the audio device. %s\n",
+                     Mix_GetError());
         exit(EXIT_FAILURE);
     }
 

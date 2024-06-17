@@ -1,17 +1,17 @@
-#include <assert.h>
-#include <stdbool.h>
-#include <stdlib.h>
+#include "o_balloons.h"
+#include "levels.h"
+#include "scene.h"
 #include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "SDL_timer.h"
-#include "levels.h"
-#include "scene.h"
 #include "types.h"
-#include "o_balloons.h"
+#include <assert.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
-static float o_balloons_unitrand(void);
+static float o_balloons_unitrand (void);
 static void o_balloons_update_pos (timing_t, balloon_t *);
 static void o_balloons_update_remove (balloon_t **, counters_t *);
 static void o_balloons_update_spawn (timing_t, scene_t, ground_t, balloon_t **, counters_t *);
@@ -30,7 +30,8 @@ void o_balloons_deinit (balloon_t ** balloons) {
     *balloons = NULL;
 }
 
-void o_balloons_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, balloon_t * balloons) {
+void o_balloons_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+                      balloon_t * balloons) {
     balloon_t * b = balloons;
     while (b != NULL) {
         SDL_Rect tgt = sim2tgt(scene, b->sim);
@@ -43,26 +44,29 @@ balloon_t * o_balloons_init (void) {
     return NULL;
 }
 
-static float o_balloons_unitrand(void) {
-    return (float)(rand()) / (float)(RAND_MAX);
+static float o_balloons_unitrand (void) {
+    return (float) (rand()) / (float) (RAND_MAX);
 }
 
-void o_balloons_update (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, counters_t * counters) {
+void o_balloons_update (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons,
+                        counters_t * counters) {
     o_balloons_update_test_exited(scene, ground, *balloons);
     o_balloons_update_remove(balloons, counters);
     o_balloons_update_pos(timing, *balloons);
     o_balloons_update_spawn(timing, scene, ground, balloons, counters);
 }
 
-static void o_balloons_update_spawn (timing_t timing, scene_t scene, ground_t ground, balloon_t ** balloons, counters_t * counters) {
+static void o_balloons_update_spawn (timing_t timing, scene_t scene, ground_t ground,
+                                     balloon_t ** balloons, counters_t * counters) {
     static const float spawn_rate = 0.35; // balloons per second
     float spawn_chance = counters->nballoons.airborne == 0 ? 1 : spawn_rate * timing.dt.frame;
     if (counters->nballoons.prespawn <= 0 || o_balloons_unitrand() > spawn_chance) {
         return;
     }
-    unsigned int remaining = counters->nballoons.yellow + counters->nballoons.orange + counters->nballoons.red;
-    float y = (float)(counters->nballoons.yellow) / remaining;
-    float o = (float)(counters->nballoons.orange) / remaining;
+    unsigned int remaining =
+        counters->nballoons.yellow + counters->nballoons.orange + counters->nballoons.red;
+    float y = (float) (counters->nballoons.yellow) / remaining;
+    float o = (float) (counters->nballoons.orange) / remaining;
     float u = o_balloons_unitrand();
     if (u < y) {
         o_balloons_update_spawn_yellow(scene, ground, balloons);
@@ -81,7 +85,8 @@ static void o_balloons_update_spawn (timing_t timing, scene_t scene, ground_t gr
 static void o_balloons_update_spawn_orange (scene_t scene, ground_t ground, balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new orange balloon.\n");
+        SDL_LogError(SDL_ENOMEM,
+                     "Something went wrong allocating memory for new orange balloon.\n");
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
@@ -141,7 +146,8 @@ static void o_balloons_update_spawn_red (scene_t scene, ground_t ground, balloon
 static void o_balloons_update_spawn_yellow (scene_t scene, ground_t ground, balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new yellow balloon.\n");
+        SDL_LogError(SDL_ENOMEM,
+                     "Something went wrong allocating memory for new yellow balloon.\n");
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
@@ -185,7 +191,7 @@ static void o_balloons_update_remove (balloon_t ** balloons, counters_t * counte
     while (this != NULL) {
         isfirst = prev == NULL;
         doremove = this->state != ALIVE;
-        switch (isfirst << 1 | doremove ) {
+        switch (isfirst << 1 | doremove) {
             case 0: {
                 // not first, not remove
                 prev = this;
@@ -231,7 +237,8 @@ static void o_balloons_update_remove (balloon_t ** balloons, counters_t * counte
                 break;
             }
             default: {
-                SDL_LogError(SDL_UNSUPPORTED, "Something went wrong in removing a balloon from the list.\n");
+                SDL_LogError(SDL_UNSUPPORTED,
+                             "Something went wrong in removing a balloon from the list.\n");
                 exit(EXIT_FAILURE);
             }
         }
@@ -242,10 +249,8 @@ static void o_balloons_update_test_exited (scene_t scene, ground_t ground, ballo
     balloon_t * this = balloons;
     bool exited;
     while (this != NULL) {
-        exited = this->sim.y < 0 - this->sim.h  ||
-                 this->sim.x > scene.sim.w ||
-                 this->sim.x < 0 - this->sim.w  ||
-                 this->sim.y > scene.sim.h - ground.sim.h;
+        exited = this->sim.y < 0 - this->sim.h || this->sim.x > scene.sim.w ||
+                 this->sim.x < 0 - this->sim.w || this->sim.y > scene.sim.h - ground.sim.h;
         if (exited) {
             this->state = EXITED;
         }

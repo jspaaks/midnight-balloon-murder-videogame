@@ -1,16 +1,16 @@
-#include <assert.h>
-#include "SDL_scancode.h"
+#include "o_barrel.h"
+#include "scene.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
-#include "scene.h"
+#include "SDL_scancode.h"
 #include "types.h"
-#include "o_barrel.h"
+#include <assert.h>
 
 static float o_barrel_max (float, float);
 static float o_barrel_min (float, float);
 static float o_barrel_clip (float);
 
-static float o_barrel_clip(float v) {
+static float o_barrel_clip (float v) {
     const float barrel_angle_min = -71;
     const float barrel_angle_max = -18;
     v = o_barrel_max(v, barrel_angle_min);
@@ -18,17 +18,15 @@ static float o_barrel_clip(float v) {
     return v;
 }
 
-void o_barrel_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, barrel_t barrel) {
+void o_barrel_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+                    barrel_t barrel) {
     SDL_Rect tgt = sim2tgt(scene, barrel.sim);
-    SDL_Point pivot_offset = (SDL_Point) {
+    SDL_Point pivot_offset = (SDL_Point){
         .x = (int) (barrel.sim2.pivot_offset.x * scene.scale),
         .y = (int) (barrel.sim2.pivot_offset.y * scene.scale),
     };
-    SDL_RenderCopyEx(renderer, spritesheet, &barrel.src,
-                                            &tgt,
-                                            barrel.sim2.angle,
-                                            &pivot_offset,
-                                            SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, spritesheet, &barrel.src, &tgt, barrel.sim2.angle, &pivot_offset,
+                     SDL_FLIP_NONE);
 }
 
 barrel_t o_barrel_init (turret_t turret) {
@@ -71,25 +69,26 @@ barrel_t o_barrel_init (turret_t turret) {
     };
 }
 
-static float o_barrel_max(float a, float b) {
+static float o_barrel_max (float a, float b) {
     return a > b ? a : b;
 }
 
-static float o_barrel_min(float a, float b) {
+static float o_barrel_min (float a, float b) {
     return a < b ? a : b;
 }
 
 void o_barrel_update (timing_t timing, barrel_t * barrel) {
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
-    int flags = keys[SDL_SCANCODE_W] |
-                keys[SDL_SCANCODE_S] << 1;
+    int flags = keys[SDL_SCANCODE_W] | keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + -1 * barrel->sim2.speed * timing.dt.frame);
+            barrel->sim2.angle =
+                o_barrel_clip(barrel->sim2.angle + -1 * barrel->sim2.speed * timing.dt.frame);
             break;
         }
         case 2: {
-            barrel->sim2.angle = o_barrel_clip(barrel->sim2.angle + 1 * barrel->sim2.speed * timing.dt.frame);
+            barrel->sim2.angle =
+                o_barrel_clip(barrel->sim2.angle + 1 * barrel->sim2.speed * timing.dt.frame);
             break;
         }
     }
