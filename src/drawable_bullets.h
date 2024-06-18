@@ -1,5 +1,5 @@
-#ifndef O_BULLETS_H
-#define O_BULLETS_H
+#ifndef DRAWABLE_BULLETS_H
+#define DRAWABLE_BULLETS_H
 #include "types.h"
 
 void drawable_bullets_deinit (bullet_t **);

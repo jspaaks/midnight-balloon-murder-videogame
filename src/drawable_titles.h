@@ -1,5 +1,5 @@
-#ifndef O_TITLES_H
-#define O_TITLES_H
+#ifndef DRAWABLE_TITLES_H
+#define DRAWABLE_TITLES_H
 #include "types.h"
 
 void drawable_titles_draw_level_finished (SDL_Renderer *, fonts_t, colors_t, scene_t, counters_t);

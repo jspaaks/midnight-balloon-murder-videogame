@@ -1,5 +1,5 @@
-#ifndef O_KEYMAP_H
-#define O_KEYMAP_H
+#ifndef DRAWABLE_KEYMAP_H
+#define DRAWABLE_KEYMAP_H
 #include "types.h"
 
 void drawable_keymap_draw_move_barrel (SDL_Renderer *, fonts_t, colors_t, scene_t, turret_t,

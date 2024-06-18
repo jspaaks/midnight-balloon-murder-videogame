@@ -1,5 +1,5 @@
-#ifndef O_TURRET_H
-#define O_TURRET_H
+#ifndef DRAWABLE_TURRET_H
+#define DRAWABLE_TURRET_H
 #include "SDL_render.h"
 #include "types.h"
 

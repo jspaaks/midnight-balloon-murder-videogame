@@ -1,5 +1,5 @@
-#ifndef O_COLLISIONS_H
-#define O_COLLISIONS_H
+#ifndef DRAWABLE_COLLISIONS_H
+#define DRAWABLE_COLLISIONS_H
 #include "types.h"
 
 void drawable_collisions_deinit (collision_t **);

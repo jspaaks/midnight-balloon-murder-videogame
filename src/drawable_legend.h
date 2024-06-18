@@ -1,5 +1,5 @@
-#ifndef O_LEGEND_H
-#define O_LEGEND_H
+#ifndef DRAWABLE_LEGEND_H
+#define DRAWABLE_LEGEND_H
 #include "types.h"
 
 void drawable_legend_draw (level_t, SDL_Renderer *, fonts_t, colors_t, scene_t,

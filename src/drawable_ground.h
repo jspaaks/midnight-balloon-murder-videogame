@@ -1,5 +1,5 @@
-#ifndef O_GROUND_H
-#define O_GROUND_H
+#ifndef DRAWABLE_GROUND_H
+#define DRAWABLE_GROUND_H
 #include "SDL_render.h"
 #include "types.h"
 

@@ -1,5 +1,5 @@
-#ifndef BALLOONS_H
-#define BALLOONS_H
+#ifndef DRAWABLE_BALLOONS_H
+#define DRAWABLE_BALLOONS_H
 #include "types.h"
 
 void drawable_balloons_deinit (balloon_t **);

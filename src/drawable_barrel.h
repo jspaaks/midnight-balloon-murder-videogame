@@ -1,5 +1,5 @@
-#ifndef O_BARREL_H
-#define O_BARREL_H
+#ifndef DRAWABLE_BARREL_H
+#define DRAWABLE_BARREL_H
 #include "SDL_render.h"
 #include "types.h"
 
