@@ -1,6 +1,6 @@
-#include "o_collisions.h"
-#include "o_balloons.h"
-#include "o_bullets.h"
+#include "drawable_collisions.h"
+#include "drawable_balloons.h"
+#include "drawable_bullets.h"
 #include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
@@ -9,13 +9,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool o_collisions_colliding (balloon_t *, bullet_t *);
-static void o_collisions_update_pos (timing_t, collision_t *);
-static void o_collisions_update_remove (collision_t **);
-static void o_collisions_update_spawn (chunks_t, balloon_t *, bullet_t *, counters_t *);
-static void o_collisions_update_test_exited (scene_t, ground_t, collision_t *);
+static bool drawable_collisions_colliding (balloon_t *, bullet_t *);
+static void drawable_collisions_update_pos (timing_t, collision_t *);
+static void drawable_collisions_update_remove (collision_t **);
+static void drawable_collisions_update_spawn (chunks_t, balloon_t *, bullet_t *, counters_t *);
+static void drawable_collisions_update_test_exited (scene_t, groundrawable_t, collision_t *);
 
-static bool o_collisions_colliding (balloon_t * ba, bullet_t * bu) {
+static bool drawable_collisions_colliding (balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
     float ba_r = ba->sim.x + ba->sim.w;
     float ba_t = ba->sim.y;
@@ -31,7 +31,7 @@ static bool o_collisions_colliding (balloon_t * ba, bullet_t * bu) {
     return !separated;
 }
 
-void o_collisions_deinit (collision_t ** collisions) {
+void drawable_collisions_deinit (collision_t ** collisions) {
     collision_t * c = *collisions;
     while (c != NULL) {
         collision_t * tmp = c;
@@ -41,7 +41,7 @@ void o_collisions_deinit (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void o_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t, collision_t * collisions) {
+void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t, collision_t * collisions) {
     collision_t * c = collisions;
     SDL_SetRenderDrawColor(renderer, 166, 166, 166, 0);
     while (c != NULL) {
@@ -49,20 +49,20 @@ void o_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t, collisi
     }
 }
 
-collision_t * o_collisions_init (void) {
+collision_t * drawable_collisions_init (void) {
     return NULL;
 }
 
-void o_collisions_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks,
+void drawable_collisions_update (timing_t timing, scene_t scene, groundrawable_t ground, chunks_t chunks,
                           balloon_t * balloons, bullet_t * bullets, counters_t * counters,
                           collision_t ** collisions) {
-    o_collisions_update_test_exited(scene, ground, *collisions);
-    o_collisions_update_remove(collisions);
-    o_collisions_update_pos(timing, *collisions);
-    o_collisions_update_spawn(chunks, balloons, bullets, counters);
+    drawable_collisions_update_test_exited(scene, ground, *collisions);
+    drawable_collisions_update_remove(collisions);
+    drawable_collisions_update_pos(timing, *collisions);
+    drawable_collisions_update_spawn(chunks, balloons, bullets, counters);
 }
 
-static void o_collisions_update_pos (timing_t timing, collision_t * collisions) {
+static void drawable_collisions_update_pos (timing_t timing, collision_t * collisions) {
     const float gravity = 70; // pixels per second per second
     collision_t * c = collisions;
     while (c != NULL) {
@@ -73,7 +73,7 @@ static void o_collisions_update_pos (timing_t timing, collision_t * collisions) 
     }
 }
 
-static void o_collisions_update_remove (collision_t ** collisions) {
+static void drawable_collisions_update_remove (collision_t ** collisions) {
     collision_t * this = *collisions;
     collision_t * prev = NULL;
     bool isfirst = false;
@@ -119,13 +119,13 @@ static void o_collisions_update_remove (collision_t ** collisions) {
     }
 }
 
-static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bullet_t * bullets,
+static void drawable_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bullet_t * bullets,
                                        counters_t * counters) {
     balloon_t * ba = balloons;
     while (ba != NULL) {
         bullet_t * bu = bullets;
         while (bu != NULL) {
-            if (o_collisions_colliding(ba, bu)) {
+            if (drawable_collisions_colliding(ba, bu)) {
 
                 // increase nbullets
                 counters->nbullets.prespawn += ba->value;
@@ -165,7 +165,7 @@ static void o_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bu
     }
 }
 
-static void o_collisions_update_test_exited (scene_t scene, ground_t ground,
+static void drawable_collisions_update_test_exited (scene_t scene, groundrawable_t ground,
                                              collision_t * collisions) {
     collision_t * this = collisions;
     bool exited;

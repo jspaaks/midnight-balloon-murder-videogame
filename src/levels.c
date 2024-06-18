@@ -1,14 +1,14 @@
 #include "levels.h"
 #include "counters.h"
-#include "o_balloons.h"
-#include "o_barrel.h"
-#include "o_bullets.h"
-#include "o_collisions.h"
-#include "o_flash.h"
-#include "o_ground.h"
-#include "o_legend.h"
-#include "o_moon.h"
-#include "o_turret.h"
+#include "drawable_balloons.h"
+#include "drawable_barrel.h"
+#include "drawable_bullets.h"
+#include "drawable_collisions.h"
+#include "drawable_flash.h"
+#include "drawable_ground.h"
+#include "drawable_legend.h"
+#include "drawable_moon.h"
+#include "drawable_turret.h"
 #include "types.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -120,19 +120,19 @@ void levels_reset_level (level_t level, drawing_t drawing, drawables_t * drawabl
                          counters_t * counters) {
 
     // --- deinit entities from previous levels
-    o_balloons_deinit(&drawables->balloons);
-    o_bullets_deinit(&drawables->bullets);
-    o_collisions_deinit(&drawables->collisions);
+    drawable_balloons_deinit(&drawables->balloons);
+    drawable_bullets_deinit(&drawables->bullets);
+    drawable_collisions_deinit(&drawables->collisions);
 
     // --- concrete entities
-    drawables->ground = o_ground_init(drawing.scene);
-    drawables->moon = o_moon_init(drawing.scene);
-    drawables->turret = o_turret_init(drawing.scene, drawables->ground);
-    drawables->barrel = o_barrel_init(drawables->turret);
-    drawables->flash = o_flash_init(drawables->barrel);
-    drawables->legend = o_legend_init();
-    drawables->balloons = o_balloons_init();
-    drawables->bullets = o_bullets_init();
-    drawables->collisions = o_collisions_init();
+    drawables->ground = drawable_groundrawable_init(drawing.scene);
+    drawables->moon = drawable_moon_init(drawing.scene);
+    drawables->turret = drawable_turret_init(drawing.scene, drawables->ground);
+    drawables->barrel = drawable_barrel_init(drawables->turret);
+    drawables->flash = drawable_flash_init(drawables->barrel);
+    drawables->legend = drawable_legendrawable_init();
+    drawables->balloons = drawable_balloons_init();
+    drawables->bullets = drawable_bullets_init();
+    drawables->collisions = drawable_collisions_init();
     *counters = counters_init(level);
 }

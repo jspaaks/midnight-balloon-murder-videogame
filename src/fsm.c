@@ -17,14 +17,14 @@ static gamestate_t gamestates[] = {
      .update = fsm_playing_update,
      },
     {
-     .draw = fsm_paused_draw,
+     .draw = fsm_pausedrawable_draw,
      .label = GAMESTATE_PAUSING,
-     .update = fsm_paused_update,
+     .update = fsm_pausedrawable_update,
      },
     {
-     .draw = fsm_level_finished_draw,
+     .draw = fsm_level_finishedrawable_draw,
      .label = GAMESTATE_FINISHING_LEVEL,
-     .update = fsm_level_finished_update,
+     .update = fsm_level_finishedrawable_update,
      },
 };
 

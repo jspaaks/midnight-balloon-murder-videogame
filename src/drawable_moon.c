@@ -1,14 +1,14 @@
-#include "o_moon.h"
+#include "drawable_moon.h"
 #include "scene.h"
 #include "SDL_rect.h"
 #include "types.h"
 
-void o_moon_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, moon_t moon) {
+void drawable_moon_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene, moon_t moon) {
     SDL_Rect tgt = sim2tgt(scene, moon.sim);
     SDL_RenderCopy(renderer, spritesheet, &moon.src, &tgt);
 }
 
-moon_t o_moon_init (scene_t scene) {
+moon_t drawable_moon_init (scene_t scene) {
     return (moon_t){
         .src = (SDL_Rect){
             .x = 75,

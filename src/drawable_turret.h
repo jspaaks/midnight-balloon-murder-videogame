@@ -1,0 +1,9 @@
+#ifndef O_TURRET_H
+#define O_TURRET_H
+#include "SDL_render.h"
+#include "types.h"
+
+void drawable_turret_draw (SDL_Renderer *, SDL_Texture *, scene_t, turret_t);
+turret_t drawable_turret_init(scene_t, groundrawable_t);
+
+#endif

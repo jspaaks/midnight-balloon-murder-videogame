@@ -1,28 +1,28 @@
 #include "drawables.h"
-#include "o_balloons.h"
-#include "o_barrel.h"
-#include "o_bullets.h"
-#include "o_collisions.h"
-#include "o_flash.h"
-#include "o_ground.h"
-#include "o_legend.h"
-#include "o_moon.h"
-#include "o_turret.h"
+#include "drawable_balloons.h"
+#include "drawable_barrel.h"
+#include "drawable_bullets.h"
+#include "drawable_collisions.h"
+#include "drawable_flash.h"
+#include "drawable_ground.h"
+#include "drawable_legend.h"
+#include "drawable_moon.h"
+#include "drawable_turret.h"
 #include "types.h"
 
 drawables_t drawables_init (scene_t scene) {
-    ground_t ground = o_ground_init(scene);
-    turret_t turret = o_turret_init(scene, ground);
-    barrel_t barrel = o_barrel_init(turret);
+    groundrawable_t ground = drawable_groundrawable_init(scene);
+    turret_t turret = drawable_turret_init(scene, ground);
+    barrel_t barrel = drawable_barrel_init(turret);
     return (drawables_t){
-        .balloons = o_balloons_init(),
+        .balloons = drawable_balloons_init(),
         .barrel = barrel,
-        .bullets = o_bullets_init(),
-        .collisions = o_collisions_init(),
-        .flash = o_flash_init(barrel),
+        .bullets = drawable_bullets_init(),
+        .collisions = drawable_collisions_init(),
+        .flash = drawable_flash_init(barrel),
         .ground = ground,
-        .legend = o_legend_init(),
-        .moon = o_moon_init(scene),
+        .legend = drawable_legendrawable_init(),
+        .moon = drawable_moon_init(scene),
         .turret = turret,
     };
 }

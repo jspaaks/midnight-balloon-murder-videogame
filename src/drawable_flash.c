@@ -1,4 +1,4 @@
-#include "o_flash.h"
+#include "drawable_flash.h"
 #include "scene.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
@@ -7,9 +7,9 @@
 #include <assert.h>
 #include <stdio.h>
 
-void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+void drawable_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
                    barrel_t barrel, flash_t flash) {
-    bool show = flash.countdown_remaining > 0 && flash.had_bullets;
+    bool show = flash.countdown_remaining > 0 && flash.hadrawable_bullets;
     if (show) {
         SDL_Rect tgt = sim2tgt(scene, flash.sim);
         SDL_Point pivot_offset = (SDL_Point){
@@ -21,7 +21,7 @@ void o_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t s
     }
 }
 
-flash_t o_flash_init (barrel_t barrel) {
+flash_t drawable_flash_init (barrel_t barrel) {
     assert(barrel.sim.x != 0 && "barrel needs to be initialized before flash");
     float h = 21;
     float w = 30;
@@ -52,7 +52,7 @@ flash_t o_flash_init (barrel_t barrel) {
     };
 }
 
-void o_flash_update (timing_t timing, flash_t * flash) {
+void drawable_flash_update (timing_t timing, flash_t * flash) {
     if (flash->countdown_remaining > 0) {
         flash->countdown_remaining -= timing.dt.frame;
     }

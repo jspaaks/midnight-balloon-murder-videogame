@@ -7,6 +7,18 @@ target_sources(
         chunks.c
         colors.c
         counters.c
+        drawable_background.c
+        drawable_balloons.c
+        drawable_barrel.c
+        drawable_bullets.c
+        drawable_collisions.c
+        drawable_flash.c
+        drawable_ground.c
+        drawable_keymap.c
+        drawable_legend.c
+        drawable_moon.c
+        drawable_titles.c
+        drawable_turret.c
         drawables.c
         drawing.c
         fonts.c
@@ -17,18 +29,6 @@ target_sources(
         fsm_start.c
         levels.c
         main.c
-        o_background.c
-        o_balloons.c
-        o_barrel.c
-        o_bullets.c
-        o_collisions.c
-        o_flash.c
-        o_ground.c
-        o_keymap.c
-        o_legend.c
-        o_moon.c
-        o_titles.c
-        o_turret.c
         renderer.c
         scene.c
         spritesheet.c

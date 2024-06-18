@@ -1,4 +1,4 @@
-#include "o_bullets.h"
+#include "drawable_bullets.h"
 #include "scene.h"
 #include "SDL_error.h"
 #include "SDL_keyboard.h"
@@ -13,12 +13,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-static void o_bullets_update_pos (timing_t, bullet_t *);
-static void o_bullets_update_remove (counters_t *, bullet_t **);
-static void o_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, flash_t *, bullet_t **);
-static void o_bullets_update_test_exited (scene_t, ground_t, bullet_t *);
+static void drawable_bullets_update_pos (timing_t, bullet_t *);
+static void drawable_bullets_update_remove (counters_t *, bullet_t **);
+static void drawable_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, flash_t *, bullet_t **);
+static void drawable_bullets_update_test_exited (scene_t, groundrawable_t, bullet_t *);
 
-void o_bullets_deinit (bullet_t ** bullets) {
+void drawable_bullets_deinit (bullet_t ** bullets) {
     bullet_t * b = *bullets;
     while (b != NULL) {
         bullet_t * tmp = b;
@@ -28,7 +28,7 @@ void o_bullets_deinit (bullet_t ** bullets) {
     *bullets = NULL;
 }
 
-void o_bullets_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+void drawable_bullets_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
                      bullet_t * bullets) {
     bullet_t * bu = bullets;
     while (bu != NULL) {
@@ -38,38 +38,38 @@ void o_bullets_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t
     }
 }
 
-bullet_t * o_bullets_init (void) {
+bullet_t * drawable_bullets_init (void) {
     return NULL;
 }
 
-void o_bullets_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks,
+void drawable_bullets_update (timing_t timing, scene_t scene, groundrawable_t ground, chunks_t chunks,
                        counters_t * counters, barrel_t * barrel, flash_t * flash,
                        bullet_t ** bullets) {
     // mark bullets that are out of frame
-    o_bullets_update_test_exited(scene, ground, *bullets);
+    drawable_bullets_update_test_exited(scene, ground, *bullets);
 
     // if bullet is marked for deletion, delete it from the list
-    o_bullets_update_remove(counters, bullets);
+    drawable_bullets_update_remove(counters, bullets);
 
     // update position
-    o_bullets_update_pos(timing, *bullets);
+    drawable_bullets_update_pos(timing, *bullets);
 
     // if SPACE down, add a bullet to the list
-    o_bullets_update_spawn(chunks, counters, barrel, flash, bullets);
+    drawable_bullets_update_spawn(chunks, counters, barrel, flash, bullets);
 }
 
-static void o_bullets_update_spawn (chunks_t chunks, counters_t * counters, barrel_t * barrel,
+static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counters, barrel_t * barrel,
                                     flash_t * flash, bullet_t ** bullets) {
     static const float PI = 3.14159265358979323846f;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
     bool has_bullets = counters->nbullets.prespawn > 0;
     bool key_pressed = keys[SDL_SCANCODE_SPACE];
-    bool cooled_down = barrel->countdown_remaining <= 0;
+    bool cooledrawable_down = barrel->countdown_remaining <= 0;
 
-    if (key_pressed && cooled_down) {
+    if (key_pressed && cooledrawable_down) {
         if (has_bullets) {
-            flash->had_bullets = true;
+            flash->hadrawable_bullets = true;
             bullet_t * b = malloc(1 * sizeof(bullet_t));
             if (b == NULL) {
                 SDL_LogError(SDL_ENOMEM,
@@ -104,14 +104,14 @@ static void o_bullets_update_spawn (chunks_t chunks, counters_t * counters, barr
             Mix_PlayChannel(-1, chunks.shoot, 0);
         } else {
             Mix_PlayChannel(-1, chunks.empty, 0);
-            flash->had_bullets = false;
+            flash->hadrawable_bullets = false;
         }
         barrel->countdown_remaining = barrel->countdown_duration;
         flash->countdown_remaining = flash->countdown_duration;
     }
 }
 
-static void o_bullets_update_pos (timing_t timing, bullet_t * bullets) {
+static void drawable_bullets_update_pos (timing_t timing, bullet_t * bullets) {
     const float gravity = 70; // pixels per second per second
     bullet_t * b = bullets;
     while (b != NULL) {
@@ -122,7 +122,7 @@ static void o_bullets_update_pos (timing_t timing, bullet_t * bullets) {
     }
 }
 
-void o_bullets_update_remove (counters_t * counters, bullet_t ** bullets) {
+void drawable_bullets_update_remove (counters_t * counters, bullet_t ** bullets) {
     bullet_t * this = *bullets;
     bullet_t * prev = NULL;
     bool isfirst = false;
@@ -174,7 +174,7 @@ void o_bullets_update_remove (counters_t * counters, bullet_t ** bullets) {
     }
 }
 
-static void o_bullets_update_test_exited (scene_t scene, ground_t ground, bullet_t * bullets) {
+static void drawable_bullets_update_test_exited (scene_t scene, groundrawable_t ground, bullet_t * bullets) {
     bullet_t * this = bullets;
     bool exited;
     while (this != NULL) {

@@ -1,10 +1,10 @@
 #include "fsm_start.h"
 #include "fsm.h"
-#include "o_background.h"
-#include "o_ground.h"
-#include "o_keymap.h"
-#include "o_moon.h"
-#include "o_titles.h"
+#include "drawable_background.h"
+#include "drawable_ground.h"
+#include "drawable_keymap.h"
+#include "drawable_moon.h"
+#include "drawable_titles.h"
 #include "scene.h"
 #include "SDL_events.h"
 #include "SDL_keycode.h"
@@ -19,12 +19,12 @@
 #include <stdlib.h>
 
 void fsm_start_draw (level_t, drawing_t drawing, drawables_t drawables, counters_t) {
-    o_background_draw(drawing.renderer, drawing.colors, drawing.scene);
-    o_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
-    o_ground_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
-    o_keymap_draw_start(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+    drawable_backgroundrawable_draw(drawing.renderer, drawing.colors, drawing.scene);
+    drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
+    drawable_groundrawable_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
+    drawable_keymap_draw_start(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
                         drawables.ground);
-    o_titles_draw_opening_title(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene);
+    drawable_titles_draw_opening_title(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene);
     SDL_RenderPresent(drawing.renderer);
 }
 

@@ -1,16 +1,16 @@
 #include "fsm_playing.h"
 #include "fsm.h"
-#include "o_background.h"
-#include "o_balloons.h"
-#include "o_barrel.h"
-#include "o_bullets.h"
-#include "o_collisions.h"
-#include "o_flash.h"
-#include "o_ground.h"
-#include "o_keymap.h"
-#include "o_legend.h"
-#include "o_moon.h"
-#include "o_turret.h"
+#include "drawable_background.h"
+#include "drawable_balloons.h"
+#include "drawable_barrel.h"
+#include "drawable_bullets.h"
+#include "drawable_collisions.h"
+#include "drawable_flash.h"
+#include "drawable_ground.h"
+#include "drawable_keymap.h"
+#include "drawable_legend.h"
+#include "drawable_moon.h"
+#include "drawable_turret.h"
 #include "scene.h"
 #include "SDL_events.h"
 #include "SDL_keycode.h"
@@ -23,21 +23,21 @@
 void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables,
                        counters_t counters) {
 
-    o_background_draw(drawing.renderer, drawing.colors, drawing.scene);
-    o_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
-    o_barrel_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel);
-    o_turret_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.turret);
-    o_flash_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel,
+    drawable_backgroundrawable_draw(drawing.renderer, drawing.colors, drawing.scene);
+    drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
+    drawable_barrel_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel);
+    drawable_turret_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.turret);
+    drawable_flash_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel,
                  drawables.flash);
-    o_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+    drawable_legendrawable_draw(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
                   drawables.legend, counters);
-    o_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.balloons);
-    o_bullets_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.bullets);
-    o_collisions_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.collisions);
-    o_ground_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
-    o_keymap_draw_pause(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+    drawable_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.balloons);
+    drawable_bullets_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.bullets);
+    drawable_collisions_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.collisions);
+    drawable_groundrawable_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
+    drawable_keymap_draw_pause(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
                         drawables.ground);
-    o_keymap_draw_proceedhint(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+    drawable_keymap_draw_proceedhint(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
                               drawables.ground, counters);
     SDL_RenderPresent(drawing.renderer);
 }
@@ -78,17 +78,17 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
         }
     }
     scene_update(drawing->renderer, &drawing->scene);
-    o_barrel_update(timing, &drawables->barrel);
-    o_balloons_update(timing, drawing->scene, drawables->ground, &drawables->balloons, counters);
-    o_bullets_update(timing, drawing->scene, drawables->ground, chunks, counters,
+    drawable_barrel_update(timing, &drawables->barrel);
+    drawable_balloons_update(timing, drawing->scene, drawables->ground, &drawables->balloons, counters);
+    drawable_bullets_update(timing, drawing->scene, drawables->ground, chunks, counters,
                      &drawables->barrel, &drawables->flash, &drawables->bullets);
-    o_flash_update(timing, &drawables->flash);
-    o_collisions_update(timing, drawing->scene, drawables->ground, chunks, drawables->balloons,
+    drawable_flash_update(timing, &drawables->flash);
+    drawable_collisions_update(timing, drawing->scene, drawables->ground, chunks, drawables->balloons,
                         drawables->bullets, counters, &drawables->collisions);
 
-    bool no_more_balloons = counters->nballoons.prespawn + counters->nballoons.airborne == 0;
-    bool no_more_bullets = counters->nbullets.prespawn + counters->nbullets.airborne == 0;
-    if (no_more_balloons || no_more_bullets) {
+    bool ndrawable_more_balloons = counters->nballoons.prespawn + counters->nballoons.airborne == 0;
+    bool ndrawable_more_bullets = counters->nbullets.prespawn + counters->nbullets.airborne == 0;
+    if (ndrawable_more_balloons || ndrawable_more_bullets) {
         counters->nballoons.miss += counters->nballoons.prespawn + counters->nballoons.airborne;
         counters->nballoons.prespawn = 0;
         counters->nballoons.airborne = 0;

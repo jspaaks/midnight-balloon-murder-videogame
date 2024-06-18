@@ -1,17 +1,17 @@
-#include "o_turret.h"
+#include "drawable_turret.h"
 #include "scene.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
 #include "types.h"
 #include <assert.h>
 
-void o_turret_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
+void drawable_turret_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
                     turret_t turret) {
     SDL_Rect tgt = sim2tgt(scene, turret.sim);
     SDL_RenderCopy(renderer, spritesheet, &turret.src, &tgt);
 }
 
-turret_t o_turret_init (scene_t scene, ground_t ground) {
+turret_t drawable_turret_init (scene_t scene, groundrawable_t ground) {
     assert(ground.sim.w != 0 && "ground needs to be initialized before turret");
     float h = 47;
     SDL_FRect sim = {
