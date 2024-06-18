@@ -29,8 +29,8 @@ void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables,
     drawable_turret_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.turret);
     drawable_flash_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel,
                         drawables.flash);
-    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors,
-                                drawing.scene, drawables.legend, counters);
+    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+                         drawables.legend, counters);
     drawable_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene,
                            drawables.balloons);
     drawable_bullets_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.bullets);

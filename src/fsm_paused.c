@@ -24,7 +24,7 @@
 #include <stdbool.h>
 
 void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,
-                             counters_t counters) {
+                      counters_t counters) {
 
     drawable_background_draw(drawing.renderer, drawing.colors, drawing.scene);
     drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
@@ -32,8 +32,8 @@ void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,
     drawable_turret_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.turret);
     drawable_flash_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel,
                         drawables.flash);
-    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors,
-                                drawing.scene, drawables.legend, counters);
+    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+                         drawables.legend, counters);
     drawable_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene,
                            drawables.balloons);
     drawable_bullets_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.bullets);
@@ -57,7 +57,7 @@ void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,
 }
 
 void fsm_paused_update (timing_t, chunks_t, counters_t * counters, drawing_t * drawing,
-                               drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
+                        drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {

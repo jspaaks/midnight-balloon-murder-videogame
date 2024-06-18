@@ -47,8 +47,7 @@ chunks_t chunks_init (void) {
     const char * device = NULL;
     int allowed_changes = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE;
 
-    if (Mix_OpenAudioDevice(frequency, format, nchannels, chunksize, device,
-                            allowed_changes) < 0) {
+    if (Mix_OpenAudioDevice(frequency, format, nchannels, chunksize, device, allowed_changes) < 0) {
         SDL_LogError(SDL_UNSUPPORTED, "Something went wrong opening the audio device. %s\n",
                      Mix_GetError());
         exit(EXIT_FAILURE);

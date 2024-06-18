@@ -20,38 +20,37 @@
 #include "wrapped.h"
 #include <stdlib.h>
 
-static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer *, colors_t, fonts_t,
-                                                           scene_t, level_t);
+static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer *, colors_t, fonts_t, scene_t,
+                                                    level_t);
 static void fsm_level_finished_draw_keymap_repeat_action (SDL_Renderer *, fonts_t, colors_t,
-                                                                 scene_t);
+                                                          scene_t);
 static void fsm_level_finished_draw_keymap_repeat_button (SDL_Renderer *, fonts_t, colors_t,
-                                                                 scene_t);
+                                                          scene_t);
 
 void fsm_level_finished_draw (level_t level, drawing_t drawing, drawables_t drawables,
-                                     counters_t counters) {
+                              counters_t counters) {
     drawable_background_draw(drawing.renderer, drawing.colors, drawing.scene);
     drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
     drawable_barrel_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel);
     drawable_turret_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.turret);
-    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors,
-                                drawing.scene, drawables.legend, counters);
+    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
+                         drawables.legend, counters);
     drawable_ground_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
     drawable_keymap_draw_proceedhint(level, drawing.renderer, drawing.fonts, drawing.colors,
                                      drawing.scene, drawables.ground, counters);
     drawable_titles_draw_level_finished(drawing.renderer, drawing.fonts, drawing.colors,
                                         drawing.scene, counters);
     fsm_level_finished_draw_keymap_proceed(drawing.renderer, drawing.colors, drawing.fonts,
-                                                  drawing.scene, level);
-    fsm_level_finished_draw_keymap_repeat_button(drawing.renderer, drawing.fonts,
-                                                        drawing.colors, drawing.scene);
-    fsm_level_finished_draw_keymap_repeat_action(drawing.renderer, drawing.fonts,
-                                                        drawing.colors, drawing.scene);
+                                           drawing.scene, level);
+    fsm_level_finished_draw_keymap_repeat_button(drawing.renderer, drawing.fonts, drawing.colors,
+                                                 drawing.scene);
+    fsm_level_finished_draw_keymap_repeat_action(drawing.renderer, drawing.fonts, drawing.colors,
+                                                 drawing.scene);
     SDL_RenderPresent(drawing.renderer);
 }
 
 static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, colors_t colors,
-                                                           fonts_t fonts, scene_t scene,
-                                                           level_t level) {
+                                                    fonts_t fonts, scene_t scene, level_t level) {
     SDL_Color color;
     bool next_exists = level.label < LEVEL_BERSERKER;
     int c = next_exists << 1 | level.next_unlocked;
@@ -121,9 +120,8 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
     }
 }
 
-static void fsm_level_finished_draw_keymap_repeat_action (SDL_Renderer * renderer,
-                                                                 fonts_t fonts, colors_t colors,
-                                                                 scene_t scene) {
+static void fsm_level_finished_draw_keymap_repeat_action (SDL_Renderer * renderer, fonts_t fonts,
+                                                          colors_t colors, scene_t scene) {
     char keymap[13] = "REPEAT LEVEL";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, keymap, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -143,9 +141,8 @@ static void fsm_level_finished_draw_keymap_repeat_action (SDL_Renderer * rendere
     SDL_FreeSurface(surf.payload);
 }
 
-static void fsm_level_finished_draw_keymap_repeat_button (SDL_Renderer * renderer,
-                                                                 fonts_t fonts, colors_t colors,
-                                                                 scene_t scene) {
+static void fsm_level_finished_draw_keymap_repeat_button (SDL_Renderer * renderer, fonts_t fonts,
+                                                          colors_t colors, scene_t scene) {
     char keymap[2] = "R";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.large, keymap, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -165,9 +162,9 @@ static void fsm_level_finished_draw_keymap_repeat_button (SDL_Renderer * rendere
     SDL_FreeSurface(surf.payload);
 }
 
-void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters,
-                                       drawing_t * drawing, drawables_t * drawables,
-                                       gamestate_t ** gamestate, level_t * level) {
+void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters, drawing_t * drawing,
+                                drawables_t * drawables, gamestate_t ** gamestate,
+                                level_t * level) {
     level->next_unlocked =
         level->next_unlocked || counters->nballoons.hit >= level->nballoons.proceed;
     SDL_Event event;

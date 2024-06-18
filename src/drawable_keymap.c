@@ -108,8 +108,8 @@ void drawable_keymap_draw_quit (SDL_Renderer * renderer, fonts_t fonts, colors_t
 }
 
 void drawable_keymap_draw_restart (level_t level, SDL_Renderer * renderer, fonts_t fonts,
-                                   colors_t colors, scene_t scene, turret_t turret,
-                                   ground_t ground, counters_t counters) {
+                                   colors_t colors, scene_t scene, turret_t turret, ground_t ground,
+                                   counters_t counters) {
     if (counters.nballoons.prespawn == level.nballoons.prespawn &&
         counters.nbullets.prespawn == level.nbullets.prespawn) {
         // we're effectively at the start of the level already

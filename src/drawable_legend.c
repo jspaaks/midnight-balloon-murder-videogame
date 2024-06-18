@@ -11,29 +11,26 @@
 #include "wrapped.h"
 #include <stdio.h>
 
-static void drawable_legend_draw_bars (level_t, SDL_Renderer *, scene_t, colors_t,
-                                              legend_t, counters_t);
-static void drawable_legend_draw_rect_nbullets (SDL_Renderer *, scene_t, colors_t,
-                                                       legend_t, counters_t);
-static void drawable_legend_draw_text_hit (SDL_Renderer *, scene_t, fonts_t, colors_t,
-                                                  legend_t);
-static void drawable_legend_draw_text_level (level_t, SDL_Renderer *, scene_t, fonts_t,
-                                                    colors_t, legend_t);
-static void drawable_legend_draw_text_miss (SDL_Renderer *, scene_t, fonts_t, colors_t,
-                                                   legend_t);
+static void drawable_legend_draw_bars (level_t, SDL_Renderer *, scene_t, colors_t, legend_t,
+                                       counters_t);
+static void drawable_legend_draw_rect_nbullets (SDL_Renderer *, scene_t, colors_t, legend_t,
+                                                counters_t);
+static void drawable_legend_draw_text_hit (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t);
+static void drawable_legend_draw_text_level (level_t, SDL_Renderer *, scene_t, fonts_t, colors_t,
+                                             legend_t);
+static void drawable_legend_draw_text_miss (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t);
 static void drawable_legend_draw_text_nballoons (level_t, SDL_Renderer *, scene_t, fonts_t,
-                                                        colors_t, legend_t, counters_t);
+                                                 colors_t, legend_t, counters_t);
 static void drawable_legend_draw_text_nbullets (SDL_Renderer *, scene_t, fonts_t, colors_t,
-                                                       legend_t, counters_t);
-static void drawable_legend_draw_text_nhit (SDL_Renderer *, scene_t, fonts_t, colors_t,
-                                                   legend_t, counters_t);
-static void drawable_legend_draw_text_nmiss (SDL_Renderer *, scene_t, fonts_t, colors_t,
-                                                    legend_t, counters_t);
+                                                legend_t, counters_t);
+static void drawable_legend_draw_text_nhit (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t,
+                                            counters_t);
+static void drawable_legend_draw_text_nmiss (SDL_Renderer *, scene_t, fonts_t, colors_t, legend_t,
+                                             counters_t);
 static SDL_Color drawable_legend_get_ammolow_bgcolor(counters_t, colors_t);
 
 static void drawable_legend_draw_bars (level_t level, SDL_Renderer * renderer, scene_t scene,
-                                              colors_t colors, legend_t legend,
-                                              counters_t counters) {
+                                       colors_t colors, legend_t legend, counters_t counters) {
     int j = 0;
     int nhit = legend.nbars * counters.nballoons.hit / level.nballoons.prespawn;
     int nmiss = legend.nbars * counters.nballoons.miss / level.nballoons.prespawn;
@@ -59,8 +56,8 @@ static void drawable_legend_draw_bars (level_t level, SDL_Renderer * renderer, s
 }
 
 static void drawable_legend_draw_rect_nbullets (SDL_Renderer * renderer, scene_t scene,
-                                                       colors_t colors, legend_t legend,
-                                                       counters_t counters) {
+                                                colors_t colors, legend_t legend,
+                                                counters_t counters) {
     // choose a warning color or use background color if not low on ammo
     SDL_Color color = drawable_legend_get_ammolow_bgcolor(counters, colors);
 
@@ -70,9 +67,8 @@ static void drawable_legend_draw_rect_nbullets (SDL_Renderer * renderer, scene_t
     SDL_RenderFillRect(renderer, &tgt);
 }
 
-static void drawable_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scene,
-                                                  fonts_t fonts, colors_t colors,
-                                                  legend_t legend) {
+static void drawable_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
+                                           colors_t colors, legend_t legend) {
     static const char caption[4] = "HIT";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -91,9 +87,8 @@ static void drawable_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scen
     SDL_FreeSurface(surf.payload);
 }
 
-static void drawable_legend_draw_text_level (level_t level, SDL_Renderer * renderer,
-                                                    scene_t scene, fonts_t fonts, colors_t colors,
-                                                    legend_t legend) {
+static void drawable_legend_draw_text_level (level_t level, SDL_Renderer * renderer, scene_t scene,
+                                             fonts_t fonts, colors_t colors, legend_t legend) {
     char caption[30];
     sprintf(caption, "%s LEVEL", level.name);
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
@@ -113,9 +108,8 @@ static void drawable_legend_draw_text_level (level_t level, SDL_Renderer * rende
     SDL_FreeSurface(surf.payload);
 }
 
-static void drawable_legend_draw_text_miss (SDL_Renderer * renderer, scene_t scene,
-                                                   fonts_t fonts, colors_t colors,
-                                                   legend_t legend) {
+static void drawable_legend_draw_text_miss (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
+                                            colors_t colors, legend_t legend) {
     static const char caption[5] = "MISS";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
@@ -136,9 +130,8 @@ static void drawable_legend_draw_text_miss (SDL_Renderer * renderer, scene_t sce
 }
 
 static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * renderer,
-                                                        scene_t scene, fonts_t fonts,
-                                                        colors_t colors, legend_t legend,
-                                                        counters_t counters) {
+                                                 scene_t scene, fonts_t fonts, colors_t colors,
+                                                 legend_t legend, counters_t counters) {
     int nremaining = counters.nballoons.prespawn + counters.nballoons.airborne;
     if (nremaining == 0) {
         // we're in the level finished screen
@@ -164,9 +157,8 @@ static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * r
 }
 
 static void drawable_legend_draw_text_nbullets (SDL_Renderer * renderer, scene_t scene,
-                                                       fonts_t fonts, colors_t colors,
-                                                       legend_t legend,
-                                                       counters_t counters) {
+                                                fonts_t fonts, colors_t colors, legend_t legend,
+                                                counters_t counters) {
     char caption[30];
     sprintf(caption, "BULLETS %d", counters.nbullets.prespawn);
     SDL_Color fgcolor = counters.nbullets.prespawn >= 30 ? colors.lightgray : colors.white;
@@ -189,9 +181,8 @@ static void drawable_legend_draw_text_nbullets (SDL_Renderer * renderer, scene_t
     SDL_FreeSurface(surf.payload);
 }
 
-static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t scene,
-                                                   fonts_t fonts, colors_t colors,
-                                                   legend_t legend, counters_t counters) {
+static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
+                                            colors_t colors, legend_t legend, counters_t counters) {
     char caption[30];
     sprintf(caption, "%d", counters.nballoons.hit);
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
@@ -212,9 +203,9 @@ static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t sce
     SDL_FreeSurface(surf.payload);
 }
 
-static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t scene,
-                                                    fonts_t fonts, colors_t colors,
-                                                    legend_t legend, counters_t counters) {
+static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
+                                             colors_t colors, legend_t legend,
+                                             counters_t counters) {
     char caption[30];
     sprintf(caption, "%d", counters.nballoons.miss);
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
@@ -235,9 +226,8 @@ static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t sc
     SDL_FreeSurface(surf.payload);
 }
 
-void drawable_legend_draw (level_t level, SDL_Renderer * renderer, fonts_t fonts,
-                                  colors_t colors, scene_t scene, legend_t legend,
-                                  counters_t counters) {
+void drawable_legend_draw (level_t level, SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
+                           scene_t scene, legend_t legend, counters_t counters) {
     drawable_legend_draw_bars(level, renderer, scene, colors, legend, counters);
     drawable_legend_draw_rect_nbullets(renderer, scene, colors, legend, counters);
     drawable_legend_draw_text_nbullets(renderer, scene, fonts, colors, legend, counters);
@@ -245,8 +235,7 @@ void drawable_legend_draw (level_t level, SDL_Renderer * renderer, fonts_t fonts
     drawable_legend_draw_text_miss(renderer, scene, fonts, colors, legend);
     drawable_legend_draw_text_nhit(renderer, scene, fonts, colors, legend, counters);
     drawable_legend_draw_text_nmiss(renderer, scene, fonts, colors, legend, counters);
-    drawable_legend_draw_text_nballoons(level, renderer, scene, fonts, colors, legend,
-                                               counters);
+    drawable_legend_draw_text_nballoons(level, renderer, scene, fonts, colors, legend, counters);
     drawable_legend_draw_text_level(level, renderer, scene, fonts, colors, legend);
 }
 

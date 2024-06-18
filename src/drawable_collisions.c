@@ -54,9 +54,9 @@ collision_t * drawable_collisions_init (void) {
     return NULL;
 }
 
-void drawable_collisions_update (timing_t timing, scene_t scene, ground_t ground,
-                                 chunks_t chunks, balloon_t * balloons, bullet_t * bullets,
-                                 counters_t * counters, collision_t ** collisions) {
+void drawable_collisions_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks,
+                                 balloon_t * balloons, bullet_t * bullets, counters_t * counters,
+                                 collision_t ** collisions) {
     drawable_collisions_update_test_exited(scene, ground, *collisions);
     drawable_collisions_update_remove(collisions);
     drawable_collisions_update_pos(timing, *collisions);

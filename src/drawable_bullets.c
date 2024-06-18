@@ -43,9 +43,9 @@ bullet_t * drawable_bullets_init (void) {
     return NULL;
 }
 
-void drawable_bullets_update (timing_t timing, scene_t scene, ground_t ground,
-                              chunks_t chunks, counters_t * counters, barrel_t * barrel,
-                              flash_t * flash, bullet_t ** bullets) {
+void drawable_bullets_update (timing_t timing, scene_t scene, ground_t ground, chunks_t chunks,
+                              counters_t * counters, barrel_t * barrel, flash_t * flash,
+                              bullet_t ** bullets) {
     // mark bullets that are out of frame
     drawable_bullets_update_test_exited(scene, ground, *bullets);
 

@@ -6,7 +6,7 @@
 #include <assert.h>
 
 void drawable_ground_draw (SDL_Renderer * renderer, colors_t colors, scene_t scene,
-                                  ground_t ground) {
+                           ground_t ground) {
     SDL_Rect tgt = sim2tgt(scene, ground.sim);
     SDL_SetRenderDrawColor(renderer, colors.ground.r, colors.ground.g, colors.ground.b,
                            colors.ground.a);
