@@ -12,12 +12,11 @@ git clone https://github.com/jspaaks/libsdl2-game.git --recursive .
 ## Building with CMake
 
 ```shell
-# generate the build files
+# create an out-of-tree build directory, cd into it
 mkdir build && cd build
-cmake .. -DSDL2MIXER_OPUS=OFF \
-         -DSDL2MIXER_MOD=OFF \
-         -DSDL2MIXER_MIDI_FLUIDSYNTH=OFF \
-         -DSDL2MIXER_WAVPACK=OFF
+
+# generate the build files
+cmake ..
 
 # compile using the generated build files
 cmake --build .
