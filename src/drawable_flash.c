@@ -8,8 +8,8 @@
 #include <stdio.h>
 
 void drawable_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
-                   barrel_t barrel, flash_t flash) {
-    bool show = flash.countdown_remaining > 0 && flash.hadrawable_bullets;
+                          barrel_t barrel, flash_t flash) {
+    bool show = flash.countdown_remaining > 0 && flash.had_bullets;
     if (show) {
         SDL_Rect tgt = sim2tgt(scene, flash.sim);
         SDL_Point pivot_offset = (SDL_Point){

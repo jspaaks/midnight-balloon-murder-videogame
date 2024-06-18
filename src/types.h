@@ -43,8 +43,8 @@ typedef struct drawing_t drawing_t;
 typedef struct flash_t flash_t;
 typedef struct fonts_t fonts_t;
 typedef struct gamestate_t gamestate_t;
-typedef struct groundrawable_t groundrawable_t;
-typedef struct legendrawable_t legendrawable_t;
+typedef struct ground_t ground_t;
+typedef struct legend_t legend_t;
 typedef struct level_t level_t;
 typedef struct moon_t moon_t;
 typedef struct scene_t scene_t;
@@ -154,7 +154,7 @@ struct colors_t {
 struct flash_t {
     unsigned int countdown_duration;
     unsigned int countdown_remaining;
-    bool hadrawable_bullets;
+    bool had_bullets;
     SDL_FRect sim;
 
     struct {
@@ -179,11 +179,11 @@ struct gamestate_t {
     gamestate_enum_t label;
 };
 
-struct groundrawable_t {
+struct ground_t {
     SDL_FRect sim;
 };
 
-struct legendrawable_t {
+struct legend_t {
     unsigned int nbars;
 
     struct {
@@ -250,8 +250,8 @@ struct drawables_t {
     bullet_t * bullets;
     collision_t * collisions;
     flash_t flash;
-    groundrawable_t ground;
-    legendrawable_t legend;
+    ground_t ground;
+    legend_t legend;
     moon_t moon;
     turret_t turret;
 };

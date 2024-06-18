@@ -13,7 +13,7 @@ static bool drawable_collisions_colliding (balloon_t *, bullet_t *);
 static void drawable_collisions_update_pos (timing_t, collision_t *);
 static void drawable_collisions_update_remove (collision_t **);
 static void drawable_collisions_update_spawn (chunks_t, balloon_t *, bullet_t *, counters_t *);
-static void drawable_collisions_update_test_exited (scene_t, groundrawable_t, collision_t *);
+static void drawable_collisions_update_test_exited (scene_t, ground_t, collision_t *);
 
 static bool drawable_collisions_colliding (balloon_t * ba, bullet_t * bu) {
     float ba_l = ba->sim.x;
@@ -41,7 +41,8 @@ void drawable_collisions_deinit (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t, collision_t * collisions) {
+void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t,
+                               collision_t * collisions) {
     collision_t * c = collisions;
     SDL_SetRenderDrawColor(renderer, 166, 166, 166, 0);
     while (c != NULL) {
@@ -53,9 +54,9 @@ collision_t * drawable_collisions_init (void) {
     return NULL;
 }
 
-void drawable_collisions_update (timing_t timing, scene_t scene, groundrawable_t ground, chunks_t chunks,
-                          balloon_t * balloons, bullet_t * bullets, counters_t * counters,
-                          collision_t ** collisions) {
+void drawable_collisions_update (timing_t timing, scene_t scene, ground_t ground,
+                                 chunks_t chunks, balloon_t * balloons, bullet_t * bullets,
+                                 counters_t * counters, collision_t ** collisions) {
     drawable_collisions_update_test_exited(scene, ground, *collisions);
     drawable_collisions_update_remove(collisions);
     drawable_collisions_update_pos(timing, *collisions);
@@ -119,8 +120,8 @@ static void drawable_collisions_update_remove (collision_t ** collisions) {
     }
 }
 
-static void drawable_collisions_update_spawn (chunks_t chunks, balloon_t * balloons, bullet_t * bullets,
-                                       counters_t * counters) {
+static void drawable_collisions_update_spawn (chunks_t chunks, balloon_t * balloons,
+                                              bullet_t * bullets, counters_t * counters) {
     balloon_t * ba = balloons;
     while (ba != NULL) {
         bullet_t * bu = bullets;
@@ -165,8 +166,8 @@ static void drawable_collisions_update_spawn (chunks_t chunks, balloon_t * ballo
     }
 }
 
-static void drawable_collisions_update_test_exited (scene_t scene, groundrawable_t ground,
-                                             collision_t * collisions) {
+static void drawable_collisions_update_test_exited (scene_t scene, ground_t ground,
+                                                    collision_t * collisions) {
     collision_t * this = collisions;
     bool exited;
     while (this != NULL) {

@@ -125,12 +125,12 @@ void levels_reset_level (level_t level, drawing_t drawing, drawables_t * drawabl
     drawable_collisions_deinit(&drawables->collisions);
 
     // --- concrete entities
-    drawables->ground = drawable_groundrawable_init(drawing.scene);
+    drawables->ground = drawable_ground_init(drawing.scene);
     drawables->moon = drawable_moon_init(drawing.scene);
     drawables->turret = drawable_turret_init(drawing.scene, drawables->ground);
     drawables->barrel = drawable_barrel_init(drawables->turret);
     drawables->flash = drawable_flash_init(drawables->barrel);
-    drawables->legend = drawable_legendrawable_init();
+    drawables->legend = drawable_legend_init();
     drawables->balloons = drawable_balloons_init();
     drawables->bullets = drawable_bullets_init();
     drawables->collisions = drawable_collisions_init();

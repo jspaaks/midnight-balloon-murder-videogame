@@ -6,12 +6,12 @@
 #include <assert.h>
 
 void drawable_turret_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
-                    turret_t turret) {
+                           turret_t turret) {
     SDL_Rect tgt = sim2tgt(scene, turret.sim);
     SDL_RenderCopy(renderer, spritesheet, &turret.src, &tgt);
 }
 
-turret_t drawable_turret_init (scene_t scene, groundrawable_t ground) {
+turret_t drawable_turret_init (scene_t scene, ground_t ground) {
     assert(ground.sim.w != 0 && "ground needs to be initialized before turret");
     float h = 47;
     SDL_FRect sim = {

@@ -15,8 +15,9 @@
 
 static void drawable_bullets_update_pos (timing_t, bullet_t *);
 static void drawable_bullets_update_remove (counters_t *, bullet_t **);
-static void drawable_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, flash_t *, bullet_t **);
-static void drawable_bullets_update_test_exited (scene_t, groundrawable_t, bullet_t *);
+static void drawable_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, flash_t *,
+                                           bullet_t **);
+static void drawable_bullets_update_test_exited (scene_t, ground_t, bullet_t *);
 
 void drawable_bullets_deinit (bullet_t ** bullets) {
     bullet_t * b = *bullets;
@@ -29,7 +30,7 @@ void drawable_bullets_deinit (bullet_t ** bullets) {
 }
 
 void drawable_bullets_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
-                     bullet_t * bullets) {
+                            bullet_t * bullets) {
     bullet_t * bu = bullets;
     while (bu != NULL) {
         SDL_Rect tgt = sim2tgt(scene, bu->sim);
@@ -42,9 +43,9 @@ bullet_t * drawable_bullets_init (void) {
     return NULL;
 }
 
-void drawable_bullets_update (timing_t timing, scene_t scene, groundrawable_t ground, chunks_t chunks,
-                       counters_t * counters, barrel_t * barrel, flash_t * flash,
-                       bullet_t ** bullets) {
+void drawable_bullets_update (timing_t timing, scene_t scene, ground_t ground,
+                              chunks_t chunks, counters_t * counters, barrel_t * barrel,
+                              flash_t * flash, bullet_t ** bullets) {
     // mark bullets that are out of frame
     drawable_bullets_update_test_exited(scene, ground, *bullets);
 
@@ -58,18 +59,19 @@ void drawable_bullets_update (timing_t timing, scene_t scene, groundrawable_t gr
     drawable_bullets_update_spawn(chunks, counters, barrel, flash, bullets);
 }
 
-static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counters, barrel_t * barrel,
-                                    flash_t * flash, bullet_t ** bullets) {
+static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counters,
+                                           barrel_t * barrel, flash_t * flash,
+                                           bullet_t ** bullets) {
     static const float PI = 3.14159265358979323846f;
     static SDL_Rect src_bullet = { .x = 188, .y = 38, .w = 5, .h = 5 };
     const Uint8 * keys = SDL_GetKeyboardState(NULL);
     bool has_bullets = counters->nbullets.prespawn > 0;
     bool key_pressed = keys[SDL_SCANCODE_SPACE];
-    bool cooledrawable_down = barrel->countdown_remaining <= 0;
+    bool cooled_down = barrel->countdown_remaining <= 0;
 
-    if (key_pressed && cooledrawable_down) {
+    if (key_pressed && cooled_down) {
         if (has_bullets) {
-            flash->hadrawable_bullets = true;
+            flash->had_bullets = true;
             bullet_t * b = malloc(1 * sizeof(bullet_t));
             if (b == NULL) {
                 SDL_LogError(SDL_ENOMEM,
@@ -104,7 +106,7 @@ static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counter
             Mix_PlayChannel(-1, chunks.shoot, 0);
         } else {
             Mix_PlayChannel(-1, chunks.empty, 0);
-            flash->hadrawable_bullets = false;
+            flash->had_bullets = false;
         }
         barrel->countdown_remaining = barrel->countdown_duration;
         flash->countdown_remaining = flash->countdown_duration;
@@ -174,7 +176,8 @@ void drawable_bullets_update_remove (counters_t * counters, bullet_t ** bullets)
     }
 }
 
-static void drawable_bullets_update_test_exited (scene_t scene, groundrawable_t ground, bullet_t * bullets) {
+static void drawable_bullets_update_test_exited (scene_t scene, ground_t ground,
+                                                 bullet_t * bullets) {
     bullet_t * this = bullets;
     bool exited;
     while (this != NULL) {

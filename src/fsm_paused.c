@@ -1,6 +1,4 @@
 #include "fsm_paused.h"
-#include "fsm.h"
-#include "levels.h"
 #include "drawable_background.h"
 #include "drawable_balloons.h"
 #include "drawable_barrel.h"
@@ -13,6 +11,8 @@
 #include "drawable_moon.h"
 #include "drawable_titles.h"
 #include "drawable_turret.h"
+#include "fsm.h"
+#include "levels.h"
 #include "scene.h"
 #include "SDL_events.h"
 #include "SDL_keycode.h"
@@ -23,39 +23,41 @@
 #include "wrapped.h"
 #include <stdbool.h>
 
-void fsm_pausedrawable_draw (level_t level, drawing_t drawing, drawables_t drawables,
-                      counters_t counters) {
+void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,
+                             counters_t counters) {
 
-    drawable_backgroundrawable_draw(drawing.renderer, drawing.colors, drawing.scene);
+    drawable_background_draw(drawing.renderer, drawing.colors, drawing.scene);
     drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
     drawable_barrel_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel);
     drawable_turret_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.turret);
     drawable_flash_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.barrel,
-                 drawables.flash);
-    drawable_legendrawable_draw(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                  drawables.legend, counters);
-    drawable_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.balloons);
+                        drawables.flash);
+    drawable_legend_draw(level, drawing.renderer, drawing.fonts, drawing.colors,
+                                drawing.scene, drawables.legend, counters);
+    drawable_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene,
+                           drawables.balloons);
     drawable_bullets_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.bullets);
-    drawable_collisions_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.collisions);
-    drawable_groundrawable_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
+    drawable_collisions_draw(drawing.renderer, drawing.spritesheet, drawing.scene,
+                             drawables.collisions);
+    drawable_ground_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
     drawable_keymap_draw_move_barrel(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                              drawables.turret, drawables.ground);
+                                     drawables.turret, drawables.ground);
     drawable_keymap_draw_shoot(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                        drawables.turret, drawables.ground);
-    drawable_keymap_draw_proceedhint(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                              drawables.ground, counters);
+                               drawables.turret, drawables.ground);
+    drawable_keymap_draw_proceedhint(level, drawing.renderer, drawing.fonts, drawing.colors,
+                                     drawing.scene, drawables.ground, counters);
     drawable_keymap_draw_unpause(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                          drawables.ground);
-    drawable_keymap_draw_restart(level, drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                          drawables.turret, drawables.ground, counters);
+                                 drawables.ground);
+    drawable_keymap_draw_restart(level, drawing.renderer, drawing.fonts, drawing.colors,
+                                 drawing.scene, drawables.turret, drawables.ground, counters);
     drawable_keymap_draw_quit(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
-                       drawables.turret, drawables.ground);
+                              drawables.turret, drawables.ground);
     drawable_titles_draw_paused(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene);
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_pausedrawable_update (timing_t, chunks_t, counters_t * counters, drawing_t * drawing,
-                        drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
+void fsm_paused_update (timing_t, chunks_t, counters_t * counters, drawing_t * drawing,
+                               drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {

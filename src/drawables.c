@@ -11,7 +11,7 @@
 #include "types.h"
 
 drawables_t drawables_init (scene_t scene) {
-    groundrawable_t ground = drawable_groundrawable_init(scene);
+    ground_t ground = drawable_ground_init(scene);
     turret_t turret = drawable_turret_init(scene, ground);
     barrel_t barrel = drawable_barrel_init(turret);
     return (drawables_t){
@@ -21,7 +21,7 @@ drawables_t drawables_init (scene_t scene) {
         .collisions = drawable_collisions_init(),
         .flash = drawable_flash_init(barrel),
         .ground = ground,
-        .legend = drawable_legendrawable_init(),
+        .legend = drawable_legend_init(),
         .moon = drawable_moon_init(scene),
         .turret = turret,
     };

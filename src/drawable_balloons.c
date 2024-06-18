@@ -14,11 +14,12 @@
 static float drawable_balloons_unitrand (void);
 static void drawable_balloons_update_pos (timing_t, balloon_t *);
 static void drawable_balloons_update_remove (balloon_t **, counters_t *);
-static void drawable_balloons_update_spawn (timing_t, scene_t, groundrawable_t, balloon_t **, counters_t *);
-static void drawable_balloons_update_spawn_orange (scene_t, groundrawable_t, balloon_t **);
-static void drawable_balloons_update_spawn_red (scene_t, groundrawable_t, balloon_t **);
-static void drawable_balloons_update_spawn_yellow (scene_t, groundrawable_t, balloon_t **);
-static void drawable_balloons_update_test_exited (scene_t, groundrawable_t, balloon_t *);
+static void drawable_balloons_update_spawn (timing_t, scene_t, ground_t, balloon_t **,
+                                            counters_t *);
+static void drawable_balloons_update_spawn_orange (scene_t, ground_t, balloon_t **);
+static void drawable_balloons_update_spawn_red (scene_t, ground_t, balloon_t **);
+static void drawable_balloons_update_spawn_yellow (scene_t, ground_t, balloon_t **);
+static void drawable_balloons_update_test_exited (scene_t, ground_t, balloon_t *);
 
 void drawable_balloons_deinit (balloon_t ** balloons) {
     balloon_t * b = *balloons;
@@ -31,7 +32,7 @@ void drawable_balloons_deinit (balloon_t ** balloons) {
 }
 
 void drawable_balloons_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
-                      balloon_t * balloons) {
+                             balloon_t * balloons) {
     balloon_t * b = balloons;
     while (b != NULL) {
         SDL_Rect tgt = sim2tgt(scene, b->sim);
@@ -48,16 +49,16 @@ static float drawable_balloons_unitrand (void) {
     return (float) (rand()) / (float) (RAND_MAX);
 }
 
-void drawable_balloons_update (timing_t timing, scene_t scene, groundrawable_t ground, balloon_t ** balloons,
-                        counters_t * counters) {
+void drawable_balloons_update (timing_t timing, scene_t scene, ground_t ground,
+                               balloon_t ** balloons, counters_t * counters) {
     drawable_balloons_update_test_exited(scene, ground, *balloons);
     drawable_balloons_update_remove(balloons, counters);
     drawable_balloons_update_pos(timing, *balloons);
     drawable_balloons_update_spawn(timing, scene, ground, balloons, counters);
 }
 
-static void drawable_balloons_update_spawn (timing_t timing, scene_t scene, groundrawable_t ground,
-                                     balloon_t ** balloons, counters_t * counters) {
+static void drawable_balloons_update_spawn (timing_t timing, scene_t scene, ground_t ground,
+                                            balloon_t ** balloons, counters_t * counters) {
     static const float spawn_rate = 0.35; // balloons per second
     float spawn_chance = counters->nballoons.airborne == 0 ? 1 : spawn_rate * timing.dt.frame;
     if (counters->nballoons.prespawn <= 0 || drawable_balloons_unitrand() > spawn_chance) {
@@ -82,7 +83,8 @@ static void drawable_balloons_update_spawn (timing_t timing, scene_t scene, grou
     counters->nballoons.prespawn--;
 }
 
-static void drawable_balloons_update_spawn_orange (scene_t scene, groundrawable_t ground, balloon_t ** balloons) {
+static void drawable_balloons_update_spawn_orange (scene_t scene, ground_t ground,
+                                                   balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM,
@@ -113,7 +115,8 @@ static void drawable_balloons_update_spawn_orange (scene_t scene, groundrawable_
     *balloons = b;
 }
 
-static void drawable_balloons_update_spawn_red (scene_t scene, groundrawable_t ground, balloon_t ** balloons) {
+static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
+                                                balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new red balloon.\n");
@@ -143,7 +146,8 @@ static void drawable_balloons_update_spawn_red (scene_t scene, groundrawable_t g
     *balloons = b;
 }
 
-static void drawable_balloons_update_spawn_yellow (scene_t scene, groundrawable_t ground, balloon_t ** balloons) {
+static void drawable_balloons_update_spawn_yellow (scene_t scene, ground_t ground,
+                                                   balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM,
@@ -245,7 +249,8 @@ static void drawable_balloons_update_remove (balloon_t ** balloons, counters_t *
     }
 }
 
-static void drawable_balloons_update_test_exited (scene_t scene, groundrawable_t ground, balloon_t * balloons) {
+static void drawable_balloons_update_test_exited (scene_t scene, ground_t ground,
+                                                  balloon_t * balloons) {
     balloon_t * this = balloons;
     bool exited;
     while (this != NULL) {

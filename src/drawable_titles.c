@@ -10,7 +10,7 @@
 #include <string.h>
 
 void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
-                                   scene_t scene, counters_t counters) {
+                                          scene_t scene, counters_t counters) {
     char title[15];
     if (counters.nballoons.miss == 0) {
         strncpy(title, "PERFECT SCORE!", 15);
@@ -35,7 +35,7 @@ void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts
 }
 
 void drawable_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
-                                  scene_t scene) {
+                                         scene_t scene) {
     static const struct {
         char left[2];
         char middle[22];
@@ -123,7 +123,8 @@ void drawable_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts,
     SDL_FreeSurface(surfs.right.payload);
 }
 
-void drawable_titles_draw_paused (SDL_Renderer * renderer, fonts_t fonts, colors_t colors, scene_t scene) {
+void drawable_titles_draw_paused (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
+                                  scene_t scene) {
     char title[7] = "PAUSED";
     SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.xlarge, title, colors.lightgray, colors.bg);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);

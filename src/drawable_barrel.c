@@ -19,7 +19,7 @@ static float drawable_barrel_clip (float v) {
 }
 
 void drawable_barrel_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
-                    barrel_t barrel) {
+                           barrel_t barrel) {
     SDL_Rect tgt = sim2tgt(scene, barrel.sim);
     SDL_Point pivot_offset = (SDL_Point){
         .x = (int) (barrel.sim2.pivot_offset.x * scene.scale),
@@ -82,8 +82,8 @@ void drawable_barrel_update (timing_t timing, barrel_t * barrel) {
     int flags = keys[SDL_SCANCODE_W] | keys[SDL_SCANCODE_S] << 1;
     switch (flags) {
         case 1: {
-            barrel->sim2.angle =
-                drawable_barrel_clip(barrel->sim2.angle + -1 * barrel->sim2.speed * timing.dt.frame);
+            barrel->sim2.angle = drawable_barrel_clip(barrel->sim2.angle +
+                                                      -1 * barrel->sim2.speed * timing.dt.frame);
             break;
         }
         case 2: {
