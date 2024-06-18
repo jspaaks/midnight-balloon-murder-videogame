@@ -48,15 +48,15 @@ convert -background none -density 96 img/sprites.svg img/sprites.bmp
 
 Linting an individual file:
 
-```
+```shell
 # see if main.c is compliant with rules in .clang-format
-clang-format --dry-run --Werror ./main.c
+clang-format --dry-run --Werror ./src/main.c
 
 # see what clang-format would like the file to look
-clang-format --Werror ./main.c
+clang-format --Werror ./src/main.c
 
 # see if all files are compliant with rules in .clang-format
-clang-format --dry-run --Werror `find . -maxdepth 1 -type f -name '*.[c|h]'`
+clang-format --dry-run --Werror `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
 ```
 
 # Sound effects
