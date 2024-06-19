@@ -33,7 +33,7 @@ void drawable_keymap_draw_move_barrel (SDL_Renderer * renderer, fonts_t fonts, c
 
 void drawable_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
                                  scene_t scene, ground_t ground) {
-    char keymap[12] = "ESC TO PAUSE";
+    char keymap[13] = "ESC TO PAUSE";
     SDLW_Surface surf =
         TTFW_RenderText_Shaded(fonts.regular, keymap, colors.middlegray, colors.ground);
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
