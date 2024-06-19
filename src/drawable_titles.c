@@ -22,6 +22,7 @@ void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n",
                      TTF_GetError());
+        // TODO free and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = (scene.sim.w - surf.payload->w) / 2,
@@ -78,6 +79,7 @@ void drawable_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts,
 
     if (txres.left.invalid || txres.middle.invalid || txres.right.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title text.\n");
+        // TODO free
         exit(EXIT_FAILURE);
     }
 
@@ -131,6 +133,7 @@ void drawable_titles_draw_paused (SDL_Renderer * renderer, fonts_t fonts, colors
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n",
                      TTF_GetError());
+        // TODO free and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = scene.sim.x + (scene.sim.w - surf.payload->w) / 2,

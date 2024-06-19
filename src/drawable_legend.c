@@ -74,6 +74,7 @@ static void drawable_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scen
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the hit legend text.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
@@ -95,6 +96,7 @@ static void drawable_legend_draw_text_level (level_t level, SDL_Renderer * rende
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the level legend text.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
@@ -115,6 +117,7 @@ static void drawable_legend_draw_text_miss (SDL_Renderer * renderer, scene_t sce
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the miss legend text.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
@@ -143,6 +146,7 @@ static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * r
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nballoons legend text.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
@@ -167,6 +171,7 @@ static void drawable_legend_draw_text_nbullets (SDL_Renderer * renderer, scene_t
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nbullets legend caption.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt = sim2tgt(
@@ -189,6 +194,7 @@ static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t sce
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nhit legend text.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_Rect tgt =
@@ -212,6 +218,7 @@ static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t sc
     SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the nmiss legend text.\n");
+        // TODO free resources and exit
     }
     SDL_Rect tgt =
         sim2tgt(scene, (SDL_FRect){

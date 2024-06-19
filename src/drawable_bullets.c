@@ -76,6 +76,7 @@ static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counter
             if (b == NULL) {
                 SDL_LogError(SDL_ENOMEM,
                              "Something went wrong allocating memory for new bullet.\n");
+                // TODO free resources
                 exit(EXIT_FAILURE);
             }
             float a = PI * barrel->sim2.angle / 180;
@@ -170,6 +171,7 @@ void drawable_bullets_update_remove (counters_t * counters, bullet_t ** bullets)
             default: {
                 SDL_LogError(SDL_UNSUPPORTED,
                              "Something went wrong in removing a bullet from the list.\n");
+                // TODO free resources
                 exit(EXIT_FAILURE);
             }
         }

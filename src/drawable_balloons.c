@@ -89,6 +89,7 @@ static void drawable_balloons_update_spawn_orange (scene_t scene, ground_t groun
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM,
                      "Something went wrong allocating memory for new orange balloon.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
@@ -120,6 +121,7 @@ static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new red balloon.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
@@ -152,6 +154,7 @@ static void drawable_balloons_update_spawn_yellow (scene_t scene, ground_t groun
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM,
                      "Something went wrong allocating memory for new yellow balloon.\n");
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     *b = (balloon_t){
@@ -243,6 +246,7 @@ static void drawable_balloons_update_remove (balloon_t ** balloons, counters_t *
             default: {
                 SDL_LogError(SDL_UNSUPPORTED,
                              "Something went wrong in removing a balloon from the list.\n");
+                // TODO free resources
                 exit(EXIT_FAILURE);
             }
         }

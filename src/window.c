@@ -18,6 +18,7 @@ SDL_Window * window_init (scene_t scene) {
                                            SDL_WINDOWPOS_CENTERED, scene.tgt.w, scene.tgt.h, flags);
     if (window == NULL) {
         SDL_LogError(SDL_ENOMEM, "Error creating window: %s\n", SDL_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     return window;

@@ -17,7 +17,6 @@
 #include "SDL_log.h"
 #include "SDL_render.h"
 #include "types.h"
-#include "wrapped.h"
 #include <stdbool.h>
 
 void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables,

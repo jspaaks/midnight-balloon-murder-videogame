@@ -35,6 +35,7 @@ chunks_t chunks_init (void) {
     if ((Mix_Init(flags) & 0x11111111) == flags) {
         SDL_LogError(SDL_UNSUPPORTED, "Something went wrong initializing the audio. %s\n",
                      Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -50,6 +51,7 @@ chunks_t chunks_init (void) {
     if (Mix_OpenAudioDevice(frequency, format, nchannels, chunksize, device, allowed_changes) < 0) {
         SDL_LogError(SDL_UNSUPPORTED, "Something went wrong opening the audio device. %s\n",
                      Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -62,6 +64,7 @@ chunks_t chunks_init (void) {
     chunks.empty = Mix_LoadWAV(filename);
     if (chunks.empty == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -69,6 +72,7 @@ chunks_t chunks_init (void) {
     chunks.hit.red = Mix_LoadWAV(filename);
     if (chunks.hit.red == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -76,6 +80,7 @@ chunks_t chunks_init (void) {
     chunks.hit.orange = Mix_LoadWAV(filename);
     if (chunks.hit.orange == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -83,6 +88,7 @@ chunks_t chunks_init (void) {
     chunks.hit.yellow = Mix_LoadWAV(filename);
     if (chunks.hit.yellow == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -90,6 +96,7 @@ chunks_t chunks_init (void) {
     chunks.pop = Mix_LoadWAV(filename);
     if (chunks.pop == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 
@@ -97,6 +104,7 @@ chunks_t chunks_init (void) {
     chunks.shoot = Mix_LoadWAV(filename);
     if (chunks.shoot == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
 

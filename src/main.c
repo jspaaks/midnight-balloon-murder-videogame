@@ -52,6 +52,7 @@ static void sdl_init (void) {
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
         SDL_LogError(SDL_ENOMEM, "Error initializing SDL: %s\n", SDL_GetError());
+        // TODO free resources
         exit(EXIT_FAILURE);
     }
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");

@@ -174,6 +174,7 @@ static void drawable_collisions_update_remove (collision_t ** collisions) {
             default: {
                 SDL_LogError(SDL_UNSUPPORTED,
                              "Something went wrong in removing a collision from the list.\n");
+                // TODO free resources
                 exit(EXIT_FAILURE);
             }
         }
@@ -187,6 +188,7 @@ static void drawable_collisions_update_spawn_effect (balloon_t balloon, collisio
         if (c == NULL) {
             SDL_LogError(SDL_ENOMEM,
                          "Something went wrong allocating memory for new collision.\n");
+            // TODO free resources
             exit(EXIT_FAILURE);
         }
         *c = (collision_t) {

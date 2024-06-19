@@ -19,6 +19,7 @@ void drawable_keymap_draw_move_barrel (SDL_Renderer * renderer, fonts_t fonts, c
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = turret.sim.x + turret.sim.w / 2 - surf.payload->w / 2,
@@ -40,6 +41,7 @@ void drawable_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = (scene.sim.w - surf.payload->w) / 2,
@@ -73,6 +75,7 @@ void drawable_keymap_draw_proceedhint (level_t level, SDL_Renderer * renderer, f
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = (scene.sim.w - surf.payload->w) / 2,
@@ -94,6 +97,7 @@ void drawable_keymap_draw_quit (SDL_Renderer * renderer, fonts_t fonts, colors_t
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right bottom keymap on paused screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt =
         sim2tgt(scene, (SDL_FRect){
@@ -122,6 +126,7 @@ void drawable_keymap_draw_restart (level_t level, SDL_Renderer * renderer, fonts
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the right top keymap on paused screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt =
         sim2tgt(scene, (SDL_FRect){
@@ -144,6 +149,7 @@ void drawable_keymap_draw_shoot (SDL_Renderer * renderer, fonts_t fonts, colors_
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = turret.sim.x + turret.sim.w / 2 - surf.payload->w / 2,
@@ -165,6 +171,7 @@ void drawable_keymap_draw_start (SDL_Renderer * renderer, fonts_t fonts, colors_
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the keymap legend text on title screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = (scene.sim.w - surf.payload->w) / 2,
@@ -186,6 +193,7 @@ void drawable_keymap_draw_unpause (SDL_Renderer * renderer, fonts_t fonts, color
     if (txre.invalid) {
         SDL_LogError(SDL_ENOMEM, "Error creating the middle keymap on paused screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = (scene.sim.w - surf.payload->w) / 2,

@@ -77,6 +77,7 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
             SDL_LogError(SDL_UNSUPPORTED,
                          "Something went wrong with determining the next level: %s",
                          SDL_GetError());
+            // TODO free resources
             exit(EXIT_FAILURE);
         }
     }
@@ -88,6 +89,7 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
             SDL_LogError(SDL_ENOMEM,
                          "Error creating the proceed button keymap on level finished screen: %s.\n",
                          TTF_GetError());
+            // TODO free resources and exit
         }
         SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                           .x = 6 * scene.sim.w / 7 - surf.payload->w / 2,
@@ -107,6 +109,7 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
             SDL_LogError(SDL_ENOMEM,
                          "Error creating the proceed action keymap on level finished screen: %s.\n",
                          TTF_GetError());
+            // TODO free resources and exit
         }
         SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                           .x = 6 * scene.sim.w / 7 - surf.payload->w / 2,
@@ -129,6 +132,7 @@ static void fsm_level_finished_draw_keymap_repeat_action (SDL_Renderer * rendere
         SDL_LogError(SDL_ENOMEM,
                      "Error creating the repeat action keymap on level finished screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = 1 * scene.sim.w / 7 - surf.payload->w / 2,
@@ -150,6 +154,7 @@ static void fsm_level_finished_draw_keymap_repeat_button (SDL_Renderer * rendere
         SDL_LogError(SDL_ENOMEM,
                      "Error creating the repeat button keymap on level finished screen: %s.\n",
                      TTF_GetError());
+        // TODO free resources and exit
     }
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = 1 * scene.sim.w / 7 - surf.payload->w / 2,
