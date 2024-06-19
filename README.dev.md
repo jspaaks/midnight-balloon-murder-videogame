@@ -41,7 +41,7 @@ sudo apt install imagemagick
 Converting SVG images to BMP with transparency using ImageMagick's `convert` command:
 
 ```shell
-convert -background none -density 96 img/sprites.svg img/sprites.bmp
+convert -background none -density 96 images/sprites.svg images/sprites.bmp
 ```
 
 ## Linting
