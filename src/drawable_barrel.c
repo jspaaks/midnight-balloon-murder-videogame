@@ -44,8 +44,8 @@ barrel_t drawable_barrel_init (turret_t turret) {
         .y = turret.sim.y + (turret.sim.w - 1) / 2 - (src.h - 1) / 2,
     };
     return (barrel_t) {
-        .countdown_duration = 75,
-        .countdown_remaining = 0,
+        .countdown_duration = 0.150,
+        .countdown_remaining = 0.000,
         .sim = {
             .h = sim.h,
             .w = sim.w,

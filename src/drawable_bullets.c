@@ -109,7 +109,7 @@ static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counter
             flash->had_bullets = false;
         }
         barrel->countdown_remaining = barrel->countdown_duration;
-        flash->countdown_remaining = flash->countdown_duration;
+        flash->age = 0.000;
     }
 }
 

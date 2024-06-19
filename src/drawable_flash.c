@@ -9,7 +9,7 @@
 
 void drawable_flash_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
                           barrel_t barrel, flash_t flash) {
-    bool show = flash.countdown_remaining > 0 && flash.had_bullets;
+    bool show = flash.age < flash.age_max && flash.had_bullets;
     if (show) {
         SDL_Rect tgt = sim2tgt(scene, flash.sim);
         SDL_Point pivot_offset = (SDL_Point){
@@ -39,8 +39,8 @@ flash_t drawable_flash_init (barrel_t barrel) {
         .y = barrel.sim2.pivot.y - (h - 1) / 2,
     };
     return (flash_t) {
-        .countdown_duration = 30,
-        .countdown_remaining = 0,
+        .age = 0.0,
+        .age_max = 0.030,
         .sim = sim,
         .sim2 = {
             .pivot_offset = (SDL_FPoint) {
@@ -53,7 +53,7 @@ flash_t drawable_flash_init (barrel_t barrel) {
 }
 
 void drawable_flash_update (timing_t timing, flash_t * flash) {
-    if (flash->countdown_remaining > 0) {
-        flash->countdown_remaining -= timing.dt.frame;
+    if (flash->age < flash->age_max) {
+        flash->age += timing.dt.frame;
     }
 }

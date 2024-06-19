@@ -4,27 +4,30 @@
 #include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
+#include "scene.h"
 #include "types.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool drawable_collisions_colliding (balloon_t *, bullet_t *);
+static bool drawable_collisions_colliding (balloon_t, bullet_t);
+static void drawable_collisions_update_age (timing_t, collision_t *);
+static void drawable_collisions_update_play_sound (chunks_t, balloon_t);
 static void drawable_collisions_update_pos (timing_t, collision_t *);
 static void drawable_collisions_update_remove (collision_t **);
-static void drawable_collisions_update_spawn (chunks_t, balloon_t *, bullet_t *, counters_t *);
+static void drawable_collisions_update_spawn_effect (balloon_t, collision_t **);
 static void drawable_collisions_update_test_exited (scene_t, ground_t, collision_t *);
 
-static bool drawable_collisions_colliding (balloon_t * ba, bullet_t * bu) {
-    float ba_l = ba->sim.x;
-    float ba_r = ba->sim.x + ba->sim.w;
-    float ba_t = ba->sim.y;
-    float ba_b = ba->sim.y + ba->sim.h;
+static bool drawable_collisions_colliding (balloon_t balloon, bullet_t bullet) {
+    float ba_l = balloon.sim.x;
+    float ba_r = balloon.sim.x + balloon.sim.w;
+    float ba_t = balloon.sim.y;
+    float ba_b = balloon.sim.y + balloon.sim.h;
 
-    float bu_l = bu->sim.x;
-    float bu_r = bu->sim.x + bu->sim.w;
-    float bu_t = bu->sim.y;
-    float bu_b = bu->sim.y + bu->sim.h;
+    float bu_l = bullet.sim.x;
+    float bu_r = bullet.sim.x + bullet.sim.w;
+    float bu_t = bullet.sim.y;
+    float bu_b = bullet.sim.y + bullet.sim.h;
 
     bool separated = ba_t > bu_b || ba_r < bu_l || ba_b < bu_t || ba_l > bu_r;
 
@@ -41,12 +44,13 @@ void drawable_collisions_deinit (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture *, scene_t,
+void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, scene_t scene,
                                collision_t * collisions) {
-    collision_t * c = collisions;
-    SDL_SetRenderDrawColor(renderer, 166, 166, 166, 0);
-    while (c != NULL) {
-        c = c->next;
+    collision_t * this = collisions;
+    while (this != NULL) {
+        SDL_Rect tgt = sim2tgt(scene, this->sim);
+        SDL_RenderCopy(renderer, spritesheet, &this->src, &tgt);
+        this = this->next;
     }
 }
 
@@ -60,7 +64,63 @@ void drawable_collisions_update (timing_t timing, scene_t scene, ground_t ground
     drawable_collisions_update_test_exited(scene, ground, *collisions);
     drawable_collisions_update_remove(collisions);
     drawable_collisions_update_pos(timing, *collisions);
-    drawable_collisions_update_spawn(chunks, balloons, bullets, counters);
+    drawable_collisions_update_age(timing, *collisions);
+    balloon_t * balloon = balloons;
+    while (balloon != NULL) {
+        bullet_t * bullet = bullets;
+        while (bullet != NULL) {
+            if (drawable_collisions_colliding(*balloon, *bullet)) {
+                // increase nbullets
+                counters->nbullets.prespawn += balloon->value;
+
+                // mark balloon and bullet for deletion
+                balloon->state = HIT;
+                bullet->state = HIT;
+
+                // play sound effect
+                drawable_collisions_update_play_sound(chunks, *balloon);
+
+                // spawn collision effects
+                drawable_collisions_update_spawn_effect(*balloon, collisions);
+            }
+            bullet = bullet->next;
+        }
+        balloon = balloon->next;
+    }
+}
+
+static void drawable_collisions_update_age (timing_t timing, collision_t * collisions) {
+    collision_t * this = collisions;
+    while (this != NULL) {
+        this->age += timing.dt.frame;
+        if (this->age > this->age_max) {
+            this->state = TIMEOUT_ENDED;
+        }
+        this = this->next;
+    }
+}
+
+static void drawable_collisions_update_play_sound (chunks_t chunks, balloon_t balloon) {
+   Mix_PlayChannel(-1, chunks.pop, 0);
+    switch (balloon.value) {
+        case 3: {
+            Mix_PlayChannel(-1, chunks.hit.yellow, 0);
+            break;
+        }
+        case 4: {
+            Mix_PlayChannel(-1, chunks.hit.orange, 0);
+            break;
+        }
+        case 5: {
+            Mix_PlayChannel(-1, chunks.hit.red, 0);
+            break;
+        }
+        default: {
+            SDL_LogError(
+                SDL_UNSUPPORTED,
+                "Something went wrong with assigning the sound to the collision.\n");
+        }
+    }
 }
 
 static void drawable_collisions_update_pos (timing_t timing, collision_t * collisions) {
@@ -120,49 +180,38 @@ static void drawable_collisions_update_remove (collision_t ** collisions) {
     }
 }
 
-static void drawable_collisions_update_spawn (chunks_t chunks, balloon_t * balloons,
-                                              bullet_t * bullets, counters_t * counters) {
-    balloon_t * ba = balloons;
-    while (ba != NULL) {
-        bullet_t * bu = bullets;
-        while (bu != NULL) {
-            if (drawable_collisions_colliding(ba, bu)) {
-
-                // increase nbullets
-                counters->nbullets.prespawn += ba->value;
-
-                // mark bullet and balloon for deletion
-                ba->state = HIT;
-                bu->state = HIT;
-
-                // play sound effect
-                Mix_PlayChannel(-1, chunks.pop, 0);
-                switch (ba->value) {
-                    case 3: {
-                        Mix_PlayChannel(-1, chunks.hit.yellow, 0);
-                        break;
-                    }
-                    case 4: {
-                        Mix_PlayChannel(-1, chunks.hit.orange, 0);
-                        break;
-                    }
-                    case 5: {
-                        Mix_PlayChannel(-1, chunks.hit.red, 0);
-                        break;
-                    }
-                    default: {
-                        SDL_LogError(
-                            SDL_UNSUPPORTED,
-                            "Something went wrong with assigning the sound to the collision.\n");
-                    }
-                }
-
-                // spawn collision effect
-                // TODO
-            }
-            bu = bu->next;
+static void drawable_collisions_update_spawn_effect (balloon_t balloon, collision_t ** collisions) {
+    int n = 4 + rand() % 10;
+    for (int i = 0; i < n; i++) {
+        collision_t * c = malloc(1 * sizeof(collision_t));
+        if (c == NULL) {
+            SDL_LogError(SDL_ENOMEM,
+                         "Something went wrong allocating memory for new collision.\n");
+            exit(EXIT_FAILURE);
         }
-        ba = ba->next;
+        *c = (collision_t) {
+            .age = 0.000,
+            .age_max = (float)(600 + rand() % 600) / 1000,
+            .next = *collisions,
+            .sim = {
+                .x = balloon.sim.x,
+                .y = balloon.sim.y,
+                .w = 3,
+                .h = 3,
+            },
+            .sim2 = {
+                .u = -50 + rand() % 100,
+                .v = -50 + rand() % 100,
+            },
+            .src = {
+                 .x = 172,
+                 .y = 38,
+                 .w = 3,
+                 .h = 3,
+            },
+            .state = ALIVE,
+        };
+        *collisions = c;
     }
 }
 

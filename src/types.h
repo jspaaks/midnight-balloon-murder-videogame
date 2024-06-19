@@ -66,10 +66,9 @@ struct balloon_t {
 };
 
 struct barrel_t {
-    unsigned int countdown_duration;
-    unsigned int countdown_remaining;
+    float countdown_duration; // seconds
+    float countdown_remaining; // seconds
     SDL_FRect sim;
-
     struct {
         float angle;
         SDL_FPoint pivot;
@@ -77,7 +76,6 @@ struct barrel_t {
         float length;
         float speed;
     } sim2;
-
     SDL_Rect src;
 };
 
@@ -85,12 +83,10 @@ struct bullet_t {
     struct bullet_t * next;
     const SDL_Rect * src;
     SDL_FRect sim;
-
     struct {
         float u;
         float v;
     } sim2;
-
     delete_reason_t state;
 };
 
@@ -125,14 +121,15 @@ struct counters_t {
 };
 
 struct collision_t {
+    float age; // seconds
+    float age_max; // seconds
     struct collision_t * next;
     SDL_FRect sim;
-
     struct {
         float u;
         float v;
     } sim2;
-
+    SDL_Rect src;
     delete_reason_t state;
 };
 
@@ -152,8 +149,8 @@ struct colors_t {
 };
 
 struct flash_t {
-    unsigned int countdown_duration;
-    unsigned int countdown_remaining;
+    float age; // seconds
+    float age_max; // seconds
     bool had_bullets;
     SDL_FRect sim;
 
@@ -258,7 +255,7 @@ struct drawables_t {
 
 struct timing_t {
     struct {
-        float frame; // s
+        float frame; // seconds
     } dt;
 };
 
