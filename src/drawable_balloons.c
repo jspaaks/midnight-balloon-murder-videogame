@@ -142,7 +142,7 @@ static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
             .y = 20,
         },
         .state = ALIVE,
-        .value = 3,
+        .value = 5,
     };
     *balloons = b;
 }
@@ -174,7 +174,7 @@ static void drawable_balloons_update_spawn_yellow (scene_t scene, ground_t groun
             .y = 1,
         },
         .state = ALIVE,
-        .value = 5,
+        .value = 3,
     };
     *balloons = b;
 }
