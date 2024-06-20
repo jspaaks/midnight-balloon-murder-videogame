@@ -33,8 +33,8 @@ void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables,
     drawable_balloons_draw(drawing.renderer, drawing.spritesheet, drawing.scene,
                            drawables.balloons);
     drawable_bullets_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.bullets);
-    drawable_collisions_draw(drawing.renderer, drawing.spritesheet, drawing.colors, drawing.fonts, drawing.scene,
-                             drawables.collisions);
+    drawable_collisions_draw(drawing.renderer, drawing.spritesheet, drawing.colors, drawing.fonts,
+                             drawing.scene, drawables.collisions);
     drawable_ground_draw(drawing.renderer, drawing.colors, drawing.scene, drawables.ground);
     drawable_keymap_draw_pause(drawing.renderer, drawing.fonts, drawing.colors, drawing.scene,
                                drawables.ground);

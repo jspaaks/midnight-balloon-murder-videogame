@@ -46,8 +46,8 @@ void drawable_collisions_deinit (collision_t ** collisions) {
     *collisions = NULL;
 }
 
-void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, colors_t colors, fonts_t fonts, scene_t scene,
-                               collision_t * collisions) {
+void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture * spritesheet, colors_t colors,
+                               fonts_t fonts, scene_t scene, collision_t * collisions) {
     SDL_Surface * surf = NULL;
     SDL_Texture * txre = NULL;
     collision_t * this = collisions;
@@ -59,19 +59,19 @@ void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture * spriteshee
             char caption[10];
             sprintf(caption, "+%d", this->value);
 
-            SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+            SDL_Surface * surf =
+                TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
             if (surf == NULL) goto cleanup;
 
             SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
             if (txre == NULL) goto cleanup;
 
-            SDL_Rect tgt =
-                sim2tgt(scene, (SDL_FRect){
-                                   .x = this->sim.x - surf->w / 2,
-                                   .y = this->sim.y - surf->h / 2,
-                                   .w = surf->w,
-                                   .h = surf->h,
-                               });
+            SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
+                                              .x = this->sim.x - surf->w / 2,
+                                              .y = this->sim.y - surf->h / 2,
+                                              .w = surf->w,
+                                              .h = surf->h,
+                                          });
             SDL_RenderCopy(renderer, txre, NULL, &tgt);
             SDL_DestroyTexture(txre);
             SDL_FreeSurface(surf);
@@ -249,7 +249,8 @@ static void drawable_collisions_update_spawn_effect (balloon_t balloon, collisio
     }
 }
 
-static void drawable_collisions_update_spawn_hitpoint (balloon_t balloon, collision_t ** collisions) {
+static void drawable_collisions_update_spawn_hitpoint (balloon_t balloon,
+                                                       collision_t ** collisions) {
     collision_t * c = malloc(1 * sizeof(collision_t));
     if (c == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new collision.\n");
