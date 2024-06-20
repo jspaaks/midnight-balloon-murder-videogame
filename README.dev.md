@@ -65,8 +65,5 @@ Sounds effects are from https://sfxr.me/.
 
 ## TODO
 
-1. hitpoints texts
-1. hitpoints shrapnel
-1. review directory structure (src / bin / test etc)
 1. packaging / distribution
 1. consider adding tests, cmocka maybe
