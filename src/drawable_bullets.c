@@ -171,8 +171,7 @@ void drawable_bullets_update_remove (counters_t * counters, bullet_t ** bullets)
             default: {
                 SDL_LogError(SDL_UNSUPPORTED,
                              "Something went wrong in removing a bullet from the list.\n");
-                // TODO free resources
-                exit(EXIT_FAILURE);
+                deinit();
             }
         }
     }

@@ -244,8 +244,7 @@ static void drawable_balloons_update_remove (balloon_t ** balloons, counters_t *
             default: {
                 SDL_LogError(SDL_UNSUPPORTED,
                              "Something went wrong in removing a balloon from the list.\n");
-                // TODO free resources
-                exit(EXIT_FAILURE);
+                deinit();
             }
         }
     }

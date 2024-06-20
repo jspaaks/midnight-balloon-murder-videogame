@@ -175,8 +175,7 @@ static void drawable_collisions_update_remove (collision_t ** collisions) {
             default: {
                 SDL_LogError(SDL_UNSUPPORTED,
                              "Something went wrong in removing a collision from the list.\n");
-                // TODO free resources
-                exit(EXIT_FAILURE);
+                deinit();
             }
         }
     }

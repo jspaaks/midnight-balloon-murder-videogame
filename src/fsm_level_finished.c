@@ -77,8 +77,7 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
             SDL_LogError(SDL_UNSUPPORTED,
                          "Something went wrong with determining the next level: %s",
                          SDL_GetError());
-            // TODO free resources
-            exit(EXIT_FAILURE);
+            deinit();
         }
     }
 

@@ -67,8 +67,7 @@ void fsm_paused_update (timing_t, chunks_t, counters_t * counters, drawing_t * d
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_q) {
                     SDL_Log("quitting\n");
-                    // TODO free resources
-                    exit(EXIT_SUCCESS);
+                    deinit();
                 } else if (event.key.keysym.sym == SDLK_r) {
                     if (counters->nballoons.prespawn < level->nballoons.prespawn ||
                         counters->nbullets.prespawn < level->nbullets.prespawn) {
