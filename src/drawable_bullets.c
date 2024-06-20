@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "drawable_bullets.h"
+#include "deinit.h"
 #include "scene.h"
 #include "SDL_error.h"
 #include "SDL_keyboard.h"

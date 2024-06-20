@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "drawable_titles.h"
+#include "deinit.h"
 #include "scene.h"
 #include "SDL_log.h"
 #include "SDL_rect.h"
@@ -91,26 +91,24 @@ void drawable_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts,
     txres.r = SDL_CreateTextureFromSurface(renderer, surfs.r);
     if (txres.r == NULL) goto cleanup;
 
-    tgts.l =
-        sim2tgt(scene, (SDL_FRect){
-                           .x = (scene.sim.w - surfs.m->w) / 2 - surfs.l->w,
-                           .y = scene.sim.h * 0.31 - 7,
-                           .w = surfs.l->w,
-                           .h = surfs.l->h,
-                       });
+    tgts.l = sim2tgt(scene, (SDL_FRect){
+                                .x = (scene.sim.w - surfs.m->w) / 2 - surfs.l->w,
+                                .y = scene.sim.h * 0.31 - 7,
+                                .w = surfs.l->w,
+                                .h = surfs.l->h,
+                            });
     tgts.m = sim2tgt(scene, (SDL_FRect){
-                                     .x = (scene.sim.w - surfs.m->w) / 2,
-                                     .y = scene.sim.h * 0.31,
-                                     .w = surfs.m->w,
-                                     .h = surfs.m->h,
-                                 });
-    tgts.r = sim2tgt(
-        scene, (SDL_FRect){
-                   .x = (scene.sim.w - surfs.m->w) / 2 + surfs.m->w,
-                   .y = scene.sim.h * 0.31 - 7,
-                   .w = surfs.r->w,
-                   .h = surfs.r->h,
-               });
+                                .x = (scene.sim.w - surfs.m->w) / 2,
+                                .y = scene.sim.h * 0.31,
+                                .w = surfs.m->w,
+                                .h = surfs.m->h,
+                            });
+    tgts.r = sim2tgt(scene, (SDL_FRect){
+                                .x = (scene.sim.w - surfs.m->w) / 2 + surfs.m->w,
+                                .y = scene.sim.h * 0.31 - 7,
+                                .w = surfs.r->w,
+                                .h = surfs.r->h,
+                            });
     tgts.underline = sim2tgt(scene, (SDL_FRect){
                                         .x = (scene.sim.w - surfs.m->w) / 2,
                                         .y = scene.sim.h * 0.31 + surfs.m->h - 51,

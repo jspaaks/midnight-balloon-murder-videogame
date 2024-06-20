@@ -58,7 +58,9 @@ int main (void) {
 
     srand(time(NULL));
 
-    deinit_prepare(&drawables.balloons, &drawables.bullets, &drawables.collisions, &drawing.renderer, &drawing.window, &drawing.spritesheet, &drawing.fonts, &chunks);
+    deinit_prepare(&drawables.balloons, &drawables.bullets, &drawables.collisions,
+                   &drawing.renderer, &drawing.window, &drawing.spritesheet, &drawing.fonts,
+                   &chunks);
 
     sdl_init();
     level = levels_get_level(LEVEL_NOVICE);

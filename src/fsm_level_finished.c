@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "fsm_level_finished.h"
+#include "deinit.h"
 #include "drawable_background.h"
 #include "drawable_barrel.h"
 #include "drawable_ground.h"
@@ -89,11 +89,11 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
     SDL_Texture * txre1 = SDL_CreateTextureFromSurface(renderer, surf1);
     if (txre1 == NULL) goto cleanup;
     SDL_Rect tgt1 = sim2tgt(scene, (SDL_FRect){
-                                      .x = 6 * scene.sim.w / 7 - surf1->w / 2,
-                                      .y = scene.sim.h / 2 - surf1->h / 2,
-                                      .w = surf1->w,
-                                      .h = surf1->h,
-                                  });
+                                       .x = 6 * scene.sim.w / 7 - surf1->w / 2,
+                                       .y = scene.sim.h / 2 - surf1->h / 2,
+                                       .w = surf1->w,
+                                       .h = surf1->h,
+                                   });
     SDL_RenderCopy(renderer, txre1, NULL, &tgt1);
 
     // --- the action
@@ -104,11 +104,11 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
     SDL_Texture * txre2 = SDL_CreateTextureFromSurface(renderer, surf2);
     if (txre2 == NULL) goto cleanup;
     SDL_Rect tgt2 = sim2tgt(scene, (SDL_FRect){
-                                      .x = 6 * scene.sim.w / 7 - surf2->w / 2,
-                                      .y = scene.sim.h / 2 - surf2->h / 2 + 30,
-                                      .w = surf2->w,
-                                      .h = surf2->h,
-                                  });
+                                       .x = 6 * scene.sim.w / 7 - surf2->w / 2,
+                                       .y = scene.sim.h / 2 - surf2->h / 2 + 30,
+                                       .w = surf2->w,
+                                       .h = surf2->h,
+                                   });
     SDL_RenderCopy(renderer, txre2, NULL, &tgt2);
 
     // --- free resources

@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "spritesheet.h"
+#include "deinit.h"
 #include "SDL_error.h"
 #include "SDL_render.h"
 #include "types.h"

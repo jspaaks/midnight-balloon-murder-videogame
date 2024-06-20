@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "fsm_start.h"
+#include "deinit.h"
 #include "drawable_background.h"
 #include "drawable_ground.h"
 #include "drawable_keymap.h"

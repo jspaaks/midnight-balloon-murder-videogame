@@ -1,6 +1,6 @@
-#include "deinit.h"
 #include "drawable_legend.h"
 #include "colors.h"
+#include "deinit.h"
 #include "drawable_balloons.h"
 #include "levels.h"
 #include "scene.h"
@@ -148,7 +148,6 @@ cleanup:
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
-
 }
 
 static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * renderer,
@@ -200,13 +199,13 @@ static void drawable_legend_draw_text_nbullets (SDL_Renderer * renderer, scene_t
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
     if (txre == NULL) goto cleanup;
 
-    SDL_Rect tgt = sim2tgt(
-        scene, (SDL_FRect){
-                   .x = legend.highlight.sim.x + (legend.highlight.sim.w - surf->w) / 2,
-                   .y = legend.highlight.sim.y + (legend.highlight.sim.h - surf->h) / 2,
-                   .w = surf->w,
-                   .h = surf->h,
-               });
+    SDL_Rect tgt =
+        sim2tgt(scene, (SDL_FRect){
+                           .x = legend.highlight.sim.x + (legend.highlight.sim.w - surf->w) / 2,
+                           .y = legend.highlight.sim.y + (legend.highlight.sim.h - surf->h) / 2,
+                           .w = surf->w,
+                           .h = surf->h,
+                       });
     SDL_RenderCopy(renderer, txre, NULL, &tgt);
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
@@ -216,7 +215,6 @@ cleanup:
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
-
 }
 
 static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,

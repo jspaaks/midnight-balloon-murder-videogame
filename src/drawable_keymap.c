@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "drawable_keymap.h"
+#include "deinit.h"
 #include "scene.h"
 #include "SDL_log.h"
 #include "SDL_pixels.h"
@@ -14,7 +14,8 @@ void drawable_keymap_draw_move_barrel (SDL_Renderer * renderer, fonts_t fonts, c
                                        scene_t scene, turret_t turret, ground_t ground) {
 
     char caption[21] = "W / S TO MOVE BARREL";
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
@@ -42,7 +43,8 @@ void drawable_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_
 
     char caption[13] = "ESC TO PAUSE";
 
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
@@ -108,7 +110,8 @@ cleanup:
 void drawable_keymap_draw_quit (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
                                 scene_t scene, turret_t turret, ground_t ground) {
     char caption[10] = "Q TO QUIT";
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
@@ -142,7 +145,8 @@ void drawable_keymap_draw_restart (level_t level, SDL_Renderer * renderer, fonts
     }
     char caption[19] = "R TO RESTART LEVEL";
 
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
@@ -170,7 +174,8 @@ void drawable_keymap_draw_shoot (SDL_Renderer * renderer, fonts_t fonts, colors_
                                  scene_t scene, turret_t turret, ground_t ground) {
     char caption[15] = "SPACE TO SHOOT";
 
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
@@ -196,7 +201,8 @@ cleanup:
 void drawable_keymap_draw_start (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
                                  scene_t scene, ground_t ground) {
     char caption[20] = "PRESS ENTER TO PLAY";
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
@@ -223,7 +229,8 @@ void drawable_keymap_draw_unpause (SDL_Renderer * renderer, fonts_t fonts, color
                                    scene_t scene, ground_t ground) {
     char caption[15] = "ESC TO UNPAUSE";
 
-    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
+    SDL_Surface * surf =
+        TTF_RenderText_Shaded(fonts.regular, caption, colors.middlegray, colors.ground);
     if (surf == NULL) goto cleanup;
 
     SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);

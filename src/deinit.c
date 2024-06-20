@@ -1,8 +1,8 @@
+#include "deinit.h"
+#include "chunks.h"
 #include "drawable_balloons.h"
 #include "drawable_bullets.h"
-#include "chunks.h"
 #include "drawable_collisions.h"
-#include "deinit.h"
 #include "fonts.h"
 #include "renderer.h"
 #include "SDL.h"
@@ -42,7 +42,9 @@ void deinit (void) {
     exit(EXIT_FAILURE);
 }
 
-void deinit_prepare(balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions, SDL_Renderer ** renderer, SDL_Window ** window, SDL_Texture ** spritesheet, fonts_t * fonts, chunks_t * chunks) {
+void deinit_prepare (balloon_t ** balloons, bullet_t ** bullets, collision_t ** collisions,
+                     SDL_Renderer ** renderer, SDL_Window ** window, SDL_Texture ** spritesheet,
+                     fonts_t * fonts, chunks_t * chunks) {
     balloons_ref = balloons;
     bullets_ref = bullets;
     collisions_ref = collisions;

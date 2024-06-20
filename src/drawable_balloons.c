@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "drawable_balloons.h"
+#include "deinit.h"
 #include "levels.h"
 #include "scene.h"
 #include "SDL_error.h"

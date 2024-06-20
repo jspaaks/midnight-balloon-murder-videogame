@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "fsm_paused.h"
+#include "deinit.h"
 #include "drawable_background.h"
 #include "drawable_balloons.h"
 #include "drawable_barrel.h"

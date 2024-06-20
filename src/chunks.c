@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "chunks.h"
+#include "deinit.h"
 #include "SDL_mixer.h"
 #include <stdlib.h>
 
@@ -63,14 +63,16 @@ chunks_t chunks_init (void) {
     chunks.empty = Mix_LoadWAV(filename);
     if (chunks.empty == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
-        deinit();;
+        deinit();
+        ;
     }
 
     filename = "chunks/hit-red.wav";
     chunks.hit.red = Mix_LoadWAV(filename);
     if (chunks.hit.red == NULL) {
         SDL_LogError(SDL_UNSUPPORTED, "Error loading '%s'. %s\n", filename, Mix_GetError());
-        deinit();;
+        deinit();
+        ;
     }
 
     filename = "chunks/hit-orange.wav";

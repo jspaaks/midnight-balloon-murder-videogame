@@ -1,19 +1,19 @@
-#include "deinit.h"
 #include "drawable_collisions.h"
+#include "deinit.h"
 #include "drawable_balloons.h"
 #include "drawable_bullets.h"
+#include "scene.h"
 #include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_render.h"
-#include "scene.h"
 #include "types.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool drawable_collisions_colliding (balloon_t, bullet_t);
+static bool drawable_collisions_colliding(balloon_t, bullet_t);
 static void drawable_collisions_update_age (timing_t, collision_t *);
-static void drawable_collisions_update_play_sound (chunks_t, balloon_t);
+static void drawable_collisions_update_play_sound(chunks_t, balloon_t);
 static void drawable_collisions_update_pos (timing_t, collision_t *);
 static void drawable_collisions_update_remove (collision_t **);
 static void drawable_collisions_update_spawn_effect (balloon_t, collision_t **);
@@ -102,7 +102,7 @@ static void drawable_collisions_update_age (timing_t timing, collision_t * colli
 }
 
 static void drawable_collisions_update_play_sound (chunks_t chunks, balloon_t balloon) {
-   Mix_PlayChannel(-1, chunks.pop, 0);
+    Mix_PlayChannel(-1, chunks.pop, 0);
     switch (balloon.value) {
         case 3: {
             Mix_PlayChannel(-1, chunks.hit.yellow, 0);
@@ -117,9 +117,8 @@ static void drawable_collisions_update_play_sound (chunks_t chunks, balloon_t ba
             break;
         }
         default: {
-            SDL_LogError(
-                SDL_UNSUPPORTED,
-                "Something went wrong with assigning the sound to the collision.\n");
+            SDL_LogError(SDL_UNSUPPORTED,
+                         "Something went wrong with assigning the sound to the collision.\n");
         }
     }
 }
@@ -186,8 +185,7 @@ static void drawable_collisions_update_spawn_effect (balloon_t balloon, collisio
     for (int i = 0; i < n; i++) {
         collision_t * c = malloc(1 * sizeof(collision_t));
         if (c == NULL) {
-            SDL_LogError(SDL_ENOMEM,
-                         "Something went wrong allocating memory for new collision.\n");
+            SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new collision.\n");
             deinit();
         }
         *c = (collision_t) {

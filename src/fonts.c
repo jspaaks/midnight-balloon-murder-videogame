@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "fonts.h"
+#include "deinit.h"
 #include "SDL_log.h"
 #include "SDL_ttf.h"
 #include "types.h"

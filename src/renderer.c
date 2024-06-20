@@ -1,5 +1,5 @@
-#include "deinit.h"
 #include "renderer.h"
+#include "deinit.h"
 #include "SDL_error.h"
 #include "SDL_hints.h"
 #include "SDL_render.h"
