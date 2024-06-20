@@ -54,12 +54,10 @@ typedef struct turret_t turret_t;
 struct balloon_t {
     struct balloon_t * next;
     SDL_FRect sim;
-
     struct {
         float u;
         float v;
     } sim2;
-
     SDL_Rect src;
     delete_reason_t state;
     unsigned int value;
@@ -69,7 +67,6 @@ struct barrel_t {
     float countdown_duration;  // seconds
     float countdown_remaining; // seconds
     SDL_FRect sim;
-
     struct {
         float angle;
         SDL_FPoint pivot;
@@ -77,7 +74,6 @@ struct barrel_t {
         float length;
         float speed;
     } sim2;
-
     SDL_Rect src;
 };
 
@@ -85,24 +81,20 @@ struct bullet_t {
     struct bullet_t * next;
     const SDL_Rect * src;
     SDL_FRect sim;
-
     struct {
         float u;
         float v;
     } sim2;
-
     delete_reason_t state;
 };
 
 struct chunks_t {
     Mix_Chunk * empty;
-
     struct {
         Mix_Chunk * orange;
         Mix_Chunk * red;
         Mix_Chunk * yellow;
     } hit;
-
     Mix_Chunk * pop;
     Mix_Chunk * shoot;
 };
@@ -117,7 +109,6 @@ struct counters_t {
         unsigned int red;
         unsigned int yellow;
     } nballoons;
-
     struct {
         unsigned int airborne;
         unsigned int prespawn;
@@ -127,16 +118,16 @@ struct counters_t {
 struct collision_t {
     float age;     // seconds
     float age_max; // seconds
+    bool iseffect;
     struct collision_t * next;
     SDL_FRect sim;
-
     struct {
         float u;
         float v;
     } sim2;
-
     SDL_Rect src;
     delete_reason_t state;
+    unsigned int value;
 };
 
 struct colors_t {
@@ -159,11 +150,9 @@ struct flash_t {
     float age_max; // seconds
     bool had_bullets;
     SDL_FRect sim;
-
     struct {
         SDL_FPoint pivot_offset;
     } sim2;
-
     SDL_Rect src;
 };
 
@@ -188,11 +177,9 @@ struct ground_t {
 
 struct legend_t {
     unsigned int nbars;
-
     struct {
         SDL_FRect sim;
     } bars[10];
-
     struct {
         SDL_FRect sim;
         SDL_Color bg;
@@ -203,7 +190,6 @@ struct level_t {
     level_enum_t label;
     level_enum_t label_next;
     char name[20];
-
     struct {
         unsigned int orange;
         unsigned int prespawn;
@@ -211,7 +197,6 @@ struct level_t {
         unsigned int red;
         unsigned int yellow;
     } nballoons;
-
     struct {
         unsigned int prespawn;
     } nbullets;
