@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "drawable_balloons.h"
 #include "levels.h"
 #include "scene.h"
@@ -89,8 +90,7 @@ static void drawable_balloons_update_spawn_orange (scene_t scene, ground_t groun
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM,
                      "Something went wrong allocating memory for new orange balloon.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
+        deinit();
     }
     *b = (balloon_t){
         .next = *balloons,
@@ -121,8 +121,7 @@ static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new red balloon.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
+        deinit();
     }
     *b = (balloon_t){
         .next = *balloons,
@@ -154,8 +153,7 @@ static void drawable_balloons_update_spawn_yellow (scene_t scene, ground_t groun
     if (b == NULL) {
         SDL_LogError(SDL_ENOMEM,
                      "Something went wrong allocating memory for new yellow balloon.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
+        deinit();
     }
     *b = (balloon_t){
         .next = *balloons,

@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "fsm_paused.h"
 #include "drawable_background.h"
 #include "drawable_balloons.h"
@@ -20,7 +21,6 @@
 #include "SDL_render.h"
 #include "SDL_video.h"
 #include "types.h"
-#include "wrapped.h"
 #include <stdbool.h>
 
 void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,

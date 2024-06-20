@@ -7,6 +7,7 @@ target_sources(
         chunks.c
         colors.c
         counters.c
+        deinit.c
         drawable_background.c
         drawable_balloons.c
         drawable_barrel.c
@@ -34,7 +35,6 @@ target_sources(
         spritesheet.c
         timing.c
         window.c
-        wrapped.c
 )
 
 target_compile_features(

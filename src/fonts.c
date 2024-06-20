@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "fonts.h"
 #include "SDL_log.h"
 #include "SDL_ttf.h"
@@ -21,8 +22,7 @@ void fonts_deinit (fonts_t * fonts) {
 fonts_t fonts_init (void) {
     if (TTF_Init() != 0) {
         SDL_LogError(SDL_ENOMEM, "Couldn't initialize SDL_ttf: %s", TTF_GetError());
-        // TODO free resources
-        exit(EXIT_FAILURE);
+        deinit();
     }
     const char fontfile[] = "fonts/Bayon-Regular.ttf";
     int ptsize;
@@ -34,7 +34,7 @@ fonts_t fonts_init (void) {
     if (fonts.regular == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile,
                      TTF_GetError());
-        // TODO free resources and exit
+        deinit();
     }
 
     ptsize = 32;
@@ -42,7 +42,7 @@ fonts_t fonts_init (void) {
     if (fonts.large == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile,
                      TTF_GetError());
-        // TODO free resources and exit
+        deinit();
     }
 
     ptsize = 70;
@@ -50,7 +50,7 @@ fonts_t fonts_init (void) {
     if (fonts.large == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile,
                      TTF_GetError());
-        // TODO free resources and exit
+        deinit();
     }
 
     ptsize = 100;
@@ -58,7 +58,7 @@ fonts_t fonts_init (void) {
     if (fonts.xlarge == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile,
                      TTF_GetError());
-        // TODO free resources and exit
+        deinit();
     }
 
     ptsize = 114;
@@ -66,7 +66,7 @@ fonts_t fonts_init (void) {
     if (fonts.xxlarge == NULL) {
         SDL_LogError(SDL_ENOMEM, "Couldn't load %d pt font from %s: %s\n", ptsize, fontfile,
                      TTF_GetError());
-        // TODO free resources and exit
+        deinit();
     }
 
     return fonts;

@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "fsm_start.h"
 #include "drawable_background.h"
 #include "drawable_ground.h"
@@ -15,7 +16,6 @@
 #include "SDL_ttf.h"
 #include "SDL_video.h"
 #include "types.h"
-#include "wrapped.h"
 #include <stdlib.h>
 
 void fsm_start_draw (level_t, drawing_t drawing, drawables_t drawables, counters_t) {

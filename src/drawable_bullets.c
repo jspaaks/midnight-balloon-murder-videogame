@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "drawable_bullets.h"
 #include "scene.h"
 #include "SDL_error.h"
@@ -76,8 +77,7 @@ static void drawable_bullets_update_spawn (chunks_t chunks, counters_t * counter
             if (b == NULL) {
                 SDL_LogError(SDL_ENOMEM,
                              "Something went wrong allocating memory for new bullet.\n");
-                // TODO free resources
-                exit(EXIT_FAILURE);
+                deinit();
             }
             float a = PI * barrel->sim2.angle / 180;
             float x =

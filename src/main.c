@@ -1,6 +1,7 @@
 #include "chunks.h"
 #include "colors.h"
 #include "counters.h"
+#include "deinit.h"
 #include "drawable_balloons.h"
 #include "drawable_barrel.h"
 #include "drawable_bullets.h"
@@ -29,31 +30,13 @@
 #include <stdlib.h>
 #include <time.h>
 
-static void deinit (chunks_t *, drawing_t *, drawables_t *);
 static void sdl_init (void);
-
-static void deinit (chunks_t * chunks, drawing_t * drawing, drawables_t * drawables) {
-    // --- concrete entities
-    drawable_balloons_deinit(&drawables->balloons);
-    drawable_bullets_deinit(&drawables->bullets);
-    drawable_collisions_deinit(&drawables->collisions);
-    // --- abstract entities
-    fonts_deinit(&drawing->fonts);
-    chunks_deinit(chunks);
-    // --- sdl infrastructure
-    renderer_deinit(&drawing->renderer);
-    window_deinit(&drawing->window);
-    spritesheet_deinit(&drawing->spritesheet);
-    // --- deinitialize sdl library
-    SDL_Quit();
-}
 
 static void sdl_init (void) {
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
         SDL_LogError(SDL_ENOMEM, "Error initializing SDL: %s\n", SDL_GetError());
-        // TODO free resources
-        exit(EXIT_FAILURE);
+        deinit();
     }
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_ShowCursor(SDL_DISABLE);
@@ -61,24 +44,38 @@ static void sdl_init (void) {
 
 int main (void) {
 
+    chunks_t chunks;
+    counters_t counters;
+    drawables_t drawables;
+    drawing_t drawing;
+    gamestate_t * frame;
+    gamestate_t * gamestate;
+    level_t level;
+    unsigned int nframes;
+    timing_t timing;
+    Uint64 tnow;
+    Uint64 tstart;
+
     srand(time(NULL));
 
+    deinit_prepare(&drawables.balloons, &drawables.bullets, &drawables.collisions, &drawing.renderer, &drawing.window, &drawing.spritesheet, &drawing.fonts, &chunks);
+
     sdl_init();
-    level_t level = levels_get_level(LEVEL_NOVICE);
-    counters_t counters = counters_init(level);
-    drawing_t drawing = drawing_init();
-    drawables_t drawables = drawables_init(drawing.scene);
-    timing_t timing = timing_init();
-    chunks_t chunks = chunks_init();
+    level = levels_get_level(LEVEL_NOVICE);
+    counters = counters_init(level);
+    drawing = drawing_init();
+    drawables = drawables_init(drawing.scene);
+    timing = timing_init();
+    chunks = chunks_init();
 
     levels_reset_level(level, drawing, &drawables, &counters);
 
-    gamestate_t * gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
-    gamestate_t * frame = gamestate;
-    Uint64 tnow = SDL_GetTicks64();
-    Uint64 tstart = tnow;
+    gamestate = fsm_gamestate_get(GAMESTATE_STARTING);
+    frame = gamestate;
+    tnow = SDL_GetTicks64();
+    tstart = tnow;
 
-    unsigned int nframes = 0;
+    nframes = 0;
 
     SDL_Log("starting\n");
     while (true) {
@@ -97,6 +94,6 @@ int main (void) {
             tstart = SDL_GetTicks64();
         }
     }
-    deinit(&chunks, &drawing, &drawables);
+    deinit();
     return EXIT_SUCCESS;
 }

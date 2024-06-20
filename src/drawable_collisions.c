@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "drawable_collisions.h"
 #include "drawable_balloons.h"
 #include "drawable_bullets.h"
@@ -188,8 +189,7 @@ static void drawable_collisions_update_spawn_effect (balloon_t balloon, collisio
         if (c == NULL) {
             SDL_LogError(SDL_ENOMEM,
                          "Something went wrong allocating memory for new collision.\n");
-            // TODO free resources
-            exit(EXIT_FAILURE);
+            deinit();
         }
         *c = (collision_t) {
             .age = 0.000,

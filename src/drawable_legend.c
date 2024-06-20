@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "drawable_legend.h"
 #include "colors.h"
 #include "drawable_balloons.h"
@@ -8,7 +9,6 @@
 #include "SDL_rect.h"
 #include "SDL_ttf.h"
 #include "types.h"
-#include "wrapped.h"
 #include <stdio.h>
 
 static void drawable_legend_draw_bars (level_t, SDL_Renderer *, scene_t, colors_t, legend_t,
@@ -70,66 +70,85 @@ static void drawable_legend_draw_rect_nbullets (SDL_Renderer * renderer, scene_t
 static void drawable_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
                                            colors_t colors, legend_t legend) {
     static const char caption[4] = "HIT";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the hit legend text.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
-    }
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = legend.bars[0].sim.x,
-                                      .y = legend.bars[0].sim.y - surf.payload->h,
-                                      .w = surf.payload->w,
-                                      .h = surf.payload->h,
+                                      .y = legend.bars[0].sim.y - surf->h,
+                                      .w = surf->w,
+                                      .h = surf->h,
                                   });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the HIT legend text.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
 
 static void drawable_legend_draw_text_level (level_t level, SDL_Renderer * renderer, scene_t scene,
                                              fonts_t fonts, colors_t colors, legend_t legend) {
     char caption[30];
     sprintf(caption, "%s LEVEL", level.name);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the level legend text.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
-                                      .x = 2 * scene.sim.w / 4 - surf.payload->w / 2,
-                                      .y = legend.bars[0].sim.y - surf.payload->h,
-                                      .w = surf.payload->w,
-                                      .h = surf.payload->h,
+                                      .x = 2 * scene.sim.w / 4 - surf->w / 2,
+                                      .y = legend.bars[0].sim.y - surf->h,
+                                      .w = surf->w,
+                                      .h = surf->h,
                                   });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the LEVEL legend text.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
 
 static void drawable_legend_draw_text_miss (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
                                             colors_t colors, legend_t legend) {
+
     static const char caption[5] = "MISS";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the miss legend text.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
                                       .x = legend.bars[legend.nbars - 1].sim.x +
-                                           legend.bars[legend.nbars - 1].sim.w - surf.payload->w,
-                                      .y = legend.bars[0].sim.y - surf.payload->h,
-                                      .w = surf.payload->w,
-                                      .h = surf.payload->h,
+                                           legend.bars[legend.nbars - 1].sim.w - surf->w,
+                                      .y = legend.bars[0].sim.y - surf->h,
+                                      .w = surf->w,
+                                      .h = surf->h,
                                   });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the MISS legend text.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
+
 }
 
 static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * renderer,
@@ -142,71 +161,92 @@ static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * r
     }
     char caption[30];
     sprintf(caption, "BALLOONS %d / %d", nremaining, level.nballoons.prespawn);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the nballoons legend text.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
-                                      .x = 3 * scene.sim.w / 4 - surf.payload->w / 2,
-                                      .y = legend.bars[0].sim.y - surf.payload->h,
-                                      .w = surf.payload->w,
-                                      .h = surf.payload->h,
+                                      .x = 3 * scene.sim.w / 4 - surf->w / 2,
+                                      .y = legend.bars[0].sim.y - surf->h,
+                                      .w = surf->w,
+                                      .h = surf->h,
                                   });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the BALLOONS legend text.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
 
 static void drawable_legend_draw_text_nbullets (SDL_Renderer * renderer, scene_t scene,
                                                 fonts_t fonts, colors_t colors, legend_t legend,
                                                 counters_t counters) {
+
     char caption[30];
     sprintf(caption, "BULLETS %d", counters.nbullets.prespawn);
     SDL_Color fgcolor = counters.nbullets.prespawn >= 30 ? colors.lightgray : colors.white;
     SDL_Color bgcolor = drawable_legend_get_ammolow_bgcolor(counters, colors);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, fgcolor, bgcolor);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the nbullets legend caption.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, fgcolor, bgcolor);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(
         scene, (SDL_FRect){
-                   .x = legend.highlight.sim.x + (legend.highlight.sim.w - surf.payload->w) / 2,
-                   .y = legend.highlight.sim.y + (legend.highlight.sim.h - surf.payload->h) / 2,
-                   .w = surf.payload->w,
-                   .h = surf.payload->h,
+                   .x = legend.highlight.sim.x + (legend.highlight.sim.w - surf->w) / 2,
+                   .y = legend.highlight.sim.y + (legend.highlight.sim.h - surf->h) / 2,
+                   .w = surf->w,
+                   .h = surf->h,
                });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the BULLETS legend caption.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
+
 }
 
 static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
                                             colors_t colors, legend_t legend, counters_t counters) {
+
     char caption[30];
     sprintf(caption, "%d", counters.nballoons.hit);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the nhit legend text.\n");
-        // TODO free resources
-        exit(EXIT_FAILURE);
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt =
         sim2tgt(scene, (SDL_FRect){
-                           .x = legend.bars[0].sim.x - surf.payload->w - 10,
-                           .y = legend.bars[0].sim.y + (legend.bars[0].sim.h - surf.payload->h) / 2,
-                           .w = surf.payload->w,
-                           .h = surf.payload->h,
+                           .x = legend.bars[0].sim.x - surf->w - 10,
+                           .y = legend.bars[0].sim.y + (legend.bars[0].sim.h - surf->h) / 2,
+                           .w = surf->w,
+                           .h = surf->h,
                        });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the legend text for counters.nballoons.hit.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
 
 static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t scene, fonts_t fonts,
@@ -214,23 +254,30 @@ static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t sc
                                              counters_t counters) {
     char caption[30];
     sprintf(caption, "%d", counters.nballoons.miss);
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the nmiss legend text.\n");
-        // TODO free resources and exit
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.regular, caption, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt =
         sim2tgt(scene, (SDL_FRect){
                            .x = legend.bars[legend.nbars - 1].sim.x +
                                 legend.bars[legend.nbars - 1].sim.w + 10,
-                           .y = legend.bars[0].sim.y + (legend.bars[0].sim.h - surf.payload->h) / 2,
-                           .w = surf.payload->w,
-                           .h = surf.payload->h,
+                           .y = legend.bars[0].sim.y + (legend.bars[0].sim.h - surf->h) / 2,
+                           .w = surf->w,
+                           .h = surf->h,
                        });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the legend text for counters.nballoons.miss.\n");
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
 
 void drawable_legend_draw (level_t level, SDL_Renderer * renderer, fonts_t fonts, colors_t colors,

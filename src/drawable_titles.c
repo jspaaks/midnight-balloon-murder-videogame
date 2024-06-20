@@ -1,3 +1,4 @@
+#include "deinit.h"
 #include "drawable_titles.h"
 #include "scene.h"
 #include "SDL_log.h"
@@ -6,7 +7,6 @@
 #include "SDL_surface.h"
 #include "SDL_ttf.h"
 #include "types.h"
-#include "wrapped.h"
 #include <string.h>
 
 void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
@@ -17,131 +17,158 @@ void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts
     } else {
         strncpy(title, "LEVEL FINISHED", 15);
     }
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.xlarge, title, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n",
-                     TTF_GetError());
-        // TODO free and exit
-    }
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.xlarge, title, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
-                                      .x = (scene.sim.w - surf.payload->w) / 2,
-                                      .y = scene.sim.h * 0.44 - surf.payload->h / 2,
-                                      .w = surf.payload->w,
-                                      .h = surf.payload->h,
+                                      .x = (scene.sim.w - surf->w) / 2,
+                                      .y = scene.sim.h * 0.44 - surf->h / 2,
+                                      .w = surf->w,
+                                      .h = surf->h,
                                   });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n",
+                 TTF_GetError());
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
 
 void drawable_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
                                          scene_t scene) {
     static const struct {
-        char left[2];
-        char middle[22];
-        char right[2];
+        char l[2];
+        char m[22];
+        char r[2];
     } titleparts = {
-        .left = "M",
-        .middle = "IDNIGHT BALLOON MURDE",
-        .right = "R",
+        .l = "M",
+        .m = "IDNIGHT BALLOON MURDE",
+        .r = "R",
     };
 
     static struct {
-        SDLW_Surface left;
-        SDLW_Surface middle;
-        SDLW_Surface right;
+        SDL_Surface * l;
+        SDL_Surface * m;
+        SDL_Surface * r;
     } surfs;
 
     static struct {
-        SDLW_Texture left;
-        SDLW_Texture middle;
-        SDLW_Texture right;
+        SDL_Texture * l;
+        SDL_Texture * m;
+        SDL_Texture * r;
     } txres;
 
     static struct {
-        SDL_Rect left;
-        SDL_Rect middle;
-        SDL_Rect right;
+        SDL_Rect l;
+        SDL_Rect m;
+        SDL_Rect r;
         SDL_Rect underline;
     } tgts;
 
-    surfs.left =
-        TTFW_RenderText_Shaded(fonts.xxxlarge, titleparts.left, colors.lightgray, colors.bg);
-    surfs.middle =
-        TTFW_RenderText_Shaded(fonts.xxlarge, titleparts.middle, colors.lightgray, colors.bg);
-    surfs.right =
-        TTFW_RenderText_Shaded(fonts.xxxlarge, titleparts.right, colors.lightgray, colors.bg);
+    surfs.l = TTF_RenderText_Shaded(fonts.xxxlarge, titleparts.l, colors.lightgray, colors.bg);
+    if (surfs.l == NULL) goto cleanup;
 
-    txres.left = SDLW_CreateTextureFromSurface(renderer, surfs.left);
-    txres.middle = SDLW_CreateTextureFromSurface(renderer, surfs.middle);
-    txres.right = SDLW_CreateTextureFromSurface(renderer, surfs.right);
+    surfs.m = TTF_RenderText_Shaded(fonts.xxlarge, titleparts.m, colors.lightgray, colors.bg);
+    if (surfs.m == NULL) goto cleanup;
 
-    if (txres.left.invalid || txres.middle.invalid || txres.right.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the title text.\n");
-        // TODO free
-        exit(EXIT_FAILURE);
-    }
+    surfs.r = TTF_RenderText_Shaded(fonts.xxxlarge, titleparts.r, colors.lightgray, colors.bg);
+    if (surfs.r == NULL) goto cleanup;
 
-    tgts.left =
+    txres.l = SDL_CreateTextureFromSurface(renderer, surfs.l);
+    if (txres.l == NULL) goto cleanup;
+
+    txres.m = SDL_CreateTextureFromSurface(renderer, surfs.m);
+    if (txres.m == NULL) goto cleanup;
+
+    txres.r = SDL_CreateTextureFromSurface(renderer, surfs.r);
+    if (txres.r == NULL) goto cleanup;
+
+    tgts.l =
         sim2tgt(scene, (SDL_FRect){
-                           .x = (scene.sim.w - surfs.middle.payload->w) / 2 - surfs.left.payload->w,
+                           .x = (scene.sim.w - surfs.m->w) / 2 - surfs.l->w,
                            .y = scene.sim.h * 0.31 - 7,
-                           .w = surfs.left.payload->w,
-                           .h = surfs.left.payload->h,
+                           .w = surfs.l->w,
+                           .h = surfs.l->h,
                        });
-    tgts.middle = sim2tgt(scene, (SDL_FRect){
-                                     .x = (scene.sim.w - surfs.middle.payload->w) / 2,
+    tgts.m = sim2tgt(scene, (SDL_FRect){
+                                     .x = (scene.sim.w - surfs.m->w) / 2,
                                      .y = scene.sim.h * 0.31,
-                                     .w = surfs.middle.payload->w,
-                                     .h = surfs.middle.payload->h,
+                                     .w = surfs.m->w,
+                                     .h = surfs.m->h,
                                  });
-    tgts.right = sim2tgt(
+    tgts.r = sim2tgt(
         scene, (SDL_FRect){
-                   .x = (scene.sim.w - surfs.middle.payload->w) / 2 + surfs.middle.payload->w,
+                   .x = (scene.sim.w - surfs.m->w) / 2 + surfs.m->w,
                    .y = scene.sim.h * 0.31 - 7,
-                   .w = surfs.right.payload->w,
-                   .h = surfs.right.payload->h,
+                   .w = surfs.r->w,
+                   .h = surfs.r->h,
                });
     tgts.underline = sim2tgt(scene, (SDL_FRect){
-                                        .x = (scene.sim.w - surfs.middle.payload->w) / 2,
-                                        .y = scene.sim.h * 0.31 + surfs.middle.payload->h - 51,
-                                        .w = surfs.middle.payload->w,
+                                        .x = (scene.sim.w - surfs.m->w) / 2,
+                                        .y = scene.sim.h * 0.31 + surfs.m->h - 51,
+                                        .w = surfs.m->w,
                                         .h = 3,
                                     });
-    SDL_RenderCopy(renderer, txres.left.payload, NULL, &tgts.left);
-    SDL_RenderCopy(renderer, txres.middle.payload, NULL, &tgts.middle);
-    SDL_RenderCopy(renderer, txres.right.payload, NULL, &tgts.right);
+    SDL_RenderCopy(renderer, txres.l, NULL, &tgts.l);
+    SDL_RenderCopy(renderer, txres.m, NULL, &tgts.m);
+    SDL_RenderCopy(renderer, txres.r, NULL, &tgts.r);
     SDL_SetRenderDrawColor(renderer, colors.lightgray.r, colors.lightgray.g, colors.lightgray.b,
                            colors.lightgray.a);
     SDL_RenderFillRect(renderer, &tgts.underline);
 
-    SDL_DestroyTexture(txres.left.payload);
-    SDL_DestroyTexture(txres.middle.payload);
-    SDL_DestroyTexture(txres.right.payload);
+    SDL_DestroyTexture(txres.l);
+    SDL_DestroyTexture(txres.m);
+    SDL_DestroyTexture(txres.r);
 
-    SDL_FreeSurface(surfs.left.payload);
-    SDL_FreeSurface(surfs.middle.payload);
-    SDL_FreeSurface(surfs.right.payload);
+    SDL_FreeSurface(surfs.l);
+    SDL_FreeSurface(surfs.m);
+    SDL_FreeSurface(surfs.r);
+    return;
+
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the title text.\n");
+    SDL_DestroyTexture(txres.l);
+    SDL_DestroyTexture(txres.m);
+    SDL_DestroyTexture(txres.r);
+    SDL_FreeSurface(surfs.l);
+    SDL_FreeSurface(surfs.m);
+    SDL_FreeSurface(surfs.r);
+    deinit();
 }
 
 void drawable_titles_draw_paused (SDL_Renderer * renderer, fonts_t fonts, colors_t colors,
                                   scene_t scene) {
+
     char title[7] = "PAUSED";
-    SDLW_Surface surf = TTFW_RenderText_Shaded(fonts.xlarge, title, colors.lightgray, colors.bg);
-    SDLW_Texture txre = SDLW_CreateTextureFromSurface(renderer, surf);
-    if (txre.invalid) {
-        SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n",
-                     TTF_GetError());
-        // TODO free and exit
-    }
+
+    SDL_Surface * surf = TTF_RenderText_Shaded(fonts.xlarge, title, colors.lightgray, colors.bg);
+    if (surf == NULL) goto cleanup;
+
+    SDL_Texture * txre = SDL_CreateTextureFromSurface(renderer, surf);
+    if (txre == NULL) goto cleanup;
+
     SDL_Rect tgt = sim2tgt(scene, (SDL_FRect){
-                                      .x = scene.sim.x + (scene.sim.w - surf.payload->w) / 2,
-                                      .y = scene.sim.y + scene.sim.h * 0.44 - surf.payload->h / 2,
-                                      .w = surf.payload->w,
-                                      .h = surf.payload->h,
+                                      .x = scene.sim.x + (scene.sim.w - surf->w) / 2,
+                                      .y = scene.sim.y + scene.sim.h * 0.44 - surf->h / 2,
+                                      .w = surf->w,
+                                      .h = surf->h,
                                   });
-    SDL_RenderCopy(renderer, txre.payload, NULL, &tgt);
-    SDL_DestroyTexture(txre.payload);
-    SDL_FreeSurface(surf.payload);
+    SDL_RenderCopy(renderer, txre, NULL, &tgt);
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    return;
+
+cleanup:
+    SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n", TTF_GetError());
+    SDL_DestroyTexture(txre);
+    SDL_FreeSurface(surf);
+    deinit();
 }
