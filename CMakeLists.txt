@@ -36,4 +36,14 @@ set(SDL2MIXER_WAVE ON)
 set(SDL2MIXER_WAVPACK OFF)
 add_subdirectory(third_party/sdl_mixer EXCLUDE_FROM_ALL)
 
+# add assets to the build
+add_subdirectory(chunks)
+add_subdirectory(fonts)
+add_subdirectory(images)
+
+# defer to the CMakeLists.txt in src/
 add_subdirectory(src)
+
+# enable testing for this project, then defer to the CMakeLists.txt in tests/
+enable_testing()
+add_subdirectory(tests)
