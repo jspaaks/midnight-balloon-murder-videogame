@@ -25,23 +25,12 @@ cmake --build .
 cd .. && ./build/src/mbm
 ```
 
-### See also
-
-- https://www.youtube.com/watch?v=IZXNsim9TWI Bret Brown CppCon 2021
-- https://www.youtube.com/watch?v=eC9-iRN2b04 Mathieu Ropert CppCon 2017
-
-## Generating a bitmap image from SVG
-
-Install [ImageMagick](https://github.com/imagemagick/imagemagick) from repositories:
+## Testing with CTest
 
 ```shell
-sudo apt install imagemagick
-```
-
-Converting SVG images to BMP with transparency using ImageMagick's `convert` command:
-
-```shell
-convert -background none -density 96 images/sprites.svg images/sprites.bmp
+# assuming the project has been built,
+cd <project dir>/build
+ctest
 ```
 
 ## Linting
@@ -59,11 +48,31 @@ clang-format --Werror ./src/main.c
 clang-format --dry-run --Werror `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
 ```
 
+## Generating a bitmap image from SVG
+
+Install [ImageMagick](https://github.com/imagemagick/imagemagick) from repositories:
+
+```shell
+sudo apt install imagemagick
+```
+
+Converting SVG images to BMP with transparency using ImageMagick's `convert` command:
+
+```shell
+convert -background none -density 96 images/sprites.svg images/sprites.bmp
+```
+
 # Sound effects
 
 Sounds effects are from https://sfxr.me/.
 
+## See also
+
+- https://www.youtube.com/watch?v=IZXNsim9TWI Bret Brown CppCon 2021
+- https://www.youtube.com/watch?v=eC9-iRN2b04 Mathieu Ropert CppCon 2017
+
 ## TODO
 
 1. packaging / distribution
-1. consider adding tests, cmocka maybe
+1. github action build & test
+1. testing setup could be more idiomatic, smarter.
