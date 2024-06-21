@@ -37,6 +37,7 @@ static bool drawable_collisions_colliding (balloon_t balloon, bullet_t bullet) {
 }
 
 void drawable_collisions_deinit (collision_t ** collisions) {
+    if (collisions == NULL) return;
     collision_t * c = *collisions;
     while (c != NULL) {
         collision_t * tmp = c;

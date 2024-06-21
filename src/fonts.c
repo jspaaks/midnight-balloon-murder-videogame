@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 void fonts_deinit (fonts_t * fonts) {
+    if (fonts == NULL) return;
     TTF_CloseFont(fonts->regular);
     TTF_CloseFont(fonts->large);
     TTF_CloseFont(fonts->xlarge);

@@ -5,6 +5,8 @@
 
 void chunks_deinit (chunks_t * chunks) {
 
+    if (chunks == NULL) return;
+
     // clean up chunks
     Mix_FreeChunk(chunks->shoot);
     chunks->shoot = NULL;

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 void spritesheet_deinit (SDL_Texture ** spritesheet) {
+    if (spritesheet == NULL) return;
     SDL_DestroyTexture(*spritesheet);
     *spritesheet = NULL;
 }

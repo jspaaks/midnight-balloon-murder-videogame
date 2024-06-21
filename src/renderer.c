@@ -6,6 +6,7 @@
 #include "types.h"
 
 void renderer_deinit (SDL_Renderer ** renderer) {
+    if (renderer == NULL) return;
     SDL_DestroyRenderer(*renderer);
     *renderer = NULL;
 }

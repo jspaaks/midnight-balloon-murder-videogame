@@ -23,6 +23,7 @@ static void drawable_balloons_update_spawn_yellow (scene_t, ground_t, balloon_t 
 static void drawable_balloons_update_test_exited (scene_t, ground_t, balloon_t *);
 
 void drawable_balloons_deinit (balloon_t ** balloons) {
+    if (balloons == NULL) return;
     balloon_t * b = *balloons;
     while (b != NULL) {
         balloon_t * tmp = b;

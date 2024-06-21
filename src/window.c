@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 void window_deinit (SDL_Window ** window) {
+    if (window == NULL) return;
     SDL_DestroyWindow(*window);
     *window = NULL;
 }
