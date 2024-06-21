@@ -3,7 +3,7 @@
 #include "levels.h"
 #include "types.h"
 
-int main() {
+int main(void) {
     level_t level = levels_get_level(LEVEL_NOVICE);
     counters_t counters = counters_init(level);
     bool cond =

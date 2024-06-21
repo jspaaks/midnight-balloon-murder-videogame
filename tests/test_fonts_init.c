@@ -3,7 +3,7 @@
 #include "fonts.h"
 #include "types.h"
 
-int main() {
+int main(void) {
     fonts_t fonts;
     deinit_prepare_fonts(&fonts);
 
