@@ -1,5 +1,5 @@
-#include <assert.h>
 #include "counters.h"
+#include <assert.h>
 
 counters_t counters_init (level_t level) {
     assert(level.nballoons.prespawn != 0 && "levels needs to be initialized before counters");

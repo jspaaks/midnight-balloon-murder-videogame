@@ -14,5 +14,4 @@ void deinit_prepare_renderer (SDL_Renderer **);
 void deinit_prepare_spritesheet (SDL_Texture **);
 void deinit_prepare_window (SDL_Window **);
 
-
 #endif
