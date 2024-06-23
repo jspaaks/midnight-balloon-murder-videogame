@@ -136,7 +136,7 @@ static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
             .v = -30.0,
         },
         .src = (SDL_Rect){
-            .h = 7,
+            .h = 8,
             .w = 6,
             .x = 184,
             .y = 20,
