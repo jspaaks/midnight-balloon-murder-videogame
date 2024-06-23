@@ -14,7 +14,7 @@ void renderer_deinit (SDL_Renderer ** renderer) {
 SDL_Renderer * renderer_init (SDL_Window * window) {
     SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, 0);
     if (renderer == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Error initializing renderer: %s\n", SDL_GetError());
+        SDL_Log("Error initializing renderer: %s\n", SDL_GetError());
         deinit();
     }
     return renderer;

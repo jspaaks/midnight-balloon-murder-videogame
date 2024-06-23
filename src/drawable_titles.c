@@ -35,7 +35,7 @@ void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts
     return;
 
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the title on level finished screen: %s.\n",
+    SDL_Log("Error creating the title on level finished screen: %s.\n",
                  TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
@@ -132,7 +132,7 @@ void drawable_titles_draw_opening_title (SDL_Renderer * renderer, fonts_t fonts,
     return;
 
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the title text.\n");
+    SDL_Log("Error creating the title text.\n");
     SDL_DestroyTexture(txres.l);
     SDL_DestroyTexture(txres.m);
     SDL_DestroyTexture(txres.r);
@@ -165,7 +165,7 @@ void drawable_titles_draw_paused (SDL_Renderer * renderer, fonts_t fonts, colors
     return;
 
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the title on paused screen: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the title on paused screen: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();

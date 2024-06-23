@@ -87,7 +87,7 @@ static void drawable_legend_draw_text_hit (SDL_Renderer * renderer, scene_t scen
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the HIT legend text.\n");
+    SDL_Log("Error creating the HIT legend text.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -115,7 +115,7 @@ static void drawable_legend_draw_text_level (level_t level, SDL_Renderer * rende
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the LEVEL legend text.\n");
+    SDL_Log("Error creating the LEVEL legend text.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -144,7 +144,7 @@ static void drawable_legend_draw_text_miss (SDL_Renderer * renderer, scene_t sce
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the MISS legend text.\n");
+    SDL_Log("Error creating the MISS legend text.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -178,7 +178,7 @@ static void drawable_legend_draw_text_nballoons (level_t level, SDL_Renderer * r
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the BALLOONS legend text.\n");
+    SDL_Log("Error creating the BALLOONS legend text.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -211,7 +211,7 @@ static void drawable_legend_draw_text_nbullets (SDL_Renderer * renderer, scene_t
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the BULLETS legend caption.\n");
+    SDL_Log("Error creating the BULLETS legend caption.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -241,7 +241,7 @@ static void drawable_legend_draw_text_nhit (SDL_Renderer * renderer, scene_t sce
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the legend text for counters.nballoons.hit.\n");
+    SDL_Log("Error creating the legend text for counters.nballoons.hit.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -272,7 +272,7 @@ static void drawable_legend_draw_text_nmiss (SDL_Renderer * renderer, scene_t sc
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the legend text for counters.nballoons.miss.\n");
+    SDL_Log("Error creating the legend text for counters.nballoons.miss.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();

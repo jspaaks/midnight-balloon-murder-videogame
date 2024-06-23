@@ -68,3 +68,10 @@ target_link_libraries(
         SDL2_ttf
         SDL2_mixer
 )
+
+# Include the executable in install directory
+install(
+    TARGETS
+        mbm
+    RUNTIME
+)
