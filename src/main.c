@@ -60,7 +60,6 @@ int main (void) {
     srand(time(NULL));
 
     char * basepath = SDL_GetBasePath();
-    SDL_Log("Executable is at: %s\n", basepath);
 
     deinit_prepare_all(&drawables.balloons, &drawables.bullets, &drawables.collisions,
                        &drawing.renderer, &drawing.window, &drawing.spritesheet, &drawing.fonts,
