@@ -20,6 +20,7 @@
 #include "scene.h"
 #include "SDL.h"
 #include "SDL_error.h"
+#include "SDL_filesystem.h"
 #include "SDL_log.h"
 #include "SDL_timer.h"
 #include "spritesheet.h"
@@ -35,7 +36,7 @@ static void sdl_init (void);
 static void sdl_init (void) {
     int flags = SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS;
     if (SDL_Init(flags) != 0) {
-        SDL_LogError(SDL_ENOMEM, "Error initializing SDL: %s\n", SDL_GetError());
+        SDL_Log("Error initializing SDL: %s\n", SDL_GetError());
         deinit();
     }
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -58,6 +59,9 @@ int main (void) {
 
     srand(time(NULL));
 
+    char * basepath = SDL_GetBasePath();
+    SDL_Log("Executable is at: %s\n", basepath);
+
     deinit_prepare_all(&drawables.balloons, &drawables.bullets, &drawables.collisions,
                        &drawing.renderer, &drawing.window, &drawing.spritesheet, &drawing.fonts,
                        &chunks);
@@ -65,10 +69,10 @@ int main (void) {
     sdl_init();
     level = levels_get_level(LEVEL_NOVICE);
     counters = counters_init(level);
-    drawing = drawing_init();
+    drawing = drawing_init(basepath);
     drawables = drawables_init(drawing.scene);
     timing = timing_init();
-    chunks = chunks_init();
+    chunks = chunks_init(basepath);
 
     levels_reset_level(level, drawing, &drawables, &counters);
 
