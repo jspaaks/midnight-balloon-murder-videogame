@@ -1,6 +1,6 @@
 # Dev notes
 
-## Installing SDL2 from submodule
+## Building, testing, and installing
 
 Clone this repo recursively:
 
@@ -9,7 +9,7 @@ cd <your project dir>
 git clone https://github.com/jspaaks/libsdl2-game.git --recursive .
 ```
 
-## Building, testing, and installing with CMake
+Then use Cmake to configure, build and (optionally) install:
 
 ```shell
 # create an out-of-tree build directory, cd into it
