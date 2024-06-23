@@ -33,8 +33,6 @@ ctest
 
 ## Linting
 
-Linting an individual file:
-
 ```shell
 # see if main.c is compliant with rules in .clang-format
 clang-format --dry-run --Werror ./src/main.c
@@ -44,6 +42,9 @@ clang-format --Werror ./src/main.c
 
 # see if all files are compliant with rules in .clang-format
 clang-format --dry-run --Werror `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
+
+# let clang-format change files in-place
+clang-format -i `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
 ```
 
 ## Generating a bitmap image from SVG
