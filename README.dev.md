@@ -61,7 +61,7 @@ Converting SVG images to BMP with transparency using ImageMagick's `convert` com
 convert -background none -density 96 images/sprites.svg images/sprites.bmp
 ```
 
-# Sound effects
+## Sound effects
 
 Sounds effects are from https://sfxr.me/.
 
@@ -70,7 +70,7 @@ Sounds effects are from https://sfxr.me/.
 - https://www.youtube.com/watch?v=IZXNsim9TWI Bret Brown CppCon 2021
 - https://www.youtube.com/watch?v=eC9-iRN2b04 Mathieu Ropert CppCon 2017
 
-# Tools
+## Tools
 
 - valgrind
 - ldd
