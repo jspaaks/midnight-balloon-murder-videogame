@@ -37,6 +37,7 @@ static bool drawable_collisions_colliding (balloon_t balloon, bullet_t bullet) {
 }
 
 void drawable_collisions_deinit (collision_t ** collisions) {
+    if (collisions == NULL) return;
     collision_t * c = *collisions;
     while (c != NULL) {
         collision_t * tmp = c;
@@ -80,7 +81,7 @@ void drawable_collisions_draw (SDL_Renderer * renderer, SDL_Texture * spriteshee
     }
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the hitpoint text.\n");
+    SDL_Log("Error creating the hitpoint text.\n");
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -219,7 +220,7 @@ static void drawable_collisions_update_spawn_effect (balloon_t balloon, collisio
     for (int i = 0; i < n; i++) {
         collision_t * c = malloc(1 * sizeof(collision_t));
         if (c == NULL) {
-            SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new collision.\n");
+            SDL_Log("Something went wrong allocating memory for new collision.\n");
             deinit();
         }
         *c = (collision_t) {
@@ -253,7 +254,7 @@ static void drawable_collisions_update_spawn_hitpoint (balloon_t balloon,
                                                        collision_t ** collisions) {
     collision_t * c = malloc(1 * sizeof(collision_t));
     if (c == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new collision.\n");
+        SDL_Log("Something went wrong allocating memory for new collision.\n");
         deinit();
     }
     *c = (collision_t) {

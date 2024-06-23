@@ -21,6 +21,7 @@ static void drawable_bullets_update_spawn (chunks_t, counters_t *, barrel_t *, f
 static void drawable_bullets_update_test_exited (scene_t, ground_t, bullet_t *);
 
 void drawable_bullets_deinit (bullet_t ** bullets) {
+    if (bullets == NULL) return;
     bullet_t * b = *bullets;
     while (b != NULL) {
         bullet_t * tmp = b;

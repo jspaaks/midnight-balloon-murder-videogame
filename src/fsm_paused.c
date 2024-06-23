@@ -63,15 +63,12 @@ void fsm_paused_update (timing_t, chunks_t, counters_t * counters, drawing_t * d
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    SDL_Log("playing\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_q) {
-                    SDL_Log("quitting\n");
                     deinit();
                 } else if (event.key.keysym.sym == SDLK_r) {
                     if (counters->nballoons.prespawn < level->nballoons.prespawn ||
                         counters->nbullets.prespawn < level->nbullets.prespawn) {
-                        SDL_Log("restarting level\n");
                         levels_reset_level(*level, *drawing, drawables, counters);
                         *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                     }

@@ -118,7 +118,7 @@ static void fsm_level_finished_draw_keymap_proceed (SDL_Renderer * renderer, col
     SDL_FreeSurface(surf2);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the proceed keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the proceed keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre1);
     SDL_DestroyTexture(txre2);
     SDL_FreeSurface(surf1);
@@ -144,7 +144,7 @@ static void fsm_level_finished_draw_keymap_repeat_action (SDL_Renderer * rendere
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the repeat-level action: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the repeat-level action: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -168,7 +168,7 @@ static void fsm_level_finished_draw_keymap_repeat_button (SDL_Renderer * rendere
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the repeat-level keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the repeat-level keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -184,13 +184,13 @@ void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters, drawi
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (level->next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
+                    // --- playing, next level
                     *level = levels_get_level(level->label_next);
                     levels_reset_level(*level, *drawing, drawables, counters);
-                    SDL_Log("playing -- next level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_r) {
+                    // --- playing, same level
                     levels_reset_level(*level, *drawing, drawables, counters);
-                    SDL_Log("playing -- same level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(drawing->window, drawing->scene.isfullscreen

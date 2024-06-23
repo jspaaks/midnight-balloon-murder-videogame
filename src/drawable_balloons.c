@@ -2,7 +2,6 @@
 #include "deinit.h"
 #include "levels.h"
 #include "scene.h"
-#include "SDL_error.h"
 #include "SDL_log.h"
 #include "SDL_rect.h"
 #include "SDL_render.h"
@@ -23,6 +22,7 @@ static void drawable_balloons_update_spawn_yellow (scene_t, ground_t, balloon_t 
 static void drawable_balloons_update_test_exited (scene_t, ground_t, balloon_t *);
 
 void drawable_balloons_deinit (balloon_t ** balloons) {
+    if (balloons == NULL) return;
     balloon_t * b = *balloons;
     while (b != NULL) {
         balloon_t * tmp = b;
@@ -120,7 +120,7 @@ static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
                                                 balloon_t ** balloons) {
     balloon_t * b = malloc(1 * sizeof(balloon_t));
     if (b == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong allocating memory for new red balloon.\n");
+        SDL_Log("Something went wrong allocating memory for new red balloon.\n");
         deinit();
     }
     *b = (balloon_t){
@@ -136,7 +136,7 @@ static void drawable_balloons_update_spawn_red (scene_t scene, ground_t ground,
             .v = -30.0,
         },
         .src = (SDL_Rect){
-            .h = 7,
+            .h = 8,
             .w = 6,
             .x = 184,
             .y = 20,

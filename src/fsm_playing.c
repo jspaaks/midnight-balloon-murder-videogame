@@ -52,7 +52,6 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
             case SDL_KEYDOWN: {
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE: {
-                        SDL_Log("pausing\n");
                         *gamestate = fsm_gamestate_get(GAMESTATE_PAUSING);
                         break;
                     }
@@ -68,7 +67,7 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
             }
             case SDL_WINDOWEVENT: {
                 switch (event.window.event) {
-                    case SDL_WINDOWEVENT_RESIZED: // fallthrough
+                    case SDL_WINDOWEVENT_RESIZED: // deliberate fallthrough
                     case SDL_WINDOWEVENT_SIZE_CHANGED: {
                         drawing->scene.resized = true;
                         break;
@@ -95,7 +94,6 @@ void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters
         counters->nballoons.miss += counters->nballoons.prespawn + counters->nballoons.airborne;
         counters->nballoons.prespawn = 0;
         counters->nballoons.airborne = 0;
-        SDL_Log("finishing level\n");
         *gamestate = fsm_gamestate_get(GAMESTATE_FINISHING_LEVEL);
     }
 }

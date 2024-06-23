@@ -6,21 +6,22 @@
 #include <stdlib.h>
 
 void spritesheet_deinit (SDL_Texture ** spritesheet) {
+    if (spritesheet == NULL) return;
     SDL_DestroyTexture(*spritesheet);
     *spritesheet = NULL;
 }
 
-SDL_Texture * spritesheet_init (SDL_Renderer * renderer) {
-    SDL_Surface * image = SDL_LoadBMP("images/sprites.bmp");
+SDL_Texture * spritesheet_init (SDL_Renderer * renderer, char * basepath) {
+    char filename[1024];
+    sprintf(filename, "%s../images/sprites.bmp", basepath);
+    SDL_Surface * image = SDL_LoadBMP(filename);
     if (image == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong creating spritesheet surface: %s\n",
-                     SDL_GetError());
+        SDL_Log("Something went wrong creating spritesheet surface: %s\n", SDL_GetError());
         deinit();
     }
     SDL_Texture * spritesheet = SDL_CreateTextureFromSurface(renderer, image);
     if (spritesheet == NULL) {
-        SDL_LogError(SDL_ENOMEM, "Something went wrong creating spritesheet texture: %s\n",
-                     SDL_GetError());
+        SDL_Log("Something went wrong creating spritesheet texture: %s\n", SDL_GetError());
         deinit();
     }
     return spritesheet;

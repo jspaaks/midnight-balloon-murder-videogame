@@ -32,7 +32,7 @@ void drawable_keymap_draw_move_barrel (SDL_Renderer * renderer, fonts_t fonts, c
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the move barrel keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the move barrel keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -61,7 +61,7 @@ void drawable_keymap_draw_pause (SDL_Renderer * renderer, fonts_t fonts, colors_
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the pause keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the pause keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -101,7 +101,7 @@ void drawable_keymap_draw_proceedhint (level_t level, SDL_Renderer * renderer, f
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the proceedhint keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the proceedhint keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -129,7 +129,7 @@ void drawable_keymap_draw_quit (SDL_Renderer * renderer, fonts_t fonts, colors_t
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the quit keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the quit keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -164,7 +164,7 @@ void drawable_keymap_draw_restart (level_t level, SDL_Renderer * renderer, fonts
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the restart keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the restart keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -192,7 +192,7 @@ void drawable_keymap_draw_shoot (SDL_Renderer * renderer, fonts_t fonts, colors_
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the shoot keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the shoot keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -219,7 +219,7 @@ void drawable_keymap_draw_start (SDL_Renderer * renderer, fonts_t fonts, colors_
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the play keymap legend: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the play keymap legend: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();
@@ -247,7 +247,7 @@ void drawable_keymap_draw_unpause (SDL_Renderer * renderer, fonts_t fonts, color
     SDL_FreeSurface(surf);
     return;
 cleanup:
-    SDL_LogError(SDL_ENOMEM, "Error creating the unpause keymap: %s.\n", TTF_GetError());
+    SDL_Log("Error creating the unpause keymap: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();

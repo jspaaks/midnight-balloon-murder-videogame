@@ -4,6 +4,6 @@
 #include "SDL_video.h"
 #include "types.h"
 
-drawing_t drawing_init (void);
+drawing_t drawing_init (char *);
 
 #endif
