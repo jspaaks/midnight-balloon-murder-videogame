@@ -34,40 +34,35 @@ fonts_t fonts_init (char * basepath) {
     ptsize = 20;
     fonts.regular = TTF_OpenFont(filename, ptsize);
     if (fonts.regular == NULL) {
-        SDL_Log(filename,
-                     TTF_GetError());
+        SDL_Log(filename, TTF_GetError());
         deinit();
     }
 
     ptsize = 32;
     fonts.large = TTF_OpenFont(filename, ptsize);
     if (fonts.large == NULL) {
-        SDL_Log(filename,
-                     TTF_GetError());
+        SDL_Log(filename, TTF_GetError());
         deinit();
     }
 
     ptsize = 70;
     fonts.xlarge = TTF_OpenFont(filename, ptsize);
     if (fonts.large == NULL) {
-        SDL_Log(filename,
-                     TTF_GetError());
+        SDL_Log(filename, TTF_GetError());
         deinit();
     }
 
     ptsize = 100;
     fonts.xxlarge = TTF_OpenFont(filename, ptsize);
     if (fonts.xlarge == NULL) {
-        SDL_Log(filename,
-                     TTF_GetError());
+        SDL_Log(filename, TTF_GetError());
         deinit();
     }
 
     ptsize = 114;
     fonts.xxxlarge = TTF_OpenFont(filename, ptsize);
     if (fonts.xxlarge == NULL) {
-        SDL_Log(filename,
-                     TTF_GetError());
+        SDL_Log(filename, TTF_GetError());
         deinit();
     }
 

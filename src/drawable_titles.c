@@ -35,8 +35,7 @@ void drawable_titles_draw_level_finished (SDL_Renderer * renderer, fonts_t fonts
     return;
 
 cleanup:
-    SDL_Log("Error creating the title on level finished screen: %s.\n",
-                 TTF_GetError());
+    SDL_Log("Error creating the title on level finished screen: %s.\n", TTF_GetError());
     SDL_DestroyTexture(txre);
     SDL_FreeSurface(surf);
     deinit();

@@ -36,8 +36,7 @@ chunks_t chunks_init (char * basepath) {
 
     MIX_InitFlags flags = 0x00000000 | MIX_INIT_MP3;
     if ((Mix_Init(flags) & 0x11111111) == flags) {
-        SDL_Log("Something went wrong initializing the audio. %s\n",
-                     Mix_GetError());
+        SDL_Log("Something went wrong initializing the audio. %s\n", Mix_GetError());
         deinit();
     }
 
@@ -51,8 +50,7 @@ chunks_t chunks_init (char * basepath) {
     int allowed_changes = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE;
 
     if (Mix_OpenAudioDevice(frequency, format, nchannels, chunksize, device, allowed_changes) < 0) {
-        SDL_Log("Something went wrong opening the audio device. %s\n",
-                     Mix_GetError());
+        SDL_Log("Something went wrong opening the audio device. %s\n", Mix_GetError());
         deinit();
     }
 
