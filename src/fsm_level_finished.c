@@ -184,13 +184,13 @@ void fsm_level_finished_update (timing_t, chunks_t, counters_t * counters, drawi
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (level->next_unlocked && event.key.keysym.sym == SDLK_RETURN) {
+                    // --- playing, next level
                     *level = levels_get_level(level->label_next);
                     levels_reset_level(*level, *drawing, drawables, counters);
-                    SDL_Log("playing -- next level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_r) {
+                    // --- playing, same level
                     levels_reset_level(*level, *drawing, drawables, counters);
-                    SDL_Log("playing -- same level\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(drawing->window, drawing->scene.isfullscreen

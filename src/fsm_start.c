@@ -36,7 +36,6 @@ void fsm_start_update (timing_t, chunks_t, counters_t *, drawing_t * drawing, dr
         switch (event.type) {
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_RETURN) {
-                    SDL_Log("playing\n");
                     *gamestate = fsm_gamestate_get(GAMESTATE_PLAYING);
                 } else if (event.key.keysym.sym == SDLK_F11) {
                     SDL_SetWindowFullscreen(drawing->window, drawing->scene.isfullscreen

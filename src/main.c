@@ -82,7 +82,6 @@ int main (void) {
 
     nframes = 0;
 
-    SDL_Log("starting\n");
     while (true) {
 
         frame = gamestate; // so .update() and .draw() are of the same state
