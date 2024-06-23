@@ -1,8 +1,5 @@
-# copy image assets to build directory
-set(
-    MBM_IMAGES
-        sprites.bmp
+# copy image assets to install directory
+install(
+    FILES sprites.bmp
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/images
 )
-foreach(MBM_IMAGE IN LISTS MBM_IMAGES)
-    file(GENERATE OUTPUT ${MBM_IMAGE} INPUT ${MBM_IMAGE})
-endforeach()

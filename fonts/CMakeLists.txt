@@ -1,9 +1,5 @@
-# copy font assets to build directory
-set(
-    MBM_FONTS
-        Bayon-Regular.ttf
-        OFL.txt
+# copy font assets to install directory
+install(
+    FILES Bayon-Regular.ttf OFL.txt
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/fonts
 )
-foreach(MBM_FONT IN LISTS MBM_FONTS)
-    file(GENERATE OUTPUT ${MBM_FONT} INPUT ${MBM_FONT})
-endforeach()

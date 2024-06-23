@@ -9,17 +9,19 @@ project (mbm
     LANGUAGES "C"
 )
 
+list(APPEND CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/../lib)
+
 # describe how to compile the SDL2 library
 set(SDL_Haptic OFF)
 set(SDL_Joystick OFF)
 set(SDL_Threads OFF)
-add_subdirectory(third_party/sdl EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/sdl)
 
 # describe how to compile the SDL2_ttf library
 set(SDL2TTF_HARFBUZZ ON)
 set(SDL2TTF_SAMPLES OFF)
 set(SDL2TTF_VENDORED ON)
-add_subdirectory(third_party/sdl_ttf EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/sdl_ttf)
 
 # describe how to compile the SDL2_mixer library
 set(SDL2MIXER_FLAC OFF)
@@ -34,7 +36,7 @@ set(SDL2MIXER_VENDORED ON)
 set(SDL2MIXER_VORBIS "")
 set(SDL2MIXER_WAVE ON)
 set(SDL2MIXER_WAVPACK OFF)
-add_subdirectory(third_party/sdl_mixer EXCLUDE_FROM_ALL)
+add_subdirectory(third_party/sdl_mixer)
 
 # add assets to the build
 add_subdirectory(chunks)
@@ -47,3 +49,17 @@ add_subdirectory(src)
 # enable testing for this project, then defer to the CMakeLists.txt in tests/
 enable_testing()
 add_subdirectory(tests)
+
+# copy libs to bin directory
+install(
+    FILES
+        build/third_party/sdl_mixer/libSDL2_mixer-2.0.so.0.800.0
+        build/third_party/sdl_mixer/libSDL2_mixer-2.0.so.0
+        build/third_party/sdl_mixer/libSDL2_mixer-2.0.so
+        build/third_party/sdl_mixer/libSDL2_mixer.so
+        build/third_party/sdl_ttf/libSDL2_ttf-2.0.so.0.2300.0
+        build/third_party/sdl_ttf/libSDL2_ttf-2.0.so.0
+        build/third_party/sdl_ttf/libSDL2_ttf-2.0.so
+        build/third_party/sdl_ttf/libSDL2_ttf.so
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+)

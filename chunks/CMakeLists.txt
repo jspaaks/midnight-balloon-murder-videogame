@@ -1,13 +1,11 @@
-# copy chunk assets to build directory
-set(
-    MBM_CHUNKS
+# copy chunk assets to install directory
+install(
+    FILES
         empty.wav
         hit-orange.wav
         hit-red.wav
         hit-yellow.wav
         pop.wav
         shot.wav
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/chunks
 )
-foreach(MBM_CHUNK IN LISTS MBM_CHUNKS)
-    file(GENERATE OUTPUT ${MBM_CHUNK} INPUT ${MBM_CHUNK})
-endforeach()

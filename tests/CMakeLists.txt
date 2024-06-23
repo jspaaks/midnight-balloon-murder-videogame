@@ -67,3 +67,20 @@ set(
 foreach(TESTFILE IN LISTS TESTFILES)
     create_test_executable(${TESTFILE})
 endforeach()
+
+# add asset files to the build/tests directory, so sibling test files can
+# be run from there during development
+set(MBM_RESOURCES
+    fonts/Bayon-Regular.ttf
+    fonts/OFL.txt
+    images/sprites.bmp
+    chunks/pop.wav
+    chunks/empty.wav
+    chunks/hit-red.wav
+    chunks/hit-yellow.wav
+    chunks/hit-orange.wav
+    chunks/shot.wav
+)
+foreach(MBM_RESOURCE IN LISTS MBM_RESOURCES)
+    file(CREATE_LINK "${CMAKE_CURRENT_LIST_DIR}/../${MBM_RESOURCE}" "${MBM_RESOURCE}" SYMBOLIC)
+endforeach()
