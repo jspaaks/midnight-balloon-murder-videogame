@@ -9,28 +9,26 @@ cd <your project dir>
 git clone https://github.com/jspaaks/libsdl2-game.git --recursive .
 ```
 
-## Building with CMake
+## Building, testing, and installing with CMake
 
 ```shell
 # create an out-of-tree build directory, cd into it
 mkdir build && cd build
 
 # generate the build files
-cmake ..
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/tmp/dist-mbm ..
 
 # compile using the generated build files
 cmake --build .
 
-# Run the binary from the project root
-cd .. && ./build/src/mbm
-```
+# install in the prefix directory from earlier
+cmake --install .
 
-## Testing with CTest
-
-```shell
-# assuming the project has been built,
-cd <project dir>/build
+# run the tests
 ctest
+
+# Run the binary from the prefix root
+/tmp/dist-mbm/bin/mbm
 ```
 
 ## Linting
@@ -70,6 +68,13 @@ Sounds effects are from https://sfxr.me/.
 
 - https://www.youtube.com/watch?v=IZXNsim9TWI Bret Brown CppCon 2021
 - https://www.youtube.com/watch?v=eC9-iRN2b04 Mathieu Ropert CppCon 2017
+
+# Tools
+
+- valgrind
+- ldd
+- nm
+- ldconfig
 
 ## TODO
 
