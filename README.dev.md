@@ -76,6 +76,7 @@ Sounds effects are from https://sfxr.me/.
 - ldd
 - nm
 - ldconfig
+- gdb
 
 ## TODO
 
