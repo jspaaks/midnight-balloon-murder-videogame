@@ -14,12 +14,12 @@
 
 balloon_t ** balloons_ref = NULL;
 bullet_t ** bullets_ref = NULL;
-collision_t ** collisions_ref = NULL;
-SDL_Renderer ** renderer_ref = NULL;
-SDL_Window ** window_ref = NULL;
-SDL_Texture ** spritesheet_ref = NULL;
-fonts_t * fonts_ref = NULL;
 chunks_t * chunks_ref = NULL;
+collision_t ** collisions_ref = NULL;
+fonts_t * fonts_ref = NULL;
+SDL_Renderer ** renderer_ref = NULL;
+SDL_Texture ** spritesheet_ref = NULL;
+SDL_Window ** window_ref = NULL;
 
 void deinit (void) {
 
