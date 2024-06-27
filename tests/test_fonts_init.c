@@ -9,6 +9,12 @@ int main(void) {
 
     char * basepath = SDL_GetBasePath();
     fonts = fonts_init(basepath);
-    bool cond = fonts.regular != NULL;
+    bool cond =
+        fonts.regular != NULL &&
+        fonts.large != NULL &&
+        fonts.xlarge != NULL &&
+        fonts.xxlarge != NULL &&
+        fonts.xxxlarge != NULL;
+
     return cond ? 0 : 1;
 }
