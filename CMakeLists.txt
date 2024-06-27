@@ -53,6 +53,9 @@ add_subdirectory(tests)
 # copy libs to bin directory
 install(
     FILES
+        build/third_party/sdl/libSDL2-2.0.so
+        build/third_party/sdl/libSDL2-2.0.so.0
+        build/third_party/sdl/libSDL2-2.0.so.0.3100.0
         build/third_party/sdl_mixer/libSDL2_mixer-2.0.so.0.800.0
         build/third_party/sdl_mixer/libSDL2_mixer-2.0.so.0
         build/third_party/sdl_mixer/libSDL2_mixer-2.0.so
