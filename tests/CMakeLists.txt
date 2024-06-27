@@ -55,6 +55,7 @@ endfunction()
 
 set(
     TESTFILES
+        test_chunks.c
         test_counters_init.c
         test_fonts_init.c
         test_levels_get_level_novice.c
