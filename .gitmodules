@@ -1,9 +1,9 @@
 [submodule "third_party/sdl"]
 	path = third_party/sdl
-	url = https://github.com/libsdl-org/sdl.git
+	url = https://github.com/midnight-balloon-murder-videogame/sdl.git
 [submodule "third_party/sdl_ttf"]
 	path = third_party/sdl_ttf
-	url = https://github.com/libsdl-org/SDL_ttf.git
+	url = https://github.com/midnight-balloon-murder-videogame/SDL_ttf.git
 [submodule "third_party/sdl_mixer"]
 	path = third_party/sdl_mixer
-	url = https://github.com/libsdl-org/SDL_mixer.git
+	url = https://github.com/midnight-balloon-murder-videogame/SDL_mixer.git
