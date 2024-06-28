@@ -6,7 +6,7 @@ Clone this repo recursively:
 
 ```shell
 cd <your project dir>
-git clone https://github.com/jspaaks/libsdl2-game.git --recursive .
+git clone https://github.com/jspaaks/midnight-balloon-murder-videogame.git --recursive .
 ```
 
 Then use Cmake to configure, build and (optionally) install:
