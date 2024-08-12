@@ -50,10 +50,7 @@ target_link_libraries(
 target_sources(
     tgt_exe_test_mbm
     PRIVATE
-        ${PROJECT_ROOT}/test/mbm/test_addition.c
-        ${PROJECT_ROOT}/test/mbm/test_division.c
-        ${PROJECT_ROOT}/test/mbm/test_multiplication.c
-        ${PROJECT_ROOT}/test/mbm/test_subtraction.c
+        ${PROJECT_ROOT}/test/mbm/test_chunks.c
 )
 
 install(TARGETS tgt_exe_test_mbm)

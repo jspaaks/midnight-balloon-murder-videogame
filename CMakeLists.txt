@@ -71,5 +71,5 @@ add_subdirectory(${PROJECT_ROOT}/src/mbm)
 
 
 
-#add_subdirectory(${PROJECT_ROOT}/test/mbm)
+add_subdirectory(${PROJECT_ROOT}/test/mbm)
 
