@@ -24,9 +24,6 @@ cmake --build .
 # install in the prefix directory from earlier
 cmake --install .
 
-# run the tests
-ctest
-
 # Run the binary from the prefix root
 /tmp/dist-mbm/bin/mbm
 ```
