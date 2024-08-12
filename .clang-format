@@ -6,7 +6,7 @@ AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLoopsOnASingleLine: false
 BreakBeforeBraces: Attach
-ColumnLimit: 100
+ColumnLimit: 120
 Cpp11BracedListStyle: false
 DerivePointerAlignment: false
 IndentCaseLabels: true
@@ -17,7 +17,7 @@ Language: Cpp
 PointerAlignment: Middle
 ReferenceAlignment: Right
 # RemoveSemicolon: true (clang >= 17)
-SeparateDefinitionBlocks: Leave
+SeparateDefinitionBlocks: Always
 SortIncludes: CaseInsensitive
 SpaceAfterCStyleCast: true
 SpaceAfterLogicalNot: false
