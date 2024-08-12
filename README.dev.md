@@ -83,3 +83,5 @@ Sounds effects are from https://sfxr.me/.
 1. packaging / distribution
 1. github action build & test
 1. testing setup could be more idiomatic, smarter.
+1. review use of const
+1. consider refactoring linked list instances into abstract data type module
