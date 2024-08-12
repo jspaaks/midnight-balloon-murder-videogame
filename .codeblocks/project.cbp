@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="mbm" />
+		<Option pch_mode="2" />
+		<Option default_target="vtgt_exe_test_mbm_dbg" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="tgt_lib_their_dbg">
+				<Option output="../build/codeblocks/debug/lib/their" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../build/codeblocks/debug/obj" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectIncludeDirsRelation="1" />
+				<Option projectResourceIncludeDirsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O0" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c2x" />
+					<Add option="-ggdb" />
+					<Add option="-g" />
+					<Add directory="../third_party/their/include" />
+				</Compiler>
+			</Target>
+			<Target title="tgt_lib_mbm_dbg">
+				<Option output="../build/codeblocks/debug/lib/mbm" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../build/codeblocks/debug/obj" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectIncludeDirsRelation="1" />
+				<Option projectResourceIncludeDirsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O0" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c2x" />
+					<Add option="-ggdb" />
+					<Add option="-g" />
+					<Add directory="../include" />
+					<Add directory="../third_party/their/include" />
+				</Compiler>
+				<Linker>
+					<Add library="their" />
+					<Add directory="../build/codeblocks/debug/lib" />
+				</Linker>
+			</Target>
+			<Target title="tgt_exe_exe_dbg">
+				<Option output="../build/codeblocks/debug/bin/exe" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../build/codeblocks/debug/obj" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectIncludeDirsRelation="1" />
+				<Option projectResourceIncludeDirsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O0" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c2x" />
+					<Add option="-ggdb" />
+					<Add option="-g" />
+					<Add directory="../include" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,-rpath,../build/codeblocks/debug/lib" />
+					<Add library="m" />
+					<Add library="mbm" />
+					<Add directory="../build/codeblocks/debug/lib" />
+				</Linker>
+			</Target>
+			<Target title="tgt_exe_test_mbm_dbg">
+				<Option output="../build/codeblocks/debug/bin/test_mbm" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../build/codeblocks/debug/obj" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="--verbose -j1" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectLinkerOptionsRelation="1" />
+				<Option projectIncludeDirsRelation="1" />
+				<Option projectResourceIncludeDirsRelation="1" />
+				<Option projectLibDirsRelation="1" />
+				<Compiler>
+					<Add option="-O0" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c2x" />
+					<Add option="-ggdb" />
+					<Add option="-g" />
+					<Add directory="../include" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,-rpath,../build/codeblocks/debug/lib" />
+					<Add library="mbm" />
+					<Add library="criterion" />
+					<Add directory="../build/codeblocks/debug/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="vtgt_exe_exe_dbg" targets="tgt_lib_their_dbg;tgt_lib_mbm_dbg;tgt_exe_exe_dbg;" />
+			<Add alias="vtgt_exe_test_mbm_dbg" targets="tgt_lib_their_dbg;tgt_lib_mbm_dbg;tgt_exe_test_mbm_dbg;" />
+		</VirtualTargets>
+		<Unit filename="../third_party/their/include/their/addition.h">
+			<Option target="tgt_lib_their_dbg" />
+		</Unit>
+		<Unit filename="../third_party/their/include/their/subtraction.h">
+			<Option target="tgt_lib_their_dbg" />
+		</Unit>
+		<Unit filename="../third_party/their/src/their/addition.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_lib_their_dbg" />
+		</Unit>
+		<Unit filename="../third_party/their/src/their/subtraction.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_lib_their_dbg" />
+		</Unit>
+		<Unit filename="../include/mbm/addition.h">
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../include/mbm/division.h">
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../include/mbm/multiplication.h">
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../include/mbm/subtraction.h">
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../src/mbm/addition.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../src/mbm/division.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../src/exe/main.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_exe_exe_dbg" />
+		</Unit>
+		<Unit filename="../src/mbm/multiplication.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../src/mbm/subtraction.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_lib_mbm_dbg" />
+		</Unit>
+		<Unit filename="../test/mbm/test_addition.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_exe_test_mbm_dbg" />
+		</Unit>
+		<Unit filename="../test/mbm/test_division.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_exe_test_mbm_dbg" />
+		</Unit>
+		<Unit filename="../test/mbm/test_multiplication.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_exe_test_mbm_dbg" />
+		</Unit>
+		<Unit filename="../test/mbm/test_subtraction.c">
+			<Option compilerVar="CC" />
+			<Option target="tgt_exe_test_mbm_dbg" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

@@ -1,9 +1,3 @@
-/mbm
+/build
 /cachegrind.out.*
 /callgrind.out.*
-/.vscode
-/**/*.d
-/**/*.o
-/lib
-/**/build
-
