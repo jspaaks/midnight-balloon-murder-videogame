@@ -12,7 +12,7 @@ void window_deinit (SDL_Window ** window) {
     *window = NULL;
 }
 
-SDL_Window * window_init (scene_t scene) {
+SDL_Window * window_init (const scene_t scene) {
     assert(scene.tgt.w != 0 && "scene needs to be initialized before window");
     int flags = SDL_WINDOW_RESIZABLE;
     SDL_Window * window = SDL_CreateWindow("Midnight Balloon Murder", SDL_WINDOWPOS_CENTERED,

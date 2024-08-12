@@ -19,8 +19,8 @@
 #include "types.h"
 #include <stdbool.h>
 
-void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables,
-                       counters_t counters) {
+void fsm_playing_draw (const level_t level, const drawing_t drawing, const drawables_t drawables,
+                       const counters_t counters) {
 
     drawable_background_draw(drawing.renderer, drawing.colors, drawing.scene);
     drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
@@ -43,7 +43,7 @@ void fsm_playing_draw (level_t level, drawing_t drawing, drawables_t drawables,
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_playing_update (timing_t timing, chunks_t chunks, counters_t * counters,
+void fsm_playing_update (const timing_t timing, const chunks_t chunks, counters_t * counters,
                          drawing_t * drawing, drawables_t * drawables, gamestate_t ** gamestate,
                          level_t *) {
     SDL_Event event;

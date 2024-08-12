@@ -59,7 +59,7 @@ void scene_update (SDL_Renderer * renderer, scene_t * scene) {
     }
 }
 
-SDL_Rect sim2tgt (scene_t scene, SDL_FRect sim) {
+SDL_Rect sim2tgt (const scene_t scene, const SDL_FRect sim) {
     return (SDL_Rect){
         .x = scene.tgt.x + (int) (sim.x * scene.scale),
         .y = scene.tgt.y + (int) (sim.y * scene.scale),

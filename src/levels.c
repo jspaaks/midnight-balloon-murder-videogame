@@ -112,11 +112,11 @@ static level_t levels[] = {
     },
 };
 
-level_t levels_get_level (level_enum_t label) {
+level_t levels_get_level (const level_enum_t label) {
     return levels[label];
 }
 
-void levels_reset_level (level_t level, drawing_t drawing, drawables_t * drawables,
+void levels_reset_level (const level_t level, const drawing_t drawing, drawables_t * drawables,
                          counters_t * counters) {
 
     // --- deinit entities from previous levels

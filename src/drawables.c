@@ -10,7 +10,7 @@
 #include "drawable_turret.h"
 #include "types.h"
 
-drawables_t drawables_init (scene_t scene) {
+drawables_t drawables_init (const scene_t scene) {
     ground_t ground = drawable_ground_init(scene);
     turret_t turret = drawable_turret_init(scene, ground);
     barrel_t barrel = drawable_barrel_init(turret);

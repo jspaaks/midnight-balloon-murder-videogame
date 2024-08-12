@@ -23,8 +23,8 @@
 #include "types.h"
 #include <stdbool.h>
 
-void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,
-                      counters_t counters) {
+void fsm_paused_draw (const level_t level, const drawing_t drawing, const drawables_t drawables,
+                      const counters_t counters) {
 
     drawable_background_draw(drawing.renderer, drawing.colors, drawing.scene);
     drawable_moon_draw(drawing.renderer, drawing.spritesheet, drawing.scene, drawables.moon);
@@ -56,7 +56,7 @@ void fsm_paused_draw (level_t level, drawing_t drawing, drawables_t drawables,
     SDL_RenderPresent(drawing.renderer);
 }
 
-void fsm_paused_update (timing_t, chunks_t, counters_t * counters, drawing_t * drawing,
+void fsm_paused_update (const timing_t, const chunks_t, counters_t * counters, drawing_t * drawing,
                         drawables_t * drawables, gamestate_t ** gamestate, level_t * level) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {

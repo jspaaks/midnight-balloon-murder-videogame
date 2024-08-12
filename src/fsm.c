@@ -28,6 +28,6 @@ static gamestate_t gamestates[] = {
      },
 };
 
-gamestate_t * fsm_gamestate_get (gamestate_enum_t label) {
+gamestate_t * fsm_gamestate_get (const gamestate_enum_t label) {
     return &gamestates[label];
 }
