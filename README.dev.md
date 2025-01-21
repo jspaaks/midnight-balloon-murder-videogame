@@ -4,58 +4,63 @@
 
 Clone this repo recursively:
 
-```shell
-cd <your project dir>
-git clone https://github.com/jspaaks/midnight-balloon-murder-videogame.git --recursive .
+```console
+$ cd <your project dir>
+$ git clone https://github.com/jspaaks/midnight-balloon-murder-videogame.git --recursive .
 ```
 
 Then use Cmake to configure, build and (optionally) install:
 
-```shell
+```console
 # create an out-of-tree build directory, cd into it
-mkdir build && cd build
+$ mkdir build && cd build
 
 # generate the build files
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/tmp/dist-mbm ..
+$ cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=~/tmp/mbm ..
 
 # compile using the generated build files
-cmake --build .
+$ cmake --build .
 
-# install in the prefix directory from earlier
-cmake --install .
+# install in your CMAKE_INSTALL_PREFIX directory of choice
+$ cmake --install .
+
+# run the tests (requires configuring with -DBUILD_TESTING=ON and additionally assumes
+# that the Criterion testing library has been installed)
+$ ctest
 
 # Run the binary from the prefix root
-/tmp/dist-mbm/bin/mbm
+$ cd ~/tmp/mbm
+$ ./bin/mbm
 ```
 
 ## Linting
 
-```shell
+```console
 # see if main.c is compliant with rules in .clang-format
-clang-format --dry-run --Werror ./src/main.c
+$ clang-format --dry-run --Werror ./src/main.c
 
 # see what clang-format would like the file to look
-clang-format --Werror ./src/main.c
+$ clang-format --Werror ./src/main.c
 
 # see if all files are compliant with rules in .clang-format
-clang-format --dry-run --Werror `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
+$ clang-format --dry-run --Werror `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
 
 # let clang-format change files in-place
-clang-format -i `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
+$ clang-format -i `find ./src -maxdepth 1 -type f -name '*.[c|h]'`
 ```
 
 ## Generating a bitmap image from SVG
 
 Install [ImageMagick](https://github.com/imagemagick/imagemagick) from repositories:
 
-```shell
-sudo apt install imagemagick
+```console
+$ sudo apt install imagemagick
 ```
 
 Converting SVG images to BMP with transparency using ImageMagick's `convert` command:
 
-```shell
-convert -background none -density 96 images/sprites.svg images/sprites.bmp
+```console
+$ convert -background none -density 96 images/sprites.svg images/sprites.bmp
 ```
 
 ## Sound effects
