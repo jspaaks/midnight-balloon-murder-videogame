@@ -53,4 +53,11 @@ target_sources(
         ${PROJECT_ROOT}/test/mbm/test_chunks.c
 )
 
+add_test(
+    NAME
+        test_mbm
+    COMMAND
+        ${CMAKE_INSTALL_PREFIX}/bin/test_mbm
+)
+
 install(TARGETS tgt_exe_test_mbm)

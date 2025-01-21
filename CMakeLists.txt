@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.23...3.28)
 
-project(project LANGUAGES C)
+project(project-mbm LANGUAGES C)
+include(CTest)  # defines BUILD_TESTING
 
 set(PROJECT_ROOT ${CMAKE_CURRENT_LIST_DIR})
 
 if (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${CMAKE_BINARY_DIR}/dist")
+    set_property(CACHE CMAKE_INSTALL_PREFIX PROPERTY VALUE "${CMAKE_BINARY_DIR}/dist")
 endif()
 
 
@@ -71,5 +72,17 @@ add_subdirectory(${PROJECT_ROOT}/src/mbm)
 
 
 
-add_subdirectory(${PROJECT_ROOT}/test/mbm)
-
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    # I'm the top-most project
+    option(MBM_BUILD_TESTING "Whether to build the mbm tests" ${BUILD_TESTING})
+    if ((BUILD_TESTING AND NOT MBM_BUILD_TESTING) OR
+        (NOT BUILD_TESTING AND MBM_BUILD_TESTING))
+        message(WARNING, " will use more specific MBM_BUILD_TESTING=${MBM_BUILD_TESTING} over BUILD_TESTING=${BUILD_TESTING}")
+    endif()
+else()
+    # I'm not the top-most project, use MBM_BUILD_TESTING as-is
+    option(MBM_BUILD_TESTING "Whether to build the mbm tests" OFF)
+endif()
+if (MBM_BUILD_TESTING)
+    add_subdirectory(${PROJECT_ROOT}/test/mbm)
+endif()
