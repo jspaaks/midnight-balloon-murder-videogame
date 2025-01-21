@@ -29,7 +29,8 @@ $ cmake --install .
 $ ctest
 
 # Run the binary from the prefix root
-$ ~/tmp/mbm/bin/mbm
+$ cd ~/tmp/mbm
+$ ./bin/mbm
 ```
 
 ## Linting
